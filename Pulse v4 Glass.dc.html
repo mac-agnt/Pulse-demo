@@ -3269,8 +3269,9 @@ function synthesizeCustomArea(name){
 function pickAnswer(q){
   const s = q.toLowerCase();
   if (/\b(load|loads|dispatch|forklift|lorry|loading)\b/.test(s)) return ANSWERS.visits;
-  if (/\b(chase|chasing|call|calls|emails?|draft|send)\b/.test(s)) return ANSWERS.chase;
-  if (/\b(quotes?|win rate|discount|india|follow-up call)\b/.test(s)) return ANSWERS.credit;
+  if (/\b(quotes?|win rate|discount|india|follow-up call|which quotes)\b/.test(s)
+      && !/\b(chase|chasing|log |draft|confirm and)\b/.test(s)) return ANSWERS.credit;
+  if (/\b(chase|chasing|log |emails?|draft|send|confirm)\b/.test(s)) return ANSWERS.chase;
   if (/\b(enquir|tasks?|late|overdue|slipped|behind)\b|\bmy work\b/.test(s)) return ANSWERS.jobs;
   if (/\b(stock|yard|accuracy|counts?|notebook|sync|herb|integrations?|health)\b/.test(s)) return ANSWERS.sync;
   return ANSWERS.fallback;
@@ -3647,7 +3648,8 @@ const ENQUIRY_ROWS = Array.from({length:67}, (_, i) => {
   const follow = i < 12;
   const stage = follow ? "follow-up" : ["email","quote","order","delivery"][i % 4];
   const tint = follow ? "#C45C26" : ["#C4B49A","#1B5E3B","#9fd6f0","#8fa67a"][i % 4];
-  return [row[1]+" · "+row[0], stage+" · "+row[2], (row[1].split(" ")[0].toLowerCase())+"@"+CONFIG.domain, row[0], follow ? "watch" : "customer", tint, i];
+  const slug = row[0].toLowerCase().replace(/[^a-z0-9]+/g,"").slice(0,14) || "trade";
+  return [row[1]+" · "+row[0], stage+" · "+row[2], (row[1].split(" ")[0].toLowerCase())+"@"+slug+".ie", row[0], follow ? "watch" : "customer", tint, i];
 });
 
 const WORK_TASKS = [
@@ -6453,6 +6455,7 @@ class Component extends DCLogic {
       workTasks: allWorkTasks.filter(t => {
         const allLabel = workView && workView.indexOf("All") === 0;
         return !workView || allLabel || t.view === workView
+          || (workView === "Today" && t.day === "Today")
           || (workView === "Done" && (st.done[t.id] || t.done))
           || (workView === "In flight" && !t.late);
       }).map(t => {
