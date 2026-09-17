@@ -25,6 +25,7 @@ TYPES = {
 }
 FILES = {
     "/": "Pulse v4 Glass.dc.html",
+    "/index.html": "index.html",
     "/support.js": "support.js",
     "/AgentFace.dc.html": "AgentFace.dc.html",  # fetched by the page for the agent avatars
     "/favicon.svg": "favicon.svg",
