@@ -6,11 +6,16 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulse</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<!-- React bundled locally so the demo runs offline; support.js skips its CDN load when these are present. -->
+<script src="./vendor/react.production.min.js"></script>
+<script src="./vendor/react-dom.production.min.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
-<helmet><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+<helmet><link href="./vendor/fonts.css" rel="stylesheet"><style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;height:100%}
 :root{
@@ -2678,6 +2683,29 @@ const INK="var(--ink)", BODY="var(--body)", DIM="var(--dim)", FAINT="var(--faint
 const LIME="var(--accent)", GREEN="var(--ok)", AMBER="var(--warn)", RED="var(--bad)", NEUTRAL="var(--neutral)";
 const MONO="'IBM Plex Mono',monospace";
 
+// Demo dates follow the real calendar so every walkthrough looks current. The sample data was
+// written for Wed 26 Aug 2026; upcoming dates below are expressed relative to today instead.
+const TODAY = new Date(); TODAY.setHours(0, 0, 0, 0);
+const MONTHS_SHORT = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONTHS_LONG = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const WEEKDAYS_SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+function addDays(d, n){ const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function daysFromToday(d){ return Math.round((d - TODAY) / 864e5); }
+function dayMonth(d){ return d.getDate() + " " + MONTHS_SHORT[d.getMonth()]; }
+function dayMonthYear(d){ return dayMonth(d) + " " + d.getFullYear(); }
+function longDate(d){ return d.getDate() + " " + MONTHS_LONG[d.getMonth()]; }
+function weekdayDate(d){ return WEEKDAYS_SHORT[d.getDay()] + " " + dayMonth(d); }
+// Soonest given weekday (0 = Sun) strictly after today, and latest one on or before today.
+function nextWeekday(dow){ return addDays(TODAY, ((dow - TODAY.getDay() + 6) % 7) + 1); }
+function lastWeekday(dow){ return addDays(TODAY, -((TODAY.getDay() - dow + 7) % 7)); }
+function nextWorkday(){ let d = addDays(TODAY, 1); while (d.getDay() === 0 || d.getDay() === 6) d = addDays(d, 1); return d; }
+function monthStart(offset){ return new Date(TODAY.getFullYear(), TODAY.getMonth() + offset, 1); }
+function monthEnd(offset){ return new Date(TODAY.getFullYear(), TODAY.getMonth() + offset + 1, 0); }
+// "Tomorrow", or "Mon 09:00" / "3 Oct 09:00" for an upcoming run further out.
+function runLabel(d, time){ const n = daysFromToday(d); return n === 1 ? "Tomorrow" : (n < 7 ? WEEKDAYS_SHORT[d.getDay()] : dayMonth(d)) + " " + time; }
+// Month axes for the twelve-month charts: oldest first, ending with last month.
+function chartMonths(n){ return Array.from({length:n}, (_, i) => MONTHS_SHORT[monthStart(i - n).getMonth()]); }
+
 const ICONS = {
   navHome:"M12 3.2 3.6 9.1v10a1.5 1.5 0 0 0 1.5 1.5h13.8a1.5 1.5 0 0 0 1.5-1.5v-10L12 3.2Z M8.9 13.1h2l1-2.6 1.5 5 1.1-2.4h1.6",
   navAgents:"M12 2.4v2.3 M12 2.4a.9.9 0 1 0 0-.02 M8.2 6.5h7.6A2.2 2.2 0 0 1 18 8.7v5.1a2.2 2.2 0 0 1-2.2 2.2H8.2A2.2 2.2 0 0 1 6 13.8V8.7a2.2 2.2 0 0 1 2.2-2.2Z M9.9 10.6v1.4 M14.1 10.6v1.4 M6 10h-1.9 M18 10h1.9 M9.2 18.6h5.6 M9.2 21.2h5.6",
@@ -2746,13 +2774,13 @@ const FILE_TREE = [
   {type:"folder", id:"f-cert", name:"Certificates", depth:0},
   {type:"file", id:"fl-3", name:"Séamus Byrne — gas safe 2026.pdf", depth:1, parent:"f-cert", indexed:true,
    path:"Certificates / Installers", title:"Séamus Byrne — gas safe 2026",
-   facts:[["TYPE","PDF · 2 pages"],["EXPIRES","14 Nov 2026"],["INDEXED","Both pages"],["OWNER","Operations"]],
-   body:["Registration covers domestic boilers and commercial water heaters, valid to 14 November 2026.",
+   facts:[["TYPE","PDF · 2 pages"],["EXPIRES",dayMonthYear(addDays(TODAY, 80))],["INDEXED","Both pages"],["OWNER","Operations"]],
+   body:["Registration covers domestic boilers and commercial water heaters, valid to " + longDate(addDays(TODAY, 80)) + " " + addDays(TODAY, 80).getFullYear() + ".",
      "The renewal reminder fires sixty days before expiry. That routine failed twice this week because Mallow yard has no contact on file."],
    links:[["Séamus Byrne","person"],["Certificate renewal reminder","workflow"]]},
   {type:"file", id:"fl-4", name:"Public liability — 2026.pdf", depth:1, parent:"f-cert", indexed:false,
    path:"Certificates / Insurance", title:"Public liability — 2026",
-   facts:[["TYPE","PDF · 12 pages"],["EXPIRES","1 Apr 2027"],["INDEXED","Not indexed"],["OWNER","Operations"]],
+   facts:[["TYPE","PDF · 12 pages"],["EXPIRES",dayMonthYear(addDays(TODAY, 218))],["INDEXED","Not indexed"],["OWNER","Operations"]],
    body:["Cover to €6.5m across all three locations. Not indexed, so Helios cannot answer questions from it yet.",
      "Indexing it would let the site-visits module check cover before a job is booked at a new address."],
    links:[["Head office","location"],["Ballincollig depot","location"]]},
@@ -2966,7 +2994,7 @@ const ADMIN_CARDS = [
    bySeverity:[["High","137",RED],["Medium","59",AMBER],["Low","35",DIM]],
    issues:[["Duplicate records","74","high","Merge on matching name and VAT number","Fix automatically"],
      ["Missing required fields","62","high","4 organisations have no billing email","Fix automatically"],
-     ["Failed imports","18","medium","Re-run the 14 August Sage batch","Retry"],
+     ["Failed imports","18","medium","Re-run the " + longDate(addDays(TODAY, -12)) + " Sage batch","Retry"],
      ["Out-of-date information","41","medium","Not touched in over 18 months","Review"],
      ["Broken connections","1","high","Xero refresh token expired","Reconnect"],
      ["Unmatched records","23","low","Invoices with no organisation attached","Review"],
@@ -3039,7 +3067,7 @@ const DATA_EVENTS = [
 const PEOPLE_EVENTS = [
   ["Aoife approved a refund","€412 written off on INV-10233 after the parts dispute closed.","Aoife Nolan","Glanmire Mechanical","Pulse","completed"],
   ["Tom changed a booking","Thursday's depot visit moved to 11:00 to fit the delivery window.","Tom Walsh","Ballincollig depot","Pulse","completed"],
-  ["Mac assigned a task","Lease decision handed to himself, due Thursday.","Martin Kilbride","Ballincollig depot","Pulse","completed"],
+  ["Martin assigned a task","Lease decision handed to himself, due Thursday.","Martin Kilbride","Ballincollig depot","Pulse","completed"],
   ["Finance uploaded a report","August month-end close workbook, nine sheets.","Aoife Nolan","Head office","Pulse","completed"],
   ["Niamh edited customer details","Billing email corrected so reminders stop bouncing.","Niamh Cronin","Dunne & Sons Ltd","Pulse","completed"],
   ["Séamus completed a visit","Warranty callback closed — parts ordered on the spot.","Séamus Byrne","Fitzgerald Heating","Pulse","completed"],
@@ -3109,10 +3137,10 @@ const ITEMS = {
   task:{kind:"Task", importance:"normal", icon:ICONS.work, age:"Thu",
     title:"Ballincollig lease renewal closes Thursday",
     why:"No decision recorded against the contract and the notice period is 30 days.",
-    detail:"The lease runs to 31 October. Ballincollig carried 38% of counter revenue this year; rent is 4.1% of that.",
+    detail:"The lease runs to " + longDate(monthEnd(2)) + ". Ballincollig carried 38% of counter revenue this year; rent is 4.1% of that.",
     actionLabel:"Open record", secondaryLabel:"Assign", group:"Work",
-    fields:[{k:"Provider",v:"core.tasks"},{k:"Due",v:"Thu 27 Aug"},{k:"Assignee",v:"Martin Kilbride"},{k:"Priority",v:"high"}],
-    history:[{when:"18 Aug",text:"Task materialised from a recurring rule"},{when:"2 Feb",text:"Contract uploaded by Aoife Nolan"}]}
+    fields:[{k:"Provider",v:"core.tasks"},{k:"Due",v:weekdayDate(nextWeekday(4))},{k:"Assignee",v:"Martin Kilbride"},{k:"Priority",v:"high"}],
+    history:[{when:dayMonth(addDays(TODAY, -8)),text:"Task materialised from a recurring rule"},{when:"2 Feb",text:"Contract uploaded by Aoife Nolan"}]}
 };
 const ORDER = ["sync","po","visit","auto","task"];
 
@@ -3128,7 +3156,7 @@ const ANSWERS = {
     rows:[["Boiler swap follow-up","Ó Riain, Glanmire","4d","S. Byrne"],["Bathroom fit sign-off","Casey Builders","3d","T. Walsh"],["Rad replace invoice","Kelleher, Cobh","2d","S. Byrne"]],
     actions:[["Reassign the two van tasks",1],["Open Work → Overdue",0]]},
   chase:{tool:"core_email_draft", effect:"write", confirm:true,
-    confirmSummary:"Send one chase email to accounts@dunneandsons.ie referencing INV-10428 (€28,410, 74 days), offering two instalments to 30 September.",
+    confirmSummary:"Send one chase email to accounts@dunneandsons.ie referencing INV-10428 (€28,410, 74 days), offering two instalments to " + longDate(monthEnd(1)) + ".",
     text:"Drafted. This is a write tool, so I have not sent it — the proposal is stored with a hash of the exact arguments, and confirming replays those stored arguments rather than anything from your yes.",
     actions:[["Confirm and send",1],["Edit draft",0]]},
   sync:{tool:"core_operations_health", effect:"read",
@@ -3140,8 +3168,8 @@ const ANSWERS = {
     rows:[["Boiler service","Casey Builders","Wed 09:00","scheduled"],["Survey","Ó Riain","Wed 14:00","scheduled"],["Depot check","Ballincollig","Thu 09:00","unassigned"]],
     actions:[["Assign the unassigned visit",1],["Open Site visits",0]]},
   fallback:{tool:"core_search", effect:"read",
-    text:"I can answer that from the records you have access to. Everything I reach goes through a registered tool with a declared permission — there is no SQL tool — and a record you may not see comes back as not found rather than forbidden.",
-    actions:[["Show me what you can do",0]]}
+    text:"Everything I reach goes through a registered tool with a declared permission, and none of them covers that question yet. Here is what I can answer right now.",
+    actions:[["Who is over their credit limit?",1],["What is running late?",0],["Why did the Xero sync fail?",0],["Site visits this week",0]]}
 };
 
 // Turns a plain-English filter name into a full dashboard area — the "primitive
@@ -3178,7 +3206,7 @@ function synthesizeCustomArea(name){
     generic:  {labels:["Volume","Rate","Cost","Coverage"], unit:"ACTIVITY — 30 DAYS"}
   }[vocab];
 
-  const months = ["Sep","Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"];
+  const months = chartMonths(12);
   let v0 = 40 + Math.floor(rnd(1) * 220);
   const chart = months.map((m, i) => {
     v0 = Math.max(8, Math.round(v0 * (1 + dir * (0.03 + rnd(i + 3) * 0.07))));
@@ -3210,13 +3238,15 @@ function synthesizeCustomArea(name){
   };
 }
 
+// Whole words only, so "how does this work?" or "the latest numbers" fall through to the
+// fallback instead of landing on an unrelated answer.
 function pickAnswer(q){
   const s = q.toLowerCase();
-  if (/visit|site visit|installer/.test(s)) return ANSWERS.visits;
-  if (/chase|email|draft|send/.test(s)) return ANSWERS.chase;
-  if (/credit|limit|debtor|owe|outstanding|dunne/.test(s)) return ANSWERS.credit;
-  if (/task|late|overdue|slip|work/.test(s)) return ANSWERS.jobs;
-  if (/sync|xero|integration|token|fail|broke|health/.test(s)) return ANSWERS.sync;
+  if (/\b(visits?|installers?)\b/.test(s)) return ANSWERS.visits;
+  if (/\b(chase|chasing|emails?|draft|send)\b/.test(s)) return ANSWERS.chase;
+  if (/\b(credit|limits?|debtors?|owed?|owes|outstanding|dunne)\b/.test(s)) return ANSWERS.credit;
+  if (/\b(tasks?|late|overdue|slipped|behind)\b|\bmy work\b/.test(s)) return ANSWERS.jobs;
+  if (/\b(sync|xero|integrations?|token|fail(ed|ing|s|ure)?|broken?|health)\b/.test(s)) return ANSWERS.sync;
   return ANSWERS.fallback;
 }
 
@@ -3273,7 +3303,7 @@ const AGENT_DEFS = [
      {kind:"stamp", text:"Yesterday 16:40"},
      {kind:"agent", text:"three accounts changed behaviour this week. i've drafted a chase for each and parked them — sending is a write tool, so they wait for you."},
      {kind:"user", text:"what changed on dunne"},
-     {kind:"agent", text:"days-to-pay went 12 → 74 since May while order volume held steady. that pattern is a cash problem, not a dispute. i'd offer two instalments to 30 September before putting them on stop again."}
+     {kind:"agent", text:"days-to-pay went 12 → 74 since May while order volume held steady. that pattern is a cash problem, not a dispute. i'd offer two instalments to " + longDate(monthEnd(1)) + " before putting them on stop again."}
    ]},
   {id:"visits", name:"Visit Scout", shape:"low-dome", tint:"#241b2e", state:"working", role:"Keeps the site-visit board honest and chases unassigned work",
    when:"Yesterday", preview:"thursday's depot check still has nobody on it.",
@@ -3317,7 +3347,7 @@ const KPI_DEFS = {
 const ASPECT_DEFS = [
   {id:"sales", label:"Sales", color:"#c8f04b", owner:"NIAMH CRONIN", description:"Counter, trade accounts and quotes out the door.",
    kind:"columns", chartTitle:"Revenue by month", chartUnit:"EUR",
-   chart:[["Sep",288,"€0k"],["Oct",301,"€0k"],["Nov",352,"€0k"],["Dec",376,"€0k"],["Jan",268,"€0k"],["Feb",294,"€0k"],["Mar",318,"€0k"],["Apr",341,"€0k"],["May",362,"€0k"],["Jun",384,"€0k"],["Jul",398,"€0k"],["Aug",413,"€0k"]],
+   chart:[["Sep",288,"€288k"],["Oct",301,"€301k"],["Nov",352,"€352k"],["Dec",376,"€376k"],["Jan",268,"€268k"],["Feb",294,"€294k"],["Mar",318,"€318k"],["Apr",341,"€341k"],["May",362,"€362k"],["Jun",384,"€384k"],["Jul",398,"€398k"],["Aug",413,"€413k"]],
    splitTitle:"Where it came from",
    split:[["Trade counter","€214.6k","72%",1],["Contract accounts","€156.8k","53%",0],["Online orders","€41.4k","18%",0]],
    tableCols:["Account","Revenue","Change","Owner"],
@@ -3361,7 +3391,7 @@ const ASPECT_DEFS = [
      ["Installer hours","84%","−2pt","down","billable",[.8,.78,.8,.76,.78,.74,.76,.72,.7]]]},
   {id:"finance", label:"Finance", color:"#7fd8a4", owner:"AOIFE NOLAN", description:"Cash in, debt ageing and margin after cost.",
    kind:"area", chartTitle:"Cash collected by month", chartUnit:"EUR",
-   chart:[["Sep",252,"€0k"],["Oct",268,"€0k"],["Nov",296,"€0k"],["Dec",318,"€0k"],["Jan",246,"€0k"],["Feb",264,"€0k"],["Mar",288,"€0k"],["Apr",306,"€0k"],["May",324,"€0k"],["Jun",342,"€0k"],["Jul",358,"€0k"],["Aug",368,"€0k"]],
+   chart:[["Sep",252,"€252k"],["Oct",268,"€268k"],["Nov",296,"€296k"],["Dec",318,"€318k"],["Jan",246,"€246k"],["Feb",264,"€264k"],["Mar",288,"€288k"],["Apr",306,"€306k"],["May",324,"€324k"],["Jun",342,"€342k"],["Jul",358,"€358k"],["Aug",368,"€368k"]],
    splitTitle:"Debt by age",
    split:[["0–30 days","€184.2k","61%",1],["31–60 days","€82.4k","27%",0],["61–90 days","€28.6k","9%",0],["90 days plus","€12.6k","4%",0]],
    tableCols:["Account","Balance","Change","Oldest"],
@@ -3382,6 +3412,11 @@ const ASPECT_DEFS = [
      ["Warranty cost","€3,140","−€420","up","30 days",[.7,.66,.62,.6,.54,.5,.46,.44,.4]],
      ["Repeat faults","3","−1","up","same site",[.5,.5,.46,.4,.4,.36,.3,.3,.26]]]}
 ];
+// Month axes end with last month, whatever month the demo runs in.
+ASPECT_DEFS.forEach(a => {
+  if (a.chart) { const m = chartMonths(a.chart.length); a.chart.forEach((row, i) => { row[0] = m[i]; }); }
+  if (a.stacked) { const m = chartMonths(a.stacked.length); a.stacked.forEach((col, i) => { col[0] = m[i]; }); }
+});
 
 const FILTER_GROUPS = [
   {title:"AREA", items:["Sales","Development","Marketing","Operations","Finance","Support"]},
@@ -3391,14 +3426,14 @@ const FILTER_GROUPS = [
 
 const OPS_DEFS = [
   {id:"o1", name:"Weekly management report", kind:"report", owner:"Chief of Staff", ownerKind:"agent", initials:"CS",
-   trigger:"Mon, 08:00", triggerKind:"schedule", next:"3 days", last:"Sent to 4 people", status:"healthy", rate:98, on:true,
+   trigger:"Mon, 08:00", triggerKind:"schedule", next:(n => n === 1 ? "Tomorrow" : n + " days")(daysFromToday(nextWeekday(1))), last:"Sent to 4 people", status:"healthy", rate:98, on:true,
    what:"Pulls last week's numbers from every area, writes the commentary and sends one page to the management team before Monday's meeting.",
    why:"The meeting used to start with twenty minutes of people reading numbers off their own screens.",
    saved:"6 hours a month",
    steps:[["Trigger","Every Monday at 08:00"],["Find","Last week's metrics across all six areas"],["Check","Flag anything moving more than 10%"],["Draft","Write the one-page commentary"],["Send","Email the management team"],["Update","File the report against the week"]],
-   runs:[["Mon 08:00","1m 12s","ok","4 recipients","€0.04"],["Mon 25 Aug 08:00","1m 04s","ok","4 recipients","€0.04"],["Mon 18 Aug 08:00","58s","ok","4 recipients","€0.03"]]},
+   runs:[["Mon 08:00","1m 12s","ok","4 recipients","€0.04"],[weekdayDate(addDays(lastWeekday(1), -7)) + " 08:00","1m 04s","ok","4 recipients","€0.04"],[weekdayDate(addDays(lastWeekday(1), -14)) + " 08:00","58s","ok","4 recipients","€0.03"]]},
   {id:"o2", name:"Chase unpaid invoices", kind:"automation", owner:"Finance Agent", ownerKind:"agent", initials:"FA",
-   trigger:"Daily, 09:00", triggerKind:"schedule", next:"Tomorrow", last:"3 drafts waiting", status:"approval", rate:94, on:true,
+   trigger:"Daily, 09:00", triggerKind:"schedule", next:runLabel(nextWorkday(), "09:00"), last:"3 drafts waiting", status:"approval", rate:94, on:true,
    what:"Finds invoices past 14 days, excludes anything disputed, drafts a reminder in your tone and parks it for the finance manager.",
    why:"Chasing was happening in bursts, so the oldest debt got the least attention.",
    saved:"11 hours a month",
@@ -3419,7 +3454,7 @@ const OPS_DEFS = [
    steps:[["Trigger","60 days before a document expires"],["Find","The owner of the certificate"],["Check","Has a renewal already been booked?"],["Send","Notify the owner and Operations"],["Update","Create the renewal task"]],
    runs:[["Today 14:20","3s","failed","0 of 2","€0.00","No contact on file for Mallow yard"],["Yesterday 14:20","4s","failed","0 of 1","€0.00","No contact on file for Mallow yard"],["Fri 14:20","5s","ok","1 notified","€0.01"]]},
   {id:"o5", name:"Morning briefing", kind:"routine", owner:"Briefing Agent", ownerKind:"agent", initials:"BR",
-   trigger:"Weekdays, 07:00", triggerKind:"schedule", next:"Tomorrow", last:"Delivered 07:02", status:"healthy", rate:100, on:true,
+   trigger:"Weekdays, 07:00", triggerKind:"schedule", next:runLabel(nextWorkday(), "07:00"), last:"Delivered 07:02", status:"healthy", rate:100, on:true,
    what:"Reads the whole business overnight and tells you the two things that actually need you.",
    why:"You were opening six screens before your first coffee.",
    saved:"9 hours a month",
@@ -3431,7 +3466,7 @@ const OPS_DEFS = [
    why:"Two jobs were rescheduled in June for parts nobody had ordered.",
    saved:"5 hours a month",
    steps:[["Trigger","Every Thursday at 09:00"],["Find","Lines below reorder point"],["Check","What this week's jobs need"],["Approval","Buyer confirms the order","gate"],["Update","Raise the purchase order"]],
-   runs:[["Thu 09:00","31s","ok","2 lines","€0.02"],["Thu 21 Aug 09:00","28s","ok","1 line","€0.02"]]},
+   runs:[["Thu 09:00","31s","ok","2 lines","€0.02"],[weekdayDate(addDays(lastWeekday(4), -7)) + " 09:00","28s","ok","1 line","€0.02"]]},
   {id:"o7", name:"Xero invoice sync", kind:"automation", owner:"Ops Watchdog", ownerKind:"agent", initials:"OW",
    trigger:"Hourly", triggerKind:"schedule", next:"Paused", last:"Token expired", status:"failed", rate:62, on:false,
    what:"Posts every finalised invoice into Xero and reconciles what came back.",
@@ -3445,14 +3480,14 @@ const OPS_DEFS = [
    why:"Weekend calls were being answered by whoever picked up, with no context.",
    saved:"4 hours a month",
    steps:[["Trigger","Every Friday at 16:30"],["Find","Open jobs and unanswered customers"],["Draft","Write the handover note"],["Send","WhatsApp the on-call rota"]],
-   runs:[["Fri 16:30","18s","ok","3 recipients","€0.02"],["Fri 15 Aug 16:30","21s","ok","3 recipients","€0.02"]]},
+   runs:[["Fri 16:30","18s","ok","3 recipients","€0.02"],[weekdayDate(addDays(lastWeekday(5), -7)) + " 16:30","21s","ok","3 recipients","€0.02"]]},
   {id:"o9", name:"Timesheet reminder", kind:"task", owner:"Operations", ownerKind:"person", initials:"TW",
    trigger:"Fri, 15:00", triggerKind:"schedule", next:"Fri 15:00", last:"9 of 12 submitted", status:"approval", rate:88, on:true,
    what:"Nudges anyone who has not filed hours, then sends Operations the list still outstanding.",
    why:"Payroll was chasing the same four people every week.",
    saved:"3 hours a month",
    steps:[["Trigger","Every Friday at 15:00"],["Find","Staff with no hours filed"],["Send","Remind each person"],["Approval","Operations signs off the week","gate"]],
-   runs:[["Fri 15:00","12s","partial","9 of 12","€0.01"],["Fri 15 Aug 15:00","11s","ok","12 of 12","€0.01"]]},
+   runs:[["Fri 15:00","12s","partial","9 of 12","€0.01"],[weekdayDate(addDays(lastWeekday(5), -7)) + " 15:00","11s","ok","12 of 12","€0.01"]]},
   {id:"o10", name:"Overnight backup check", kind:"automation", owner:"Ops Watchdog", ownerKind:"agent", initials:"OW",
    trigger:"Daily, 03:00", triggerKind:"schedule", next:"Tonight", last:"All systems clean", status:"healthy", rate:100, on:true,
    what:"Confirms every nightly backup completed and the restore test passed, and raises an alert if not.",
@@ -3461,12 +3496,12 @@ const OPS_DEFS = [
    steps:[["Trigger","Every day at 03:00"],["Check","Every backup job completed"],["Check","Last restore test passed"],["Send","Alert only if something failed"]],
    runs:[["Today 03:00","8s","ok","6 jobs","€0.00"],["Yesterday 03:00","9s","ok","6 jobs","€0.00"]]},
   {id:"o11", name:"Month-end close pack", kind:"report", owner:"Finance Agent", ownerKind:"agent", initials:"FA",
-   trigger:"1st, 07:00", triggerKind:"schedule", next:"1 Sep 07:00", last:"Delivered 1 Aug", status:"healthy", rate:95, on:true,
+   trigger:"1st, 07:00", triggerKind:"schedule", next:dayMonth(monthStart(1)) + " 07:00", last:"Delivered " + dayMonth(monthStart(0)), status:"healthy", rate:95, on:true,
    what:"Assembles the close pack: aged debt, margin by area, cash position and the variance commentary.",
    why:"Close took three days of copying between spreadsheets.",
    saved:"16 hours a month",
    steps:[["Trigger","First of the month at 07:00"],["Find","Last month's ledger and margin data"],["Check","Reconcile against the bank"],["Draft","Write the variance commentary"],["Send","Email the pack to Finance"]],
-   runs:[["1 Aug 07:00","3m 42s","ok","1 pack","€0.09"],["1 Jul 07:00","3m 51s","ok","1 pack","€0.09"]]}
+   runs:[[dayMonth(monthStart(0)) + " 07:00","3m 42s","ok","1 pack","€0.09"],[dayMonth(monthStart(-1)) + " 07:00","3m 51s","ok","1 pack","€0.09"]]}
 ];
 
 const OPS_FILTERS = [
@@ -3766,7 +3801,7 @@ class Component extends DCLogic {
             recSection:"contacts", recAsk:"", treeOpen:true, treeExpanded:{}, treeFile:"fl-1", treeQuery:"",
             ontoNode:"Organisation", ontoHover:null, ontoLayout:"Force",
             newRecOpen:false, newRecName:"", newRecTemplate:"Field sheet", newRecCat:"All",
-            opsFilter:"all", opsOff:{}, opsOpen:null, opsScope:"week", opsDay:26, opsOrder:null, opsDrag:null,
+            opsFilter:"all", opsOff:{}, opsOpen:null, opsScope:"week", opsDay:null, opsOrder:null, opsDrag:null,
             opsBuilderOpen:false, opsBuilderMode:"workflow", builderText:"", builderGenerated:false,
             railOpen:false, barOpen:true, chatRailPinned:false, widgetEdit:false, widgets:["inbox","work","activity"],
             kpiEdit:false, kpiKeys:["revenue","cash","overdue","margin","jobs"],
@@ -4691,9 +4726,17 @@ class Component extends DCLogic {
     ].map(e => { const w = OPS_DEFS.find(x => x.id === e[1]);
       return w ? {day:e[0], name:w.name, color:STATUS_TINT[opsStatusOf(w)][0]} : null; }).filter(Boolean);
     const eventsFor = (d) => MONTH_EVENTS.filter(e => e.day === d);
+    // The sample schedule above was drawn around the week of Mon 24 Aug 2026. Lay it over the real
+    // calendar: this week's days borrow that week's events, other days keep their day of the month.
+    const weekStart = addDays(TODAY, -((TODAY.getDay() + 6) % 7));
+    const sampleDay = (date) => { const i = Math.round((date - weekStart) / 864e5); return i >= 0 && i < 7 ? 24 + i : date.getDate(); };
+    const monthGrid = () => { const first = monthStart(0), lead = (first.getDay() + 6) % 7;
+      return Array.from({length:lead}, () => null).concat(Array.from({length:monthEnd(0).getDate()}, (_, i) => addDays(first, i))); };
+    const selectedDay = st.opsDay || TODAY.getTime();
+    const monthName = MONTHS_LONG[TODAY.getMonth()] + " " + TODAY.getFullYear();
 
     const calModel = {
-      monthLabel: st.opsScope === "week" ? "This week · 26 Aug" : "August 2026",
+      monthLabel: st.opsScope === "week" ? "This week · " + dayMonth(TODAY) : monthName,
       hint: "Everything Pulse will do on its own, and when.",
       load: (st.opsOrder || ["o5","o2","o3","o10","o4","o6","o9","o8"]).length + " routines",
       scopes: [["week","Week"],["month","Month"]].map(s => ({label:s[1],
@@ -4702,16 +4745,15 @@ class Component extends DCLogic {
         pick: () => this.setState({opsScope:s[0]})})),
       dayNames: ["MON","TUE","WED","THU","FRI","SAT","SUN"],
       cellH: st.opsScope === "week" ? "height:118px" : "height:96px",
-      days: (st.opsScope === "week" ? [24,25,26,27,28,29,30]
-        : [null,null,null,null,null,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
-      ).map(d => {
-        if (d === null) return {date:"", pick:() => {}, chips:[], hasMore:false,
+      days: (st.opsScope === "week" ? [0,1,2,3,4,5,6].map(i => addDays(weekStart, i)) : monthGrid()
+      ).map(date => {
+        if (date === null) return {date:"", pick:() => {}, chips:[], hasMore:false,
           cellStyle: st.opsScope === "week" ? "height:118px" : "height:96px" + ";border-radius:12px;background:none;border:1px dashed var(--border)"};
-        const today = d === 26, sel = st.opsDay === d && !today;
-        const evs = eventsFor(d);
+        const today = date.getTime() === TODAY.getTime(), sel = selectedDay === date.getTime() && !today;
+        const evs = eventsFor(sampleDay(date));
         const shown = evs.slice(0, st.opsScope === "week" ? 4 : 2);
         const more = evs.length - shown.length;
-        return {date:String(d),
+        return {date:String(date.getDate()),
           cellStyle: (st.opsScope === "week" ? "height:118px" : "height:96px")
             + ";border-radius:12px;cursor:pointer;padding:7px 8px;display:flex;flex-direction:column;gap:4px;overflow:hidden;"
             + "transition:border-color .2s var(--ease),background .2s var(--ease);"
@@ -4726,17 +4768,17 @@ class Component extends DCLogic {
               + "font-size:10px;line-height:1.3;color:var(--body);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
               + "border-left:2.5px solid " + e.color})),
           hasMore: more > 0, moreLabel: "+" + more + " more",
-          pick: () => this.setState({opsDay:d})};
+          pick: () => this.setState({opsDay:date.getTime()})};
       }),
-      monthTitle: "August 2026",
-      monthDays: [null,null,null,null,null,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31].map(d => {
-        if (d === null) return {date:"", pick:() => {}, chips:[], hasMore:false, moreLabel:"",
+      monthTitle: monthName,
+      monthDays: monthGrid().map(date => {
+        if (date === null) return {date:"", pick:() => {}, chips:[], hasMore:false, moreLabel:"",
           cellStyle:"min-height:104px;border-radius:12px;background:none;border:1px dashed var(--border)"};
-        const today = d === 26, sel = st.opsDay === d && !today;
-        const evs = eventsFor(d);
+        const today = date.getTime() === TODAY.getTime(), sel = selectedDay === date.getTime() && !today;
+        const evs = eventsFor(sampleDay(date));
         const shown = evs.slice(0, 3);
         const more = evs.length - shown.length;
-        return {date:String(d),
+        return {date:String(date.getDate()),
           cellStyle: "min-height:104px;border-radius:12px;cursor:pointer;padding:8px 9px;display:flex;flex-direction:column;gap:4px;overflow:hidden;"
             + "transition:border-color .2s var(--ease),background .2s var(--ease);"
             + (today ? "background:var(--accent-faint);border:1.5px solid var(--accent)"
@@ -4750,7 +4792,7 @@ class Component extends DCLogic {
               + "font-size:10.5px;line-height:1.3;color:var(--body);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
               + "border-left:2.5px solid " + e.color})),
           hasMore: more > 0, moreLabel: "+" + more + " more",
-          pick: () => this.setState({opsDay:d})};
+          pick: () => this.setState({opsDay:date.getTime()})};
       }),
       legend: [{label:"Agent routine", bg:"var(--accent)"}, {label:"Automation", bg:"var(--neutral)"}, {label:"Nothing scheduled", bg:"var(--track)"}],
       weekStats: (() => {
@@ -4760,7 +4802,7 @@ class Component extends DCLogic {
         const busiest = Object.keys(DAY_LOAD).reduce((a, b) => DAY_LOAD[b] > DAY_LOAD[a] ? b : a, "24");
         return [
           {label:"Runs this week", value:String(runs), note:"across " + sched.length + " routines"},
-          {label:"Busiest day", value:busiest + " Aug", note:DAY_LOAD[busiest] + " scheduled runs"},
+          {label:"Busiest day", value:dayMonth(addDays(weekStart, Number(busiest) - 24)), note:DAY_LOAD[busiest] + " scheduled runs"},
           {label:"Needs a person", value:String(OPS_DEFS.filter(w => opsStatusOf(w) === "approval").length), note:"waiting on an approval"},
           {label:"Failing", value:String(OPS_DEFS.filter(w => opsStatusOf(w) === "failed").length), note:"routines to look at"},
           {label:"Time saved", value:hours + "h", note:"per month, all routines"},
@@ -4782,7 +4824,7 @@ class Component extends DCLogic {
           knobBg: on ? "var(--on-accent)" : DIM,
           toggle: () => this.setState(prev => ({opsOff: Object.assign({}, prev.opsOff, {[w.id]: on})}))};
       }),
-      agendaTitle: st.opsDay === 26 ? "Today" : "Wed " + st.opsDay + " Aug",
+      agendaTitle: selectedDay === TODAY.getTime() ? "Today" : weekdayDate(new Date(selectedDay)),
       dragHint: true,
       agenda: (st.opsOrder || ["o5","o2","o3","o10","o4","o6","o9","o8"]).map(id => OPS_DEFS.find(w => w.id === id)).filter(Boolean).map(w => ({
         time: (w.trigger.match(/\d{2}:\d{2}/) || ["—"])[0],
@@ -5749,7 +5791,7 @@ class Component extends DCLogic {
     const jump = (p, extra) => () => this.setState(Object.assign({page:p, paletteOpen:false, query:"", palSel:0}, extra || {}));
     const KITS = {
       Home: [
-        {title:"Ask what changed today", meta:"Helios · briefing", icon:ICONS.helios, go: () => { clearInterval(this._t); this.setState({paletteOpen:false, query:"", page:"Home"}); this.ask("What changed today?"); }},
+        {title:"Ask what is running late", meta:"Helios · briefing", icon:ICONS.helios, go: () => { clearInterval(this._t); this.setState({paletteOpen:false, query:"", page:"Home"}); this.ask("What is running late?"); }},
         {title:"Action inbox", meta:openKeys.length + " waiting on you", icon:ICONS.inbox, go: jump("Home", {open:null})},
         {title:"Edit widgets", meta:"Rearrange the right rail", icon:ICONS.dash, go: jump("Home", {widgetEdit:true})},
         {title:"My work", meta:"Tasks due today", icon:ICONS.work, go: jump("Work", {queue:"mine"})}
@@ -5792,7 +5834,9 @@ class Component extends DCLogic {
       ]
     };
     const palPageRaw = KITS[page] || [
-      {title:"Ask Helios about this page", meta:"It sees what you see", icon:ICONS.helios, go: () => { this.setState({paletteOpen:false, query:"", page:"Home"}); this.ask("What should I know about " + page + "?"); }},
+      {title:"Ask Helios about this page", meta:"It sees what you see", icon:ICONS.helios, go: () => { this.setState({paletteOpen:false, query:"", page:"Home"});
+        // Point each page at the Helios answer that belongs to it, so this never lands on the fallback.
+        this.ask({Dashboard:"Who is over their credit limit?", Records:"Who is over their credit limit?", Activity:"Why did the Xero sync fail?", Settings:"Why did the Xero sync fail?"}[page] || "What is running late?"); }},
       {title:"Action inbox", meta:openKeys.length + " waiting on you", icon:ICONS.inbox, go: jump("Home")},
       {title:"My work", meta:"Tasks due today", icon:ICONS.work, go: jump("Work", {queue:"mine"})},
       {title:"Records", meta:"Every record you can see", icon:ICONS.navRecords, go: jump("Records")}
@@ -5870,7 +5914,13 @@ class Component extends DCLogic {
       contextNav = ADMIN_GROUPS.map(grp => seg(
         grp[0].charAt(0) + grp[0].slice(1).toLowerCase(),
         st.adminGroup === grp[0],
-        () => this.setState({adminGroup: st.adminGroup === grp[0] ? null : grp[0]}),
+        () => {
+          // Picking a group also opens its first area, so the panel matches the filtered list.
+          if (st.adminGroup === grp[0]) { this.setState({adminGroup:null}); return; }
+          const open = ADMIN_CARDS.find(c => c.id === st.adminOpen) || ADMIN_CARDS[0];
+          const first = ADMIN_CARDS.find(c => c.group === grp[0]);
+          this.setState(open.group === grp[0] || !first ? {adminGroup:grp[0]} : {adminGroup:grp[0], adminOpen:first.id});
+        },
         String(ADMIN_CARDS.filter(c => c.group === grp[0]).length)));
       contextHint = "ADMIN · 13 AREAS";
       searchHint = "Search settings";
@@ -6411,11 +6461,11 @@ class Component extends DCLogic {
         date: new Date().toLocaleDateString("en-GB"), open: () => this.setState({page:"Home", miniOpen:false})}] : [],
       miniEmpty: st.miniThread.length === 0,
       miniGreeting: (() => { const h = new Date().getHours();
-        const g = h < 5 ? "Still up" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : h < 22 ? "Good evening" : "Still going";
-        return g + ", Mac"; })(),
+        const g = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+        return g + ", Martin"; })(),
       miniSuggestions: [
-        {label:"What changed today?", run:() => this.askMini("What changed today?")},
-        {label:"What needs my decision?", run:() => this.askMini("What needs my decision?")},
+        {label:"What is running late?", run:() => this.askMini("What is running late?")},
+        {label:"Who is over their credit limit?", run:() => this.askMini("Who is over their credit limit?")},
         {label:"Draft a chase for the worst account", run:() => this.askMini("Draft chase emails")}
       ],
       miniWorkSections: (() => {
@@ -6561,12 +6611,16 @@ class Component extends DCLogic {
       // render, so there is no mutation feedback loop and the transition survives.
       navThumb: (() => {
         const n = Math.max(1, contextNav.length);
-        const i = Math.max(0, contextNav.findIndex(t => t.active));
+        const active = contextNav.findIndex(t => t.active);
+        const i = Math.max(0, active);
+        // With nothing selected (Settings before a group is picked) the pill hides instead of
+        // sitting under the first tab, whose label is not styled for it.
         return "position:absolute;left:2px;top:2px;bottom:2px;z-index:0;pointer-events:none;border-radius:999px;"
           + "width:calc((100% - 4px) / " + n + ");transform:translateX(" + (i * 100) + "%);"
+          + "opacity:" + (active < 0 ? 0 : 1) + ";"
           + "background-color:var(--accent);box-shadow:0 3px 14px var(--accent-line);"
           + "background-image:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0) 55%);background-blend-mode:overlay;"
-          + "transition:transform .46s cubic-bezier(.22,.9,.16,1)";
+          + "transition:transform .46s cubic-bezier(.22,.9,.16,1),opacity .2s var(--ease)";
       })(),
       searchStyle: "height:38px;justify-self:center;min-width:0;" + (mid ? "width:100%;padding:0 8px 0 15px;" : "width:44px;justify-content:center;padding:0;"),
       // The bar is one row: the fewer sub-nav segments a page has, the more of the
@@ -6597,26 +6651,12 @@ class Component extends DCLogic {
       settingsHovered: st.hovered === "__settings",
       // Live: renderVals reads the real clock every render, and a 1s ticker
       // (Home page only) is what makes a render happen when no one is typing.
+      // Plain and predictable for client demos: no random or joke variants.
       greetingPrefix: (() => {
         const h = new Date().getHours();
-        const pool = h < 5 ? ["Still up","Burning the midnight oil"]
-          : h < 12 ? ["Good morning","Rise and grind","Morning"]
-          : h < 17 ? ["Good afternoon","Afternoon"]
-          : h < 22 ? ["Good evening","Evening"]
-          : ["Still going","Night owl mode"];
-        // A goofy one about 1 in 5 times, otherwise the plain greeting — picked
-        // once per hour and cached, so it doesn't flip on every re-render.
-        const goofy = ["Top of the morning","Look who it is","Well if it isn't"];
-        const bucket = Math.floor(Date.now() / 3600000);
-        if (this._greetBucket !== bucket) {
-          this._greetBucket = bucket;
-          const useGoofy = bucket % 5 === 0;
-          const list = useGoofy ? pool.concat(goofy) : pool;
-          this._greetPick = list[Math.floor(Math.random() * list.length)];
-        }
-        return this._greetPick;
+        return h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
       })(),
-      greetingName: "Mac",
+      greetingName: "Martin",
       flipUnits: this.buildFlipUnits(BODY, INK, LIME),
       enterSettings: (e) => this.hover("__settings", "Settings", "", e),
       leaveSettings: () => this.unhover("__settings"),
@@ -6660,9 +6700,9 @@ class Component extends DCLogic {
         };
       }),
       suggestions: [
-        {label:"Which organisations are over their limit?", run:() => this.ask("Which organisations are over their credit limit?")},
-        {label:"What is overdue in my work?", run:() => this.ask("Summarise the tasks running late")},
-        {label:"What visits are booked this week?", run:() => this.ask("What site visits are booked this week?")}
+        {label:"Which organisations are over their limit?", run:() => this.ask("Which organisations are over their limit?")},
+        {label:"What is overdue in my work?", run:() => this.ask("What is overdue in my work?")},
+        {label:"What visits are booked this week?", run:() => this.ask("What visits are booked this week?")}
       ],
       activity: [
         {who:"Aoife Nolan", what:"raised purchase order PO-4471", event:"core.approval.created", when:"18m", dot:LIME},

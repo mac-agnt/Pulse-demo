@@ -17,14 +17,6 @@ Pulse is an attached local codebase folder (`Pulse/`), not a GitHub repo. Browse
   notifications, settings).
 - `Pulse v2.dc.html`, `Pulse v3 Apple.dc.html`, `Pulse v3 Console.dc.html`, `Pulse Home.dc.html` — earlier directions, keep.
 
-## Running the demo
-- `python3 serve.py` (or double-click `Start Demo.command`) serves `Pulse v4 Glass.dc.html` at
-  http://pulse.localhost:8080, plus only the files it needs. The preview pane's launcher can't read
-  ~/Downloads (macOS privacy), so start the server from the shell and attach the pane via `.claude/launch.json`.
-- `vendor/` holds React 18.3.1 and the fonts so the demo runs offline; the page loads them before `support.js`.
-- Upcoming dates in the mockup data are computed from today (helpers at the top of the logic script).
-- `DEMO-SCRIPT.md` lists the questions Helios has real answers for.
-
 ## Conventions the mockups should keep
 - Helios never executes write/external tools; it proposes and waits for a confirmation bound to hashed arguments.
 - The action inbox answers three things per item: what happened, why it matters, what I can do.
