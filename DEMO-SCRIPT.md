@@ -14,11 +14,11 @@ Type these on Home, or click the matching suggestion. The wording can change; He
 
 | Ask | Helios shows | Key words it listens for |
 |---|---|---|
-| Which organisations are over their credit limit? | Three accounts over limit; Dunne & Sons is 74 days | credit, limit, owe, outstanding, Dunne |
-| What is overdue in my work? | Eleven late tasks; seven of them at Ballincollig | tasks, late, overdue, behind, my work |
-| What site visits are booked this week? | Four visits, one with no installer (a module's tool) | visit, visits, installer |
+| Which organisations are over their credit limit? | Three accounts over limit; Riverside Care is 74 days | credit, limit, owe, outstanding, Riverside |
+| What is overdue in my work? | Eleven late tasks; seven of them at Cranmore | tasks, late, overdue, behind, my work |
+| What site visits are booked this week? | Four delivery runs, one with no pharmacist (a module's tool) | visit, visits, pharmacist |
 | Why did the Xero sync fail? | Expired token; 148 invoices queued, nothing lost | Xero, sync, failed, integration, broken |
-| Draft a chase email for Dunne & Sons | A write tool: drafts it and waits for your yes | chase, email, draft, send |
+| Draft a chase email for Riverside Care | A write tool: drafts it and waits for your yes | chase, email, draft, send |
 
 Anything else gets: "Everything I reach goes through a registered tool with a declared permission, and none of them covers that question yet." It then offers buttons for the questions above, so click one and carry on.
 

@@ -24,7 +24,9 @@ TYPES = {
     ".woff2": "font/woff2",
 }
 FILES = {
-    "/": "Pulse v4 Glass.dc.html",
+    "/": "index.html",
+    "/index.html": "index.html",
+    "/Pulse v4 Glass.dc.html": "Pulse v4 Glass.dc.html",
     "/support.js": "support.js",
     "/AgentFace.dc.html": "AgentFace.dc.html",  # fetched by the page for the agent avatars
     "/favicon.svg": "favicon.svg",
