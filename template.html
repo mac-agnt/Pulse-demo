@@ -1,0 +1,836 @@
+<div data-theme="{{ theme }}" style="position:relative;display:flex;height:100vh;overflow:hidden;background:var(--bg);color:var(--ink)">
+<div style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none"><dc-import name="AgentFace" shape="crown-pebble" state="idle" tint="#191c1f" size="1" hint-size="1px,1px"></dc-import></div>
+<div style="position:absolute;z-index:0;top:-220px;left:180px;width:720px;height:620px;border-radius:50%;background:radial-gradient(circle,var(--glow-a),transparent 70%);filter:blur(40px);pointer-events:none"></div>
+<div style="position:absolute;z-index:0;bottom:-260px;right:-120px;width:680px;height:640px;border-radius:50%;background:radial-gradient(circle,var(--glow-b),transparent 70%);filter:blur(40px);pointer-events:none"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     Demo data indicator — fixed bottom center
+     ═══════════════════════════════════════════════════════════════ -->
+<div style="position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:999;display:flex;align-items:center;gap:7px;height:28px;padding:0 14px;background:rgba(200,240,75,.12);border:1px solid rgba(200,240,75,.3);border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--accent);backdrop-filter:blur(20px);pointer-events:none">
+<span style="width:5px;height:5px;border-radius:50%;background:var(--accent);animation:breathe 2.6s ease-in-out infinite"></span>DEMO DATA · PROPOSED OPERATING MODEL · FICTIONAL DATA ONLY</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     Scenario controls modal (Mary Byrne story)
+     ═══════════════════════════════════════════════════════════════ -->
+<sc-if value="{{ scenarioOpen }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeScenario }}" style="position:fixed;inset:0;z-index:100;background:var(--scrim);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center">
+<div onClick="{{ stop }}" style="width:min(520px,90vw);background:var(--overlay);border:1px solid var(--border);border-radius:24px;backdrop-filter:blur(20px);box-shadow:0 24px 60px rgba(0,0,0,.5);overflow:hidden;animation:popIn .3s var(--ease) both">
+<div style="padding:22px 24px 16px;border-bottom:1px solid var(--border)">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.13em;color:var(--faint)">DEMO SCENARIO CONTROLS</div>
+<div style="font-size:19px;font-weight:500;letter-spacing:-.4px;margin-top:6px">Mary Byrne — Hip Treatment</div>
+<div style="font-size:13px;color:var(--dim);margin-top:6px;line-height:1.55">Step through the connected story. Each stage updates Patients, Referrals, Care Network, Travel &amp; Transport and Claims &amp; Funding.</div>
+</div>
+<div style="padding:16px 24px 24px">
+<sc-for list="{{ scenarioSteps }}" as="step" hint-placeholder-count="6">
+<button onClick="{{ step.go }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:6px;background:{{ step.bg }};border:1px solid {{ step.border }};border-radius:14px;cursor:pointer;text-align:left;transition:background .2s var(--ease),border-color .2s var(--ease)" style-hover="background:var(--surface-2);border-color:var(--border-strong)">
+<span style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ step.numBg }};color:{{ step.numColor }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">{{ step.num }}</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:13px;font-weight:500;color:{{ step.titleColor }}">{{ step.title }}</div>
+<div style="font-size:11.5px;color:var(--dim);margin-top:2px">{{ step.desc }}</div>
+</div>
+<sc-if value="{{ step.current }}" hint-placeholder-val="{{ false }}">
+<span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--accent)">CURRENT</span>
+</sc-if>
+<sc-if value="{{ step.done }}" hint-placeholder-val="{{ false }}">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+</sc-if>
+</button>
+</sc-for>
+<div style="display:flex;gap:8px;margin-top:14px">
+<button onClick="{{ resetScenario }}" style="flex:1;height:38px;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--border);border-radius:12px;background:none;color:var(--body);font-size:13px;cursor:pointer;transition:border-color .2s var(--ease),color .2s var(--ease)" style-hover="border-color:var(--border-strong);color:var(--ink)">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5v5h5 M4.2 14a8 8 0 1 0 .3-5.3"/></svg>Reset demo</button>
+<button onClick="{{ closeScenario }}" style="flex:1;height:38px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-size:13px;font-weight:500;cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--accent-hover)">Close</button>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     NAV RAIL (sidebar)
+     ═══════════════════════════════════════════════════════════════ -->
+<nav style="{{ railOuter }}">
+<!-- Logo + brand row -->
+<div style="{{ railRowStyle }}margin-bottom:12px">
+<sc-if value="{{ railOpen }}" hint-placeholder-val="{{ false }}">
+<img src="./vendor/ha-logo-white.png" alt="Healthcare Abroad" style="height:28px;flex:none;cursor:pointer" onClick="{{ toggleRail }}" />
+</sc-if>
+<sc-if value="{{ railCollapsed }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ toggleRail }}" title="{{ railLabel }}" style="width:30px;height:30px;flex:none;border:0;border-radius:10px;background:var(--accent);color:var(--on-accent);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;padding:0;transition:transform .2s var(--ease)" style-hover="transform:scale(1.07)" style-active="transform:scale(.94)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 4h5.6A1.6 1.6 0 0 1 16.4 5.6V8H7.6V5.6A1.6 1.6 0 0 1 9.2 4Z M5 8h14a1.6 1.6 0 0 1 1.6 1.6v8.8a1.6 1.6 0 0 1-1.6 1.6H5a1.6 1.6 0 0 1-1.6-1.6V9.6A1.6 1.6 0 0 1 5 8Z M12 12v4"/></svg>
+</button>
+</sc-if>
+<span style="{{ brandStyle }}">Healthcare Abroad</span>
+<sc-if value="{{ railOpen }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ toggleRail }}" title="{{ railLabel }}" style="width:28px;height:28px;flex:none;border:0;border-radius:9px;background:none;color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s var(--ease),color .2s var(--ease)" style-hover="background:var(--track);color:var(--ink)">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16 M4 12h10 M4 18h16"/></svg></button>
+</sc-if>
+</div>
+
+<!-- Nav items: Home, Agents, Dashboard, (div), Patients, Referrals, Care Network, Travel, Claims, (div), Work, Records, Activity -->
+<sc-for list="{{ nav }}" as="item" hint-placeholder-count="14">
+<sc-if value="{{ item.isDivider }}" hint-placeholder-val="{{ false }}">
+<div style="width:20px;height:1px;background:var(--track);margin:7px 0"></div>
+</sc-if>
+<sc-if value="{{ item.isItem }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ item.go }}" onPointerEnter="{{ item.enter }}" onPointerLeave="{{ item.leave }}" style="{{ item.style }}" style-hover="background:var(--surface-2);color:var(--ink)">
+<sc-if value="{{ item.active }}" hint-placeholder-val="{{ false }}">
+<span style="position:absolute;left:-6px;top:50%;width:3px;height:20px;margin-top:-10px;border-radius:2px;background:var(--accent);box-shadow:0 0 12px var(--accent-line);animation:markIn .34s var(--ease) both"></span>
+<span style="position:absolute;inset:0;border-radius:13px;overflow:hidden;pointer-events:none">
+<span style="position:absolute;top:0;bottom:0;width:36%;background:linear-gradient(90deg,transparent,var(--accent-faint),transparent);animation:shimmer 2.6s var(--ease) .2s infinite"></span>
+</span>
+</sc-if>
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="{{ item.glyphStyle }}"><path d="{{ item.d }}"/></svg>
+<sc-if value="{{ item.dot }}" hint-placeholder-val="{{ false }}">
+<span style="{{ item.dotStyle }}"></span>
+</sc-if>
+<span style="{{ item.inlineStyle }}">{{ item.label }}</span>
+</button>
+</sc-if>
+</sc-for>
+
+<div style="flex:1;min-height:10px"></div>
+
+<!-- Settings button -->
+<button onClick="{{ goSettings }}" onPointerEnter="{{ enterSettings }}" onPointerLeave="{{ leaveSettings }}" style="{{ settingsStyle }}" style-hover="background:var(--surface-2);color:var(--ink)">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="{{ settingsGlyphStyle }}"><path d="M5.5 20v-5.5 M5.5 9.5V4 M12 20v-7.5 M12 7.5V4 M18.5 20v-4 M18.5 11V4 M3 12.5h5 M9.5 5.5h5 M16 14h5"/></svg>
+<span style="{{ settingsInlineStyle }}">Settings</span>
+</button>
+
+<!-- Mary Byrne story button -->
+<button onClick="{{ openScenario }}" style="{{ railRowStyle }}padding:8px 0;margin-top:4px" style-hover="background:var(--surface-2);color:var(--ink)">
+<div style="width:30px;height:30px;flex:none;border-radius:50%;background:var(--accent-soft);border:1px solid var(--accent-line);color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l10 6-10 6V6Z"/></svg></div>
+<sc-if value="{{ railOpen }}" hint-placeholder-val="{{ false }}">
+<span style="flex:1;min-width:0;font-size:12px;color:var(--accent);white-space:nowrap;overflow:hidden">Mary Byrne story</span>
+</sc-if>
+</button>
+
+<!-- User avatar row -->
+<div style="{{ railRowStyle }}padding-top:8px">
+<div style="width:30px;height:30px;flex:none;border-radius:50%;background:var(--track);color:var(--body);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:500;cursor:pointer">SC</div>
+<span style="{{ brandStyle }}">Sarah Collins</span>
+</div>
+</nav>
+
+<!-- Hover label for collapsed rail -->
+<span style="{{ hoverLabel.style }}">
+<span style="position:absolute;left:-4px;top:50%;width:8px;height:8px;background:var(--tooltip);border-left:1px solid var(--border);border-bottom:1px solid var(--border);transform:translateY(-50%) rotate(45deg)"></span>
+<span style="width:5px;height:5px;border-radius:50%;background:var(--accent)"></span>{{ hoverLabel.label }}</span>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MAIN CONTENT AREA
+     ═══════════════════════════════════════════════════════════════ -->
+<main style="position:relative;z-index:1;flex:1;min-width:0;display:flex;flex-direction:column">
+
+<!-- ─── TOP BAR (full Glass bar) ─────────────────────────────── -->
+<header style="position:relative;z-index:2;flex:none;padding:14px 22px 12px">
+<div style="display:flex;align-items:center;gap:0;height:44px;padding:0 5px;background:var(--surface);border:1px solid var(--border);border-radius:999px;backdrop-filter:blur(28px);box-shadow:var(--card-shadow);transition:border-color .24s var(--ease)">
+
+<!-- Agent face + name when on Agents page (replaces pills) -->
+<sc-if value="{{ isAgents }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:10px;padding:0 14px;flex:0 0 auto">
+<dc-import name="AgentFace" shape="{{ agent.shape }}" state="{{ agent.state }}" tint="{{ agent.tint }}" size="28" hint-size="28px,28px"></dc-import>
+<div style="min-width:0">
+<div style="font-size:13px;font-weight:600;line-height:1.2;white-space:nowrap">{{ agent.name }}</div>
+<div style="font-size:10px;color:var(--dim);line-height:1.2">{{ agent.statusLabel }}</div>
+</div>
+</div>
+</sc-if>
+
+<!-- Pill nav group (context tabs — per page) -->
+<sc-if value="{{ showPillNav }}" hint-placeholder-val="{{ true }}">
+<div style="{{ navGroupStyle }}">
+<span style="{{ navThumb }}"></span>
+<sc-for list="{{ contextNav }}" as="t" hint-placeholder-count="4">
+<sc-if value="{{ t.active }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ t.go }}" data-nav-active="1" style="position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 13px;border:0;border-radius:999px;cursor:pointer;font-size:13px;white-space:nowrap;background:none;color:var(--on-accent);font-weight:600;transition:color .3s var(--ease)">{{ t.label }}<sc-if value="{{ t.count }}" hint-placeholder-val="{{ false }}"><span style="position:relative;padding:1px 7px;border-radius:999px;background:var(--on-accent-soft);font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--on-accent)">{{ t.count }}</span></sc-if></button>
+</sc-if>
+<sc-if value="{{ t.inactive }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ t.go }}" style="position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 13px;border:0;border-radius:999px;cursor:pointer;font-size:13px;white-space:nowrap;background:none;color:var(--dim);font-weight:500;transition:color .3s var(--ease)" style-hover="color:var(--ink)">{{ t.label }}<sc-if value="{{ t.count }}" hint-placeholder-val="{{ false }}"><span style="padding:1px 6px;border-radius:999px;background:var(--track);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ t.count }}</span></sc-if></button>
+</sc-if>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- Search field (center) -->
+<div style="flex:1 1 auto;min-width:0;display:flex;align-items:center;justify-content:center;padding:0 10px">
+<button onClick="{{ openPalette }}" title="{{ searchHint }}" style="{{ searchBarStyle }}" style-hover="border-color:var(--accent-line);color:var(--ink);background:var(--surface-strong)">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="flex:none"><path d="m21 21-4.3-4.3 M17 11a6 6 0 1 1-12 0 6 6 0 0 1 12 0"/></svg>
+<span style="flex:1;min-width:0;text-align:left;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ searchHint }}</span>
+<span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">⌘K</span>
+</button>
+</div>
+
+<!-- Context hint (monospace uppercase) -->
+<sc-if value="{{ showHint }}" hint-placeholder-val="{{ true }}">
+<span style="flex:0 1 auto;min-width:0;padding:0 12px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.11em;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ contextHint }}</span>
+</sc-if>
+
+<!-- Right section: theme toggle, notification bell, team avatars, profile — inside barOpen -->
+<sc-if value="{{ barOpen }}" hint-placeholder-val="{{ true }}">
+
+<!-- Divider -->
+<div style="width:1px;height:22px;flex:none;background:var(--border)"></div>
+
+<!-- Theme toggle button (moon/sun icon) -->
+<div style="flex:0 0 auto;display:flex;align-items:center;gap:2px;padding:0 3px">
+<button onClick="{{ toggleTheme }}" title="{{ themeLabel }}" style="width:32px;height:32px;border:0;border-radius:50%;background:none;cursor:pointer;color:var(--dim);display:flex;align-items:center;justify-content:center;transition:background .2s var(--ease),color .2s var(--ease)" style-hover="background:var(--track);color:var(--ink)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{ themeIcon }}"/></svg></button>
+</div>
+
+<!-- Notification bell with lime dot -->
+<button onClick="{{ toggleNotifs }}" title="Notifications" style="position:relative;width:32px;height:32px;border:0;border-radius:50%;background:none;cursor:pointer;color:var(--dim);display:flex;align-items:center;justify-content:center;transition:background .2s var(--ease),color .2s var(--ease)" style-hover="background:var(--track);color:var(--ink)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9 M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+<span style="position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent-line)"></span>
+</button>
+
+<!-- Divider -->
+<div style="width:1px;height:22px;flex:none;background:var(--border)"></div>
+
+<!-- Team avatar stack (3 avatars: SC, AR, NC) -->
+<div style="flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:0 4px 0 12px;cursor:pointer">
+<div style="display:flex;align-items:center">
+<sc-for list="{{ team }}" as="t" hint-placeholder-count="3">
+<div style="width:26px;height:26px;border-radius:50%;background:{{ t.bg }};color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;border:2px solid var(--surface);margin-left:-6px">{{ t.i }}</div>
+</sc-for>
+</div>
+
+<!-- Profile name text -->
+<sc-if value="{{ showProfileText }}" hint-placeholder-val="{{ true }}">
+<div style="min-width:0">
+<div style="font-size:12px;font-weight:500;line-height:1.2;white-space:nowrap">Sarah Collins</div>
+<div style="font-size:10.5px;color:var(--faint);line-height:1.2">Patient Coordinator</div>
+</div>
+</sc-if>
+</div>
+
+</sc-if>
+
+<!-- Bar collapse chevron -->
+<button onClick="{{ toggleBar }}" title="{{ barLabel }}" style="flex:none;width:30px;height:30px;margin-left:2px;border:0;border-radius:50%;background:none;color:var(--faint);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s var(--ease),color .2s var(--ease)" style-hover="background:var(--track);color:var(--ink)">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{ barChevronStyle }}"><path d="m9 6 6 6-6 6"/></svg></button>
+</div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE CONTENT AREA
+     ═══════════════════════════════════════════════════════════════ -->
+<div style="flex:1;min-height:0;overflow-y:auto;padding:0 22px">
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  HOME PAGE                                               ║
+     ║  Tabs: Home, Dashboard                                   ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;gap:20px;height:100%;padding-bottom:22px">
+<!-- Left column: Helios chat -->
+<div style="flex:1;min-width:0;min-height:0;display:flex;flex-direction:column">
+<div style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column">
+
+<!-- Empty state: greeting + prompt -->
+<sc-if value="{{ heliosEmpty }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1 1 auto;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:clamp(10px,2.4vh,26px);padding:clamp(8px,2vh,20px) 8px 8px">
+<h1 style="flex:0 0 auto;margin:0;font-size:clamp(26px,4.4vh,40px);font-weight:500;letter-spacing:-1.4px;line-height:1.05">{{ greetingPrefix }} <span style="color:var(--accent)">{{ greetingName }}</span></h1>
+<p style="flex:0 1 auto;min-height:0;overflow:hidden;margin:0;max-width:440px;font-size:14.5px;line-height:1.55;color:var(--dim);text-wrap:pretty">Ask about patients, cases, travel plans or claims. Helios answers through registered tools only, and anything that changes data waits for your yes.</p>
+</div>
+</sc-if>
+
+<!-- Active thread -->
+<sc-if value="{{ threadOpen }}" hint-placeholder-val="{{ false }}">
+<div style="flex:0 0 auto;width:100%;max-width:880px;margin:0 auto;padding:14px 4px 8px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;color:var(--faint)">CONVERSATION</div>
+<div style="font-size:19px;font-weight:500;letter-spacing:-0.45px;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ threadTitle }}</div>
+<sc-for list="{{ thread }}" as="m" hint-placeholder-count="0">
+<div style="margin-top:20px">
+<sc-if value="{{ m.isUser }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;justify-content:flex-end"><div style="max-width:76%;padding:12px 18px;background:var(--surface-2);border:1px solid var(--border);border-radius:20px 20px 6px 20px;font-size:14.5px;line-height:1.55;backdrop-filter:blur(24px)">{{ m.text }}</div></div>
+</sc-if>
+<sc-if value="{{ m.isHelios }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:14px;animation:riseIn .4s var(--ease) both">
+<span style="width:28px;height:28px;flex:none;border-radius:50%;background:var(--accent-soft);border:1px solid var(--accent-line);display:flex;align-items:center;justify-content:center;margin-top:2px">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l2.5-6 3.5 12 3-8 2 2h5"/></svg></span>
+<div style="flex:1;min-width:0">
+<sc-if value="{{ m.hasTool }}" hint-placeholder-val="{{ false }}">
+<div style="display:inline-flex;align-items:center;gap:8px;padding:5px 11px;margin-bottom:12px;background:var(--surface);border:1px solid var(--border);border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--dim)">
+<span style="width:5px;height:5px;border-radius:50%;background:{{ m.toolDot }}"></span>{{ m.tool }}<span style="color:var(--faint)">{{ m.toolEffect }}</span></div>
+</sc-if>
+<div style="font-size:14.5px;line-height:1.75;color:var(--body);text-wrap:pretty">{{ m.text }}</div>
+<sc-if value="{{ m.hasTable }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(16px);overflow:hidden">
+<div style="display:grid;grid-template-columns:{{ m.tableCols }};background:var(--surface)">
+<sc-for list="{{ m.cols }}" as="c" hint-placeholder-count="4"><div style="padding:11px 16px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.09em;color:var(--faint);text-transform:uppercase">{{ c }}</div></sc-for>
+</div>
+<sc-for list="{{ m.rows }}" as="r" hint-placeholder-count="3">
+<div style="display:grid;grid-template-columns:{{ m.tableCols }};border-top:1px solid var(--border)" style-hover="background:var(--surface)">
+<sc-for list="{{ r.cells }}" as="cell" hint-placeholder-count="4"><div style="padding:12px 16px;font-size:13px;color:{{ cell.color }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ cell.v }}</div></sc-for>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ m.hasActions }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px">
+<sc-for list="{{ m.actions }}" as="a" hint-placeholder-count="2">
+<button onClick="{{ a.run }}" style="height:34px;padding:0 16px;border:1px solid {{ a.border }};background:{{ a.bg }};color:{{ a.color }};border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;transition:background .2s var(--ease),transform .18s var(--ease)">{{ a.label }}</button>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+</div>
+
+<!-- Chat input -->
+<div style="flex:none;padding-top:14px">
+<div style="width:100%;max-width:880px;margin:0 auto">
+<div style="display:flex;align-items:flex-end;gap:10px;padding:11px 11px 11px 18px;background:var(--surface);border:1px solid var(--border);border-radius:26px;backdrop-filter:blur(20px) saturate(1.3);box-shadow:var(--card-shadow)">
+<textarea value="{{ draft }}" onChange="{{ setDraft }}" onKeyDown="{{ onDraftKey }}" rows="1" placeholder="Ask Pulse anything…" style="flex:1;min-width:0;border:0;outline:0;resize:none;background:none;font-size:15px;line-height:1.55;padding:7px 0;max-height:120px"></textarea>
+<button onClick="{{ send }}" style="flex:none;width:36px;height:36px;border:0;border-radius:50%;background:var(--accent);color:var(--on-accent);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:var(--accent-hover)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5 M5 12l7-7 7 7"/></svg></button>
+</div>
+<sc-if value="{{ heliosEmpty }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px">
+<sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="3">
+<button onClick="{{ s.run }}" style="display:flex;align-items:center;gap:8px;height:34px;padding:0 14px;background:var(--surface);border:1px solid var(--border);border-radius:999px;font-size:12.5px;color:var(--body);cursor:pointer;backdrop-filter:blur(24px)" style-hover="border-color:var(--accent);color:var(--ink)">
+<span style="color:var(--accent)">›</span>{{ s.label }}</button>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+
+<!-- Right-side widget rail: action inbox, upcoming travel, today's numbers -->
+<sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+<aside style="width:352px;flex:none;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:2px 0 6px 20px">
+
+<!-- Action inbox -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;backdrop-filter:blur(20px) saturate(1.3);box-shadow:var(--card-shadow);padding:20px 22px 10px">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="flex:1;font-size:13.5px;font-weight:500">Action inbox</div>
+<span style="height:24px;display:flex;align-items:center;padding:0 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim)">{{ inboxCount }}</span>
+</div>
+<div style="margin-top:8px">
+<sc-for list="{{ inboxItems }}" as="i" hint-placeholder-count="4">
+<div onClick="{{ i.go }}" style="display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)">
+<span style="width:7px;height:7px;border-radius:50%;flex:none;margin-top:5px;background:{{ i.dot }}"></span>
+<div style="flex:1;min-width:0">
+<div style="font-size:13px;line-height:1.4">{{ i.title }}</div>
+<div style="font-size:11.5px;color:var(--dim);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ i.why }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<!-- Upcoming travel -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;backdrop-filter:blur(20px) saturate(1.3);box-shadow:var(--card-shadow);padding:20px 22px 10px">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="flex:1;font-size:13.5px;font-weight:500">Upcoming travel</div>
+</div>
+<div style="margin-top:8px">
+<sc-for list="{{ upcomingTravel }}" as="t" hint-placeholder-count="3">
+<div style="display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--border)">
+<span style="width:7px;height:7px;border-radius:50%;flex:none;margin-top:5px;background:{{ t.dot }}"></span>
+<div style="flex:1;min-width:0">
+<div style="font-size:13px;line-height:1.4">{{ t.title }}</div>
+<div style="font-size:11.5px;color:var(--dim);margin-top:3px">{{ t.when }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<!-- Today's numbers -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;backdrop-filter:blur(20px) saturate(1.3);box-shadow:var(--card-shadow);padding:20px 22px 22px">
+<div style="font-size:13.5px;font-weight:500">Today's numbers</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+<sc-for list="{{ miniKpis }}" as="k" hint-placeholder-count="4">
+<div style="padding:13px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:16px">
+<div style="font-size:11.5px;color:var(--dim)">{{ k.label }}</div>
+<div style="font-size:19px;font-weight:500;letter-spacing:-.6px;margin-top:6px">{{ k.value }}</div>
+<div style="font-size:11px;color:{{ k.deltaColor }};margin-top:4px">{{ k.delta }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+</aside>
+</sc-if>
+</div>
+</sc-if>
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  PATIENTS PAGE                                           ║
+     ║  Tabs: List, Journey board                               ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isPatients }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
+<div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;padding:20px 4px 22px">
+<div style="flex:1;min-width:280px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">PATIENTS</div>
+<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ patientsTitle }}</h1>
+</div>
+</div>
+
+<!-- Patient Profile (opens on row click) -->
+<sc-if value="{{ patientProfile }}" hint-placeholder-val="{{ false }}">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:22px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
+<div style="display:flex;align-items:center;gap:14px;padding:22px 24px;border-bottom:1px solid var(--border)">
+<div style="width:48px;height:48px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">{{ profileInitials }}</div>
+<div style="flex:1;min-width:0">
+<div style="font-size:20px;font-weight:500;letter-spacing:-.5px">{{ profileName }}</div>
+<div style="font-size:13px;color:var(--dim);margin-top:2px">{{ profileSummary }}</div>
+</div>
+<span style="{{ profileStatusStyle }}">{{ profileStatus }}</span>
+<button onClick="{{ closeProfile }}" style="width:30px;height:30px;border:1px solid var(--border);border-radius:50%;background:none;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="color:var(--ink)">
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12 M18 6 6 18"/></svg></button>
+</div>
+<!-- Profile tabs: Overview, Timeline, Documents, Treatment & travel, Funding & claim, Aftercare -->
+<div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
+<sc-for list="{{ profileTabs }}" as="tab" hint-placeholder-count="5">
+<button onClick="{{ tab.pick }}" style="flex:1;padding:12px 16px;border:0;background:none;font-size:13px;cursor:pointer;color:{{ tab.color }};border-bottom:2px solid {{ tab.accent }};font-weight:{{ tab.weight }};transition:color .2s var(--ease)" style-hover="color:var(--ink)">{{ tab.label }}</button>
+</sc-for>
+</div>
+<!-- Profile detail fields -->
+<div style="padding:20px 24px 24px">
+<sc-for list="{{ profileFields }}" as="f" hint-placeholder-count="6">
+<div style="display:flex;align-items:baseline;gap:16px;padding:10px 0;border-bottom:1px solid var(--border)">
+<span style="flex:none;width:160px;font-size:12px;color:var(--dim)">{{ f.label }}</span>
+<span style="flex:1;font-size:13px;color:var(--ink)">{{ f.value }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<!-- Patient views (only when no profile is open) -->
+<sc-if value="{{ showPatientList }}" hint-placeholder-val="{{ true }}">
+
+<!-- Journey board view -->
+<sc-if value="{{ patientViewBoard }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat({{ boardCols }},minmax(180px,1fr));gap:12px;overflow-x:auto;padding-bottom:8px">
+<sc-for list="{{ boardColumns }}" as="col" hint-placeholder-count="4">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:14px;min-height:200px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+<span style="font-size:13px;font-weight:500">{{ col.title }}</span>
+<span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ col.count }}</span>
+</div>
+<sc-for list="{{ col.patients }}" as="p" hint-placeholder-count="2">
+<div onClick="{{ p.open }}" style="padding:12px;margin-bottom:8px;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:border-color .2s var(--ease),transform .18s var(--ease)" style-hover="border-color:var(--accent-line);transform:translateY(-2px)">
+<div style="font-size:13px;font-weight:500">{{ p.name }}</div>
+<div style="font-size:11.5px;color:var(--dim);margin-top:4px">{{ p.treatment }}</div>
+<div style="display:flex;align-items:center;gap:6px;margin-top:8px">
+<span style="width:5px;height:5px;border-radius:50%;background:{{ p.dot }}"></span>
+<span style="font-size:11px;color:var(--faint)">{{ p.issue }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- List view: table with columns Patient, Treatment, Stage, Coordinator, Destination, Issue -->
+<sc-if value="{{ patientViewList }}" hint-placeholder-val="{{ true }}">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
+<div style="display:grid;grid-template-columns:1.5fr 1.2fr 1fr 1fr .8fr .8fr;border-bottom:1px solid var(--border);background:var(--surface-faint)">
+<sc-for list="{{ patientCols }}" as="c" hint-placeholder-count="6">
+<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div>
+</sc-for>
+</div>
+<sc-for list="{{ patientRows }}" as="p" hint-placeholder-count="8">
+<div onClick="{{ p.open }}" style="display:grid;grid-template-columns:1.5fr 1.2fr 1fr 1fr .8fr .8fr;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
+<div style="display:flex;align-items:center;gap:11px;padding:13px 20px">
+<span style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ p.bg }};color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">{{ p.initials }}</span>
+<span style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.name }}</span>
+</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ p.treatment }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px"><span style="{{ p.stageStyle }}">{{ p.stage }}</span></div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ p.coordinator }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ p.destination }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:12px;color:{{ p.issueColor }}">{{ p.issue }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+</sc-if>
+</div>
+</sc-if>
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  REFERRALS PAGE                                          ║
+     ║  Tabs: GP requests, Hospital requests, Incoming, Review  ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isReferrals }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
+<div style="padding:20px 4px 22px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">REFERRALS &amp; PAPERWORK</div>
+<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ referralsTitle }}</h1>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+<sc-for list="{{ referralStats }}" as="s" hint-placeholder-count="3">
+<div style="padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:18px">
+<div style="font-size:11.5px;color:var(--dim)">{{ s.label }}</div>
+<div style="font-size:24px;font-weight:500;letter-spacing:-.8px;margin-top:7px;color:{{ s.color }}">{{ s.value }}</div>
+</div>
+</sc-for>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
+<div style="display:grid;grid-template-columns:1.5fr 1.2fr 1fr .8fr .8fr .7fr;border-bottom:1px solid var(--border);background:var(--surface-faint)">
+<sc-for list="{{ referralCols }}" as="c" hint-placeholder-count="6">
+<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div>
+</sc-for>
+</div>
+<sc-for list="{{ referralRows }}" as="r" hint-placeholder-count="6">
+<div onClick="{{ r.open }}" style="display:grid;grid-template-columns:1.5fr 1.2fr 1fr .8fr .8fr .7fr;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px">{{ r.patient }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ r.source }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ r.items }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:12px;color:var(--dim)">{{ r.requested }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px"><span style="{{ r.statusStyle }}">{{ r.status }}</span></div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:12px;color:var(--dim)">{{ r.owner }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  CARE NETWORK PAGE                                       ║
+     ║  Tabs: Hospitals, Surgeons, Options, Performance         ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isCareNetwork }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
+<div style="padding:20px 4px 22px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">CARE NETWORK</div>
+<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ careNetworkTitle }}</h1>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+<sc-for list="{{ hospitals }}" as="h" hint-placeholder-count="4">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px;transition:transform .24s var(--ease),border-color .2s var(--ease)" style-hover="transform:translateY(-3px);border-color:var(--border-strong)">
+<div style="display:flex;align-items:center;gap:12px">
+<span style="width:40px;height:40px;border-radius:12px;background:{{ h.tint }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--on-accent)">{{ h.initials }}</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:15px;font-weight:500">{{ h.name }}</div>
+<div style="font-size:12px;color:var(--dim);margin-top:2px">{{ h.location }}</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+<div style="padding:10px;background:var(--surface-2);border-radius:12px"><div style="font-size:10.5px;color:var(--faint)">TREATMENTS</div><div style="font-size:16px;font-weight:500;margin-top:4px">{{ h.treatments }}</div></div>
+<div style="padding:10px;background:var(--surface-2);border-radius:12px"><div style="font-size:10.5px;color:var(--faint)">ACTIVE CASES</div><div style="font-size:16px;font-weight:500;margin-top:4px">{{ h.activeCases }}</div></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
+<sc-for list="{{ h.categories }}" as="cat" hint-placeholder-count="3">
+<span style="height:24px;display:inline-flex;align-items:center;padding:0 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;font-size:11px;color:var(--dim)">{{ cat }}</span>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  TRAVEL PAGE                                             ║
+     ║  Tabs: Trip planner, Departures, Accommodation,          ║
+     ║        Dispatch, Travel pack                             ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isTravel }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
+<div style="padding:20px 4px 22px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">TRAVEL &amp; TRANSPORT</div>
+<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ travelTitle }}</h1>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+<sc-for list="{{ travelStats }}" as="s" hint-placeholder-count="4">
+<div style="padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:18px">
+<div style="font-size:11.5px;color:var(--dim)">{{ s.label }}</div>
+<div style="font-size:22px;font-weight:500;letter-spacing:-.8px;margin-top:7px;color:{{ s.color }}">{{ s.value }}</div>
+<div style="font-size:11px;color:var(--faint);margin-top:4px">{{ s.hint }}</div>
+</div>
+</sc-for>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
+<div style="display:flex;align-items:center;gap:14px;padding:18px 24px;border-bottom:1px solid var(--border)">
+<div style="flex:1;font-size:15px;font-weight:500">Trip planner</div>
+</div>
+<sc-for list="{{ trips }}" as="trip" hint-placeholder-count="4">
+<div onClick="{{ trip.open }}" style="display:flex;align-items:center;gap:16px;padding:16px 24px;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
+<span style="width:36px;height:36px;flex:none;border-radius:50%;background:{{ trip.bg }};color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">{{ trip.initials }}</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:14px;font-weight:500">{{ trip.patient }} · {{ trip.treatment }}</div>
+<div style="font-size:12px;color:var(--dim);margin-top:3px">{{ trip.dates }} · {{ trip.destination }}</div>
+</div>
+<span style="{{ trip.statusStyle }}">{{ trip.status }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  CLAIMS PAGE                                             ║
+     ║  Tabs: Claims tracker, Funding                           ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isClaims }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
+<div style="padding:20px 4px 22px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">CLAIMS &amp; FUNDING</div>
+<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ claimsTitle }}</h1>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+<sc-for list="{{ claimStats }}" as="s" hint-placeholder-count="3">
+<div style="padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:18px">
+<div style="font-size:11.5px;color:var(--dim)">{{ s.label }}</div>
+<div style="font-size:24px;font-weight:500;letter-spacing:-.8px;margin-top:7px;color:{{ s.color }}">{{ s.value }}</div>
+</div>
+</sc-for>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px">
+<div style="font-size:15px;font-weight:500;margin-bottom:14px">Patient reimbursement claims</div>
+<sc-for list="{{ claims }}" as="cl" hint-placeholder-count="4">
+<div onClick="{{ cl.open }}" style="display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border);cursor:pointer" style-hover="background:var(--surface-2)">
+<span style="width:7px;height:7px;border-radius:50%;flex:none;background:{{ cl.dot }}"></span>
+<div style="flex:1;min-width:0">
+<div style="font-size:13px;font-weight:500">{{ cl.patient }}</div>
+<div style="font-size:11.5px;color:var(--dim);margin-top:2px">{{ cl.treatment }} · {{ cl.amount }}</div>
+</div>
+<span style="{{ cl.statusStyle }}">{{ cl.status }}</span>
+</div>
+</sc-for>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px">
+<div style="font-size:15px;font-weight:500;margin-bottom:14px">Funding applications</div>
+<sc-for list="{{ funding }}" as="f" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border)">
+<span style="width:7px;height:7px;border-radius:50%;flex:none;background:{{ f.dot }}"></span>
+<div style="flex:1;min-width:0">
+<div style="font-size:13px;font-weight:500">{{ f.patient }}</div>
+<div style="font-size:11.5px;color:var(--dim);margin-top:2px">{{ f.lender }} · {{ f.status }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  DASHBOARD PAGE                                          ║
+     ║  (accessed via Home/Dashboard tabs)                      ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
+<div style="position:sticky;top:0;z-index:12;margin:0 -22px;padding:14px 22px 14px;background:var(--bg);border-bottom:1px solid var(--border)">
+<div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
+<div style="flex:1;min-width:0">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.13em;color:var(--faint)">CORE KPIS · ILLUSTRATIVE FIGURES</div>
+<div style="font-size:19px;font-weight:500;letter-spacing:-.5px;margin-top:5px">Healthcare Abroad · Operations</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat({{ kpiColumns }},1fr);gap:10px">
+<sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
+<div style="position:relative;padding:14px 16px;background:{{ k.bg }};border:1px solid {{ k.border }};border-radius:18px;color:{{ k.ink }};transition:transform .24s var(--ease)" style-hover="transform:translateY(-2px)">
+<div style="font-size:11.5px;opacity:.72">{{ k.label }}</div>
+<div style="font-size:22px;font-weight:500;letter-spacing:-.8px;margin-top:7px;line-height:1">{{ k.value }}</div>
+<div style="display:flex;align-items:center;gap:7px;margin-top:7px">
+<span style="font-size:11.5px;color:{{ k.deltaColor }}">{{ k.delta }}</span>
+<span style="font-size:10.5px;opacity:.55">{{ k.hint }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:20px">
+<sc-for list="{{ dashCards }}" as="card" hint-placeholder-count="4">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px;animation:springIn .5s var(--ease) both">
+<div style="font-size:14px;font-weight:500;margin-bottom:14px">{{ card.title }}</div>
+<sc-for list="{{ card.rows }}" as="row" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--border)">
+<span style="flex:1;font-size:13px">{{ row.label }}</span>
+<span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:{{ row.color }}">{{ row.value }}</span>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  AGENTS PAGE                                             ║
+     ║  No pill tabs — agent face + name in bar instead         ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isAgents }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:20px;height:100%;padding-bottom:22px;animation:riseIn .4s var(--ease) both">
+<!-- Agent list sidebar -->
+<div style="width:300px;flex:none;min-height:0;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:24px;backdrop-filter:blur(20px) saturate(1.3);box-shadow:var(--card-shadow);padding:8px 0;overflow:hidden">
+<div style="flex:none;padding:10px 18px 8px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.13em;color:var(--faint)">{{ agentListHint }}</div>
+<div style="flex:1;min-height:0;overflow-y:auto;padding:0 8px 6px">
+<sc-for list="{{ agentList }}" as="a" hint-placeholder-count="6">
+<div onClick="{{ a.open }}" style="{{ a.rowStyle }}">
+<dc-import name="AgentFace" shape="{{ a.shape }}" state="{{ a.state }}" tint="{{ a.tint }}" size="34" hint-size="34px,34px"></dc-import>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="flex:1;min-width:0;font-size:13.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ a.name }}</span>
+<span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ a.when }}</span>
+</div>
+<div style="font-size:12px;color:var(--dim);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ a.preview }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+<!-- Agent conversation pane -->
+<div style="flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:24px;backdrop-filter:blur(20px) saturate(1.3);box-shadow:var(--card-shadow);overflow:hidden">
+<div style="flex:none;display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border)">
+<dc-import name="AgentFace" shape="{{ agent.shape }}" state="{{ agent.state }}" tint="{{ agent.tint }}" size="32" hint-size="32px,32px"></dc-import>
+<div style="flex:1;min-width:0">
+<div style="font-size:14.5px;font-weight:500">{{ agent.name }}</div>
+<div style="font-size:11.5px;color:var(--dim);margin-top:2px">{{ agent.role }}</div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow-y:auto;padding:20px 22px">
+<sc-for list="{{ agentThread }}" as="m" hint-placeholder-count="4">
+<div style="{{ m.wrapStyle }}">
+<sc-if value="{{ m.isStamp }}" hint-placeholder-val="{{ false }}">
+<div style="width:100%;text-align:center;font-size:11.5px;color:var(--faint);padding:8px 0 14px">{{ m.text }}</div>
+</sc-if>
+<sc-if value="{{ m.isBubble }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:80%"><div style="{{ m.bubbleStyle }}">{{ m.text }}</div></div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  WORK PAGE                                               ║
+     ║  Tabs: Tasks, Approvals, Workflows, Schedules            ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isWork }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
+<div style="padding:20px 4px 22px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">WORKSPACE</div>
+<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ workTitle }}</h1>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
+<div style="display:grid;grid-template-columns:1.5fr 1.3fr 1fr .8fr .8fr;border-bottom:1px solid var(--border);background:var(--surface-faint)">
+<sc-for list="{{ workCols }}" as="c" hint-placeholder-count="5">
+<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div>
+</sc-for>
+</div>
+<sc-for list="{{ workRows }}" as="t" hint-placeholder-count="8">
+<div style="display:grid;grid-template-columns:1.5fr 1.3fr 1fr .8fr .8fr;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px">{{ t.title }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ t.patient }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ t.owner }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:12px;color:{{ t.dueColor }}">{{ t.due }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px"><span style="{{ t.statusStyle }}">{{ t.status }}</span></div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  RECORDS PAGE                                            ║
+     ║  Tabs: Contacts, Files, Ontology                         ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isRecords }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:26px;animation:pageIn .62s var(--ease) both">
+<div style="position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 0 32px">
+<h1 style="margin:0;font-size:clamp(32px,4vw,48px);font-weight:500;letter-spacing:-2px;line-height:1.02">Records</h1>
+<p style="margin:14px 0 0;max-width:520px;font-size:15px;line-height:1.6;color:var(--dim)">Contacts directory — patients, GPs, hospitals, surgeons, hotels, drivers and staff.</p>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
+<div style="display:grid;grid-template-columns:1.5fr 1.2fr 1.3fr .9fr .8fr;border-bottom:1px solid var(--border);background:var(--surface-faint)">
+<sc-for list="{{ recordCols }}" as="c" hint-placeholder-count="5">
+<div style="padding:10px 24px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div>
+</sc-for>
+</div>
+<sc-for list="{{ recordRows }}" as="p" hint-placeholder-count="8">
+<div style="display:grid;grid-template-columns:1.5fr 1.2fr 1.3fr .9fr .8fr;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
+<div style="display:flex;align-items:center;gap:11px;padding:13px 24px">
+<span style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ p.bg }};color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">{{ p.initials }}</span>
+<span style="font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.name }}</span>
+</div>
+<div style="display:flex;align-items:center;padding:13px 24px;font-size:13px;color:var(--dim)">{{ p.role }}</div>
+<div style="display:flex;align-items:center;padding:13px 24px;font-size:13px;color:var(--dim)">{{ p.email }}</div>
+<div style="display:flex;align-items:center;padding:13px 24px;font-size:13px;color:var(--dim)">{{ p.org }}</div>
+<div style="display:flex;align-items:center;padding:13px 24px"><span style="{{ p.tagStyle }}">{{ p.tag }}</span></div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  ACTIVITY PAGE                                           ║
+     ║  Tabs: Everything, People, Agents, Attention             ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isActivity }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
+<div style="padding:20px 4px 22px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">ACTIVITY</div>
+<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">Everything happening now</h1>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
+<div style="display:flex;align-items:center;gap:14px;padding:18px 24px;border-bottom:1px solid var(--border)">
+<div style="flex:1;font-size:15px;font-weight:500">Event log</div>
+<span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ activityCount }} EVENTS</span>
+</div>
+<sc-for list="{{ activityRows }}" as="e" hint-placeholder-count="10">
+<div style="display:flex;gap:14px;padding:14px 24px;border-top:1px solid var(--border)">
+<span style="width:7px;height:7px;border-radius:50%;flex:none;margin-top:6px;background:{{ e.dot }}"></span>
+<div style="flex:1;min-width:0">
+<div style="font-size:13px;line-height:1.4">{{ e.title }}</div>
+<div style="font-size:11.5px;color:var(--dim);margin-top:3px">{{ e.actor }} · {{ e.event }}</div>
+</div>
+<span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--faint)">{{ e.when }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<!-- ╔═══════════════════════════════════════════════════════════╗
+     ║  SETTINGS PAGE                                           ║
+     ║  No tabs (admin group cards)                             ║
+     ╚═══════════════════════════════════════════════════════════╝ -->
+<sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+<div style="max-width:1320px;padding-bottom:38px;animation:pageIn .62s var(--ease) both">
+<div style="padding:20px 4px 20px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">ADMIN</div>
+<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">Settings</h1>
+<div style="font-size:14px;color:var(--dim);margin-top:9px">How Pulse is set up for Healthcare Abroad — staff, integrations, approval rules, agent permissions.</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<sc-for list="{{ settingsCards }}" as="card" hint-placeholder-count="4">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px">
+<div style="font-size:14px;font-weight:500;margin-bottom:14px">{{ card.title }}</div>
+<sc-for list="{{ card.rows }}" as="row" hint-placeholder-count="3">
+<div style="display:flex;align-items:baseline;gap:12px;padding:10px 0;border-top:1px solid var(--border)">
+<span style="flex:none;width:140px;font-size:12px;color:var(--dim)">{{ row.k }}</span>
+<span style="flex:1;font-size:13px;color:var(--ink)">{{ row.v }}</span>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+</div>
+</main>
+</div>
