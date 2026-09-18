@@ -23,16 +23,16 @@ html,body{margin:0;padding:0;height:100%}
 --surface-strong:rgba(20,22,19,.7);--overlay:rgba(24,26,23,.9);--tooltip:rgba(32,35,30,.98);--tooltip-ink:#f2f3ef;
 --border:rgba(255,255,255,.07);--border-strong:rgba(255,255,255,.16);--card-shadow:none;
 --ink:#f2f3ef;--body:#c6c8bf;--dim:#9b9d95;--faint:#6b6d65;--mid:#83857d;
---accent:#c8f04b;--on-accent:#0b0c0b;--on-accent-2:rgba(11,12,11,.66);--on-accent-strong:rgba(11,12,11,.85);--on-accent-soft:rgba(11,12,11,.22);
---accent-hover:#d8fa6e;--accent-soft:rgba(200,240,75,.12);--accent-faint:rgba(200,240,75,.05);--accent-line:rgba(200,240,75,.3);
+--accent:#2BB673;--on-accent:#ffffff;--on-accent-2:rgba(255,255,255,.78);--on-accent-strong:rgba(255,255,255,.92);--on-accent-soft:rgba(255,255,255,.28);
+--accent-hover:#0F7A4A;--accent-soft:rgba(43,182,115,.12);--accent-faint:rgba(43,182,115,.05);--accent-line:rgba(43,182,115,.3);
 --ok:#7fd8a4;--ok-soft:rgba(127,216,164,.13);--warn:#e0b452;--warn-soft:rgba(224,180,82,.14);--bad:#e2705c;--bad-soft:rgba(226,112,92,.13);--bad-on-accent:#7a1f12;
 --neutral:rgba(255,255,255,.24);--track:rgba(255,255,255,.09);--scrim:rgba(6,7,6,.55);
 --pill-bg:#f2f3ef;--pill-ink:#0b0c0b;--surface-faint:rgba(255,255,255,.02);
 --glass-surface:rgba(46,58,72,.5);--glass-surface-2:rgba(58,70,86,.42);--glass-border:rgba(210,225,240,.16);--glass-highlight:rgba(255,255,255,.12);--glass-shadow:rgba(4,8,14,.6);--glass-tint:rgba(70,110,150,.16);
 --flap:linear-gradient(178deg,#26291f 0%,#1b1e16 49%,#14170f 51%,#1e2118 100%);--flap-hinge:rgba(0,0,0,.62);--flap-notch:#0b0c0b;
---glow-a:rgba(200,240,75,.07);--glow-b:rgba(120,200,255,.045);--grid:rgba(255,255,255,.022);--ease:cubic-bezier(.2,.8,.2,1);
---bloom-a:rgba(200,240,75,.42);--bloom-b:rgba(96,190,255,.38);--bloom-c:rgba(158,120,255,.34);--hero-field:rgba(14,16,14,.86);--records-card:rgba(12,14,12,.90);--chip:rgba(10,12,10,.82);--chip-border:rgba(255,255,255,.10);
---hero-grad:linear-gradient(180deg,#0b100c 0%,#123a20 18%,#18642f 40%,#1f8b3d 60%,#166030 82%,#0d1a10 100%)}
+--glow-a:rgba(43,182,115,.07);--glow-b:rgba(120,200,255,.045);--grid:rgba(255,255,255,.022);--ease:cubic-bezier(.2,.8,.2,1);
+--bloom-a:rgba(43,182,115,.42);--bloom-b:rgba(96,190,255,.38);--bloom-c:rgba(158,120,255,.34);--hero-field:rgba(14,16,14,.86);--records-card:rgba(12,14,12,.90);--chip:rgba(10,12,10,.82);--chip-border:rgba(255,255,255,.10);
+--hero-grad:linear-gradient(180deg,#0b100c 0%,#0F7A4A 22%,#2BB673 48%,#1f8b3d 72%,#0d1a10 100%)}
 [data-theme="light"]{
 --bg:#f4f2ed;--rail:rgba(255,255,255,.6);--surface:rgba(255,255,255,.78);--surface-2:rgba(255,255,255,.92);
 --surface-strong:#ffffff;--overlay:rgba(255,255,255,.94);--tooltip:rgba(26,28,32,.96);--tooltip-ink:#ffffff;
@@ -2760,7 +2760,7 @@ const REC_SECTIONS = [
 ];
 
 const CONTACTS = [
-  ["Nicola Cleary","Practice manager","nicola@activelifepharmacy.ie","Active Life Pharmacy","staff","#c8f04b"],
+  ["Nicola Cleary","Practice manager","nicola@activelifepharmacy.ie","Active Life Pharmacy","staff","#2BB673"],
   ["Orla Buckley","Supervising pharmacist","orla@activelifepharmacy.ie","Active Life Pharmacy","staff","#9fd6f0"],
   ["Patricia Montes","Dispensary lead","patricia@activelifepharmacy.ie","Active Life Pharmacy","staff","#e6c78a"],
   ["Aoife Kelly","OTC counter","aoife@activelifepharmacy.ie","Active Life Pharmacy","staff","#c8b4f0"],
@@ -2792,14 +2792,14 @@ const FILE_TREE = [
    path:"Certificates / Pharmacists", title:"Orla Buckley — PSI registration 2026",
    facts:[["TYPE","PDF · 2 pages"],["EXPIRES",dayMonthYear(addDays(TODAY, 80))],["INDEXED","Both pages"],["OWNER","Operations"]],
    body:["Registration covers community pharmacy practice and supervised supply, valid to " + longDate(addDays(TODAY, 80)) + " " + addDays(TODAY, 80).getFullYear() + ".",
-     "The renewal reminder fires sixty days before expiry. That routine failed twice this week because O'Connell Street has no contact on file."],
+     "The renewal reminder fires sixty days before expiry. That routine failed twice this week because Active Life New Sligo has no contact on file."],
    links:[["Orla Buckley","person"],["Certificate renewal reminder","workflow"]]},
   {type:"file", id:"fl-4", name:"Public liability — 2026.pdf", depth:1, parent:"f-cert", indexed:false,
    path:"Certificates / Insurance", title:"Public liability — 2026",
    facts:[["TYPE","PDF · 12 pages"],["EXPIRES",dayMonthYear(addDays(TODAY, 218))],["INDEXED","Not indexed"],["OWNER","Operations"]],
-   body:["Cover to €6.5m across all three locations. Not indexed, so Helios cannot answer questions from it yet.",
+   body:["Cover to €6.5m across all four locations. Not indexed, so Helios cannot answer questions from it yet.",
      "Indexing it would let the site-visits module check cover before a job is booked at a new address."],
-   links:[["Wine Street","location"],["Cranmore dispensary","location"]]},
+   links:[["Ward's Pharmacy","location"],["Active Life Cranmore","location"],["Active Life New Sligo","location"],["Active Life Eden Quay","location"]]},
   {type:"folder", id:"f-fin", name:"Finance", depth:0},
   {type:"file", id:"fl-5", name:"INV-10428.pdf", depth:1, parent:"f-fin", indexed:true,
    path:"Finance / Invoices", title:"INV-10428",
@@ -2871,10 +2871,10 @@ const REC_TEMPLATE_CATS = ["All","Records","Case work","Finance","Notes","Ops"];
 /* ---- admin hub ---- */
 /* ---- admin hub: 13 settings areas in five groups ---- */
 const PEOPLE = [
-  ["Nicola Cleary","Practice manager","nicola@activelifepharmacy.ie","Wine Street","active","Admin","2 min ago"],
-  ["Orla Buckley","Supervising pharmacist","orla@activelifepharmacy.ie","Cranmore","active","Standard","1 h ago"],
-  ["Patricia Montes","Dispensary lead","patricia@activelifepharmacy.ie","Wine Street","active","Manager","34 min ago"],
-  ["Aoife Kelly","OTC counter","aoife@activelifepharmacy.ie","Cranmore","active","Standard","3 h ago"],
+  ["Nicola Cleary","Practice manager","nicola@activelifepharmacy.ie","Ward's Pharmacy","active","Admin","2 min ago"],
+  ["Orla Buckley","Supervising pharmacist","orla@activelifepharmacy.ie","Active Life Cranmore","active","Standard","1 h ago"],
+  ["Patricia Montes","Dispensary lead","patricia@activelifepharmacy.ie","Ward's Pharmacy","active","Manager","34 min ago"],
+  ["Aoife Kelly","OTC counter","aoife@activelifepharmacy.ie","Active Life Cranmore","active","Standard","3 h ago"],
   ["Mary Brennan","Matron · St John's Nursing Home","mary@stjohnsnursing.ie","—","external","External","2 days ago"],
   ["Liam Dunne","Owner · Riverside Care","liam@riversidecare.ie","—","inactive","External","19 days ago"]
 ];
@@ -2883,6 +2883,15 @@ const PERM_KEYS = [["view","View records"],["edit","Edit records"],["approve","A
 const DEFAULT_PERMS = {Admin:{view:true,edit:true,approve:true}, Manager:{view:true,edit:true,approve:true},
   Standard:{view:true,edit:true,approve:false}, External:{view:true,edit:false,approve:false}};
 const INTEGRATIONS = [
+  {name:"Fitzgerald Power", tint:"#0F7A4A", status:"connected", statusKind:"ok",
+   glyph:"M4 8 12 4.5 20 8 12 11.5 4 8Z M4 13 12 16.5 20 13 M4 18 12 21.5 20 18",
+   lastSync:"4 min ago", usage:"accounts + payroll nightly", auth:"OAuth 2.0", scopes:["Read","Write"]},
+  {name:"Google Sheets", tint:"#0F9D58", status:"connected", statusKind:"ok",
+   glyph:"M7 3.5h10v17H7v-17Z M7 8h10 M12 8v12.5 M7 13h10",
+   lastSync:"1 min ago", usage:"47 SKUs live", auth:"OAuth 2.0", scopes:["Read","Write"]},
+  {name:"WhatsApp", tint:"#25d366", status:"connected", statusKind:"ok",
+   glyph:"M4 19.5 5.3 15A7.7 7.7 0 1 1 8.6 18.2L4 19.5Z M8.6 10.3c0 3 2.4 5.4 5.4 5.4",
+   lastSync:"3 min ago", usage:"62 vs 71 hours of coverage messages", auth:"API key", scopes:["Read","Send"]},
   {name:"Gmail", tint:"#ea4335", status:"connected", statusKind:"ok",
    glyph:"M4 7.2 12 13 20 7.2 M4 7.2v10.6h16V7.2 M4 7.2 8.5 4h7L20 7.2",
    lastSync:"2 min ago", usage:"340 emails/day", auth:"OAuth 2.0", scopes:["Read","Send"]},
@@ -2892,22 +2901,13 @@ const INTEGRATIONS = [
   {name:"Sage", tint:"#00d639", status:"read only", statusKind:"warn",
    glyph:"M4 8 12 4.5 20 8 12 11.5 4 8Z M4 13 12 16.5 20 13 M4 18 12 21.5 20 18",
    lastSync:"14 min ago", usage:"9 accounts synced nightly", auth:"API key", scopes:["Read"]},
-  {name:"HubSpot", tint:"#ff7a59", status:"connected", statusKind:"ok",
-   glyph:"M12 9.6a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8Z M12 4v3.4 M12 16.6V20 M4 12h3.4 M16.6 12H20 M6.5 6.5l2.4 2.4 M15.1 15.1l2.4 2.4 M17.5 6.5l-2.4 2.4 M8.9 15.1l-2.4 2.4",
-   lastSync:"6 min ago", usage:"1.1k contacts synced", auth:"OAuth 2.0", scopes:["Read","Write"]},
-  {name:"WhatsApp Business", tint:"#25d366", status:"write only", statusKind:"warn",
-   glyph:"M4 19.5 5.3 15A7.7 7.7 0 1 1 8.6 18.2L4 19.5Z M8.6 10.3c0 3 2.4 5.4 5.4 5.4",
-   lastSync:"11 min ago", usage:"62 messages/day", auth:"API key", scopes:["Send"]},
   {name:"Resend", tint:"var(--accent)", status:"write only", statusKind:"warn",
    glyph:"M3.5 12 20.5 4 16 20l-3.4-6.6L3.5 12Z",
-   lastSync:"38 min ago", usage:"210 emails/day", auth:"API key", scopes:["Send"]},
-  {name:"Composio", tint:DIM, status:"not connected", statusKind:"off",
-   glyph:"M9 3v5 M15 3v5 M6 8h12v3.5a6 6 0 0 1-12 0V8Z M12 17.5V21",
-   lastSync:"—", usage:"—", auth:"—", scopes:[]}
+   lastSync:"38 min ago", usage:"210 emails/day", auth:"API key", scopes:["Send"]}
 ];
 
 const THEMES = [
-  {id:"dark", label:"Dark", group:"Dark", bg:"#0b0c0b", surface:"#1a1c19", ink:"#f2f3ef", accent:"#c8f04b"},
+  {id:"dark", label:"Dark", group:"Dark", bg:"#0b0c0b", surface:"#1a1c19", ink:"#f2f3ef", accent:"#2BB673"},
   {id:"indigo", label:"Indigo", group:"Dark", bg:"#0a0b13", surface:"#1a1b26", ink:"#f0f1fa", accent:"#8b93ff"},
   {id:"slate", label:"Slate", group:"Dark", bg:"#100e0c", surface:"#211c17", ink:"#f4f0ea", accent:"#e8a14a"},
   {id:"plum", label:"Plum", group:"Dark", bg:"#100a10", surface:"#20151f", ink:"#f6eef4", accent:"#f077b0"},
@@ -2937,11 +2937,11 @@ const ADMIN_ICONS = {
 const ADMIN_CARDS = [
   {id:"people", group:"ORGANISATION", title:"People & access", icon:"people", tint:"#6ad0f0",
    blurb:"Invite, suspend and offboard the people who use Pulse.",
-   tags:["48 people","6 teams","3 locations"], badge:"3 waiting", badgeKind:"warn",
+   tags:["48 people","6 teams","4 locations"], badge:"3 waiting", badgeKind:"warn",
    footer:"Last login checked 4 minutes ago", action:"Review 3 invites",
    listLabel:"WHAT YOU CONTROL HERE",
    rows:[["Add, invite or remove employees","",""],["Create teams and departments","6 teams"],["Assign managers","4 reporting lines"],
-     ["Set locations","Wine Street · Cranmore · O'Connell Street"],["Suspend accounts","2 suspended"],["View last login","48 people tracked"]]},
+     ["Set locations","Ward's Pharmacy · Active Life Cranmore · Active Life New Sligo · Active Life Eden Quay"],["Suspend accounts","2 suspended"],["View last login","48 people tracked"]]},
   {id:"teams", group:"ORGANISATION", title:"Roles & permissions", icon:"shield", tint:"var(--accent)",
    blurb:"Permission templates, and exactly what each person can reach.",
    tags:["4 roles","64 permissions","3 scopes"],
@@ -2953,9 +2953,9 @@ const ADMIN_CARDS = [
      ["Restrict by team, location or record owner","3 scopes"],["Set approval limits","€10,000 threshold"],["Preview Pulse as another user",""]]},
   {id:"structure", group:"ORGANISATION", title:"Company structure", icon:"structure", tint:"#f0c04b",
    blurb:"Who reports to whom, where they work and when.",
-   tags:["3 locations","Europe/Dublin","EUR"],
+   tags:["4 locations","Europe/Dublin","EUR"],
    listLabel:"WHAT YOU CONTROL HERE",
-   rows:[["Company details","Active Life Pharmacy"],["Departments","5"],["Teams","6"],["Locations","3"],
+   rows:[["Company details","Active Life Pharmacy"],["Departments","5"],["Teams","6"],["Locations","4"],
      ["Reporting lines","4"],["Working hours","08:00–17:30, Mon–Fri"],["Holidays","Irish public holidays"],
      ["Default currency and timezone","EUR · Europe/Dublin"]]},
 
@@ -2987,11 +2987,11 @@ const ADMIN_CARDS = [
 
   {id:"integrations", group:"SYSTEMS", title:"Integrations", icon:"plug", tint:"#6ad0f0",
    blurb:"Email, accounting, CRM and messaging — and which way data flows.",
-   tags:["6 connected","1 disconnected","2 read-only"], badge:"Xero down", badgeKind:"bad",
-   footer:"Xero token expired 27 February", action:"Reconnect",
+   tags:["Fitzgerald Power","Google Sheets","WhatsApp"], badge:"3 live", badgeKind:"ok",
+   footer:"Fitzgerald Power, Google Sheets and WhatsApp connected", action:"Manage",
    listLabel:"CONNECTIONS",
-   rows:[["Gmail","read and write"],["Xero","disconnected"],["Sage","read only"],["HubSpot","read and write"],
-     ["WhatsApp Business","write only"],["Resend","write only"],["Composio","not connected"]]},
+   rows:[["Fitzgerald Power","read and write"],["Google Sheets","47 SKUs"],["WhatsApp","read and write"],
+     ["Gmail","read and write"],["Xero","disconnected"],["Sage","read only"],["Resend","write only"]]},
   {id:"modules", group:"SYSTEMS", title:"Modules & configuration", icon:"modules", tint:"#f0c04b",
    blurb:"Turn modules on, and make Pulse speak the business's own words.",
    tags:["3 installed","1 available","2 renamed terms"],
@@ -3064,9 +3064,9 @@ const ADMIN_GROUPS = [
 ];
 
 /* ---- activity feeds ---- */
-const SRC_TINT = {Gmail:"#f07a9d", Pulse:"var(--accent)", Sage:"#6ad0f0", WhatsApp:"#5fe0a8",
+const SRC_TINT = {Gmail:"#f07a9d", Pulse:"var(--accent)", Sage:"#6ad0f0", WhatsApp:"#5fe0a8", "Fitzgerald Power":"#0F7A4A", "Google Sheets":"#0F9D58",
   HubSpot:"#f0994b", Xero:"#8fa6ff", Agent:"var(--accent)"};
-const SRC_ABBR = {Gmail:"GM", Pulse:"PL", Sage:"SG", WhatsApp:"WA", HubSpot:"HS", Xero:"XR", Agent:"AI"};
+const SRC_ABBR = {Gmail:"GM", Pulse:"PL", Sage:"SG", WhatsApp:"WA", "Fitzgerald Power":"FP", "Google Sheets":"GS", Xero:"XR", Agent:"AI"};
 
 const DATA_EVENTS = [
   ["New customer created","McKenna Transport was added from a web enquiry.","Web form","McKenna Transport","Pulse","completed"],
@@ -3076,15 +3076,15 @@ const DATA_EVENTS = [
   ["42 records imported","Nightly Sage sync brought in 42 invoice lines across 9 accounts.","Sage sync","9 organisations","Sage","completed"],
   ["CRM record updated","Credit limit changed on the account after the August review.","HubSpot sync","Sligo Medical Centre","HubSpot","completed"],
   ["Form submitted","Blister-pack enrolment request in Strandhill.","Web form","Strandhill Family Practice","Pulse","completed"],
-  ["WhatsApp message received","Photo of the owing-script photo filed against the visit.","Orla Buckley","Cranmore dispensary","WhatsApp","completed"],
+  ["WhatsApp message received","Photo of the owing-script photo filed against the visit.","Orla Buckley","Active Life Cranmore","WhatsApp","completed"],
   ["External system synced","Xero connection retried and failed — token still expired.","Xero","148 invoices queued","Xero","failed"]
 ];
 
 const PEOPLE_EVENTS = [
   ["Aoife approved a refund","€412 written off on INV-10233 after the owing-script dispute closed.","Nicola Cleary","Calry Medical Centre","Pulse","completed"],
-  ["Tom changed a booking","Thursday's dispensary check moved to 11:00 to fit the delivery window.","Patricia Montes","Cranmore dispensary","Pulse","completed"],
-  ["Pat assigned a task","Lease decision handed to himself, due Thursday.","Pat Durkin","Cranmore dispensary","Pulse","completed"],
-  ["Finance uploaded a report","August month-end close workbook, nine sheets.","Nicola Cleary","Wine Street","Pulse","completed"],
+  ["Tom changed a booking","Thursday's dispensary check moved to 11:00 to fit the delivery window.","Patricia Montes","Active Life Cranmore","Pulse","completed"],
+  ["Pat assigned a task","Lease decision handed to himself, due Thursday.","Pat Durkin","Active Life Cranmore","Pulse","completed"],
+  ["Finance uploaded a report","August month-end close workbook, nine sheets.","Nicola Cleary","Ward's Pharmacy","Pulse","completed"],
   ["Aoife edited customer details","Billing email corrected so reminders stop bouncing.","Aoife Kelly","Riverside Care Centre","Pulse","completed"],
   ["Orla completed a visit","Warranty callback closed — owing items ordered on the spot.","Orla Buckley","Sligo Medical Centre","Pulse","completed"],
   ["Purchase order raised","PO-4471 for €14,280 sent up for sign-off.","Nicola Cleary","Uniphar","Pulse","awaiting"],
@@ -3094,11 +3094,11 @@ const PEOPLE_EVENTS = [
 const AI_EVENTS = [
   ["Finance Agent checked 143 invoices","Three accounts over their limit and €41.2k past 60 days.","Finance Agent","3 organisations","Agent","working"],
   ["Sales Agent qualified a new lead","McKenna Transport scored 82/100 on company size, location and enquiry detail.","Sales Agent","McKenna Transport","HubSpot","working"],
-  ["Operations Agent updated a schedule","Van 01's jobs redistributed across two pharmacists.","Operations Agent","Cranmore dispensary","Agent","working"],
+  ["Operations Agent updated a schedule","Van 01's jobs redistributed across two pharmacists.","Operations Agent","Active Life Cranmore","Agent","working"],
   ["Helios prepared a report","Weekly management one-pager written and filed.","Helios","Management","Agent","working"],
   ["Agent paused for approval","Chase email to Riverside Care drafted — needs your yes before it sends.","Finance Agent","Riverside Care Centre","Agent","awaiting"],
-  ["Workflow failed","Certificate renewal reminder could not find a contact for O'Connell Street.","Operations","O'Connell Street","Agent","failed"],
-  ["Stock Watch raised order lines","Two lines below reorder point before Thursday's jobs.","Stock Watch","Uniphar","Agent","working"],
+  ["Workflow failed","Certificate renewal reminder could not find a contact for Active Life New Sligo.","Operations","Active Life New Sligo","Agent","failed"],
+  ["Stock Watch raised order lines","47 SKUs on the Google Sheet; two lines below reorder (€2,840).","Stock Watch","Uniphar","Agent","working"],
   ["Briefing Agent posted the morning brief","Two items needed you; the rest was noise.","Briefing Agent","Pat Durkin","WhatsApp","completed"]
 ];
 
@@ -3137,7 +3137,7 @@ const ITEMS = {
     fields:[{k:"Provider",v:"core.notifications"},{k:"Integration",v:"Xero"},{k:"Queued",v:"148 invoices"},{k:"Event",v:"core.automation.failed"}],
     history:[{when:"Today 02:14",text:"Sync failed — invalid_grant"},{when:"Today 02:16",text:"Retried twice, then dead-lettered"}]},
   visit:{kind:"Task", importance:"high", icon:ICONS.visits, age:"2h",
-    title:"Delivery run at Cranmore dispensary is unassigned",
+    title:"Delivery run at Active Life Cranmore is unassigned",
     why:"Scheduled for tomorrow 09:00 with no pharmacist against it.",
     detail:"Contributed by the site-visits module through its own inbox provider. Core never learns what a visit is — it sorts by importance and age like everything else.",
     actionLabel:"Assign pharmacist", secondaryLabel:"Reschedule", group:"Work",
@@ -3151,9 +3151,9 @@ const ITEMS = {
     fields:[{k:"Automation",v:"Overdue invoice reminder"},{k:"Run",v:"partial"},{k:"Sent",v:"6 of 10"},{k:"Failed step",v:"notify.email"}],
     history:[{when:"Today 08:00",text:"Run completed with warnings"},{when:"Yesterday 08:00",text:"Same 4 records skipped"}]},
   task:{kind:"Task", importance:"normal", icon:ICONS.work, age:"Thu",
-    title:"Cranmore lease renewal closes Thursday",
+    title:"Active Life Cranmore lease renewal closes Thursday",
     why:"No decision recorded against the contract and the notice period is 30 days.",
-    detail:"The lease runs to " + longDate(monthEnd(2)) + ". Cranmore carried 38% of OTC and script revenue this year; rent is 4.1% of that.",
+    detail:"The lease runs to " + longDate(monthEnd(2)) + ". Active Life Cranmore carried 38% of OTC and script revenue this year; rent is 4.1% of that.",
     actionLabel:"Open record", secondaryLabel:"Assign", group:"Work",
     fields:[{k:"Provider",v:"core.tasks"},{k:"Due",v:weekdayDate(nextWeekday(4))},{k:"Assignee",v:"Pat Durkin"},{k:"Priority",v:"high"}],
     history:[{when:dayMonth(addDays(TODAY, -8)),text:"Task materialised from a recurring rule"},{when:"2 Feb",text:"Contract uploaded by Nicola Cleary"}]}
@@ -3167,7 +3167,7 @@ const ANSWERS = {
     rows:[["Riverside Care","€28,410","€8,410","74d"],["Sligo Medical Centre","€9,240","€2,240","63d"],["St Anne's","€3,560","€560","61d"]],
     actions:[["Draft chase emails",1],["Open Riverside Care",0]]},
   jobs:{tool:"core_tasks_find", effect:"read",
-    text:"Eleven tasks are past their due date. Two slipped on Friday when Van 01 went off the road at Cranmore; the other nine are waiting on stock. Cranmore carries seven of the eleven, well above its usual share.",
+    text:"Eleven tasks are past their due date. Two slipped on Friday when Van 01 went off the road at Active Life Cranmore; the other nine are waiting on stock. Active Life Cranmore carries seven of the eleven, well above its usual share.",
     cols:["Task","Subject","Late","Owner"],
     rows:[["MDS review follow-up","Strandhill Family Practice","4d","O. Buckley"],["Blister-pack sign-off","St John's Nursing Home","3d","P. Montes"],["Repeat-script invoice","Calry GP Practice","2d","O. Buckley"]],
     actions:[["Reassign the two van tasks",1],["Open Work → Overdue",0]]},
@@ -3176,12 +3176,17 @@ const ANSWERS = {
     text:"Drafted. This is a write tool, so I have not sent it — the proposal is stored with a hash of the exact arguments, and confirming replays those stored arguments rather than anything from your yes.",
     actions:[["Confirm and send",1],["Edit draft",0]]},
   sync:{tool:"core_operations_health", effect:"read",
-    text:"The Xero connection failed at 02:14 with an expired refresh token — last authorised 27 February. Nothing was lost: 148 invoices are queued and post once reconnected. This is the third token failure this year, so it is worth moving the connection to the service account.",
+    text:"Fitzgerald Power, Google Sheets (47 SKUs) and WhatsApp are connected. Xero is the leftover: it failed at 02:14 with an expired refresh token. Nothing was lost — 148 invoices queue until you reconnect it.",
     actions:[["Open System health",1],["Assign to Aoife",0]]},
+  stock:{tool:"core_search", effect:"read",
+    text:"Google Sheets is live with 47 SKUs. Two lines drop below reorder before Thursday — covering them at the Fitzgerald Power cost is €2,840. Pharmacist hours this week are 62 vs 71 last week (−2.4pts of cover).",
+    cols:["SKU","On hand","Reorder","Cover"],
+    rows:[["Atorvastatin 20mg","18","24","€640"],["Apixaban 5mg","11","20","€1,120"],["Salbutamol CFC-free","9","16","€1,080"]],
+    actions:[["Open Google Sheets",1],["Raise PO for €2,840",0]]},
   visits:{tool:"site_visits_find", effect:"read",
-    text:"Four delivery runs are booked this week and one has no pharmacist against it. That tool is contributed by the site-visits module, not core — installing the module is what gave me the ability to answer this.",
+    text:"Four pharmacies — Ward's Pharmacy, Active Life Cranmore, Active Life New Sligo and Active Life Eden Quay. Four delivery runs are booked this week and one has no pharmacist against it. Pharmacist hours are 62 vs 71 last week.",
     cols:["Visit","Organisation","When","Status"],
-    rows:[["Flu clinic","St John's Nursing Home","Wed 09:00","scheduled"],["Survey","Strandhill FP","Wed 14:00","scheduled"],["Depot check","Cranmore","Thu 09:00","unassigned"]],
+    rows:[["Flu clinic","St John's Nursing Home","Wed 09:00","scheduled"],["Survey","Strandhill FP","Wed 14:00","scheduled"],["Depot check","Active Life Cranmore","Thu 09:00","unassigned"],["MDS run","Active Life Eden Quay","Fri 10:00","scheduled"]],
     actions:[["Assign the unassigned visit",1],["Open Site visits",0]]},
   fallback:{tool:"core_search", effect:"read",
     text:"Everything I reach goes through a registered tool with a declared permission, and none of them covers that question yet. Here is what I can answer right now.",
@@ -3258,11 +3263,12 @@ function synthesizeCustomArea(name){
 // fallback instead of landing on an unrelated answer.
 function pickAnswer(q){
   const s = q.toLowerCase();
-  if (/\b(visits?|pharmacists?)\b/.test(s)) return ANSWERS.visits;
+  if (/\b(sku|skus|stock|sheets?)\b/.test(s)) return ANSWERS.stock;
+  if (/\b(visits?|pharmacists?|hours?)\b/.test(s)) return ANSWERS.visits;
   if (/\b(chase|chasing|emails?|draft|send)\b/.test(s)) return ANSWERS.chase;
   if (/\b(credit|limits?|debtors?|owed?|owes|outstanding|riverside)\b/.test(s)) return ANSWERS.credit;
   if (/\b(tasks?|late|overdue|slipped|behind)\b|\bmy work\b/.test(s)) return ANSWERS.jobs;
-  if (/\b(sync|xero|integrations?|token|fail(ed|ing|s|ure)?|broken?|health)\b/.test(s)) return ANSWERS.sync;
+  if (/\b(fitzgerald|sheets?|whatsapp|sync|xero|integrations?|token|fail(ed|ing|s|ure)?|broken?|health)\b/.test(s)) return ANSWERS.sync;
   return ANSWERS.fallback;
 }
 
@@ -3281,9 +3287,10 @@ const TEAMS = [
   ["Management","2 members","Pat Durkin","all core permissions"]
 ];
 const LOCATIONS = [
-  ["Wine Street","Wine Street, Sligo","14 staff","active"],
-  ["Cranmore dispensary","Cranmore, Sligo","14 staff","lease review"],
-  ["O'Connell Street","O'Connell Street, Sligo","4 staff","active"]
+  ["Ward's Pharmacy","Ward's Pharmacy, Sligo","16 staff","active"],
+  ["Active Life Cranmore","Cranmore, Sligo","12 staff","lease review"],
+  ["Active Life New Sligo","New Sligo","9 staff","active"],
+  ["Active Life Eden Quay","Eden Quay, Dublin","8 staff","active"]
 ];
 
 const AGENT_DEFS = [
@@ -3307,11 +3314,11 @@ const AGENT_DEFS = [
      {kind:"routine", text:"Ran routine", routine:"Morning briefing"},
      {kind:"agent", text:"morning briefing:", lines:[
        {k:"Cash", v:"€41.2k past 60 days · Riverside Care is 74 days"},
-       {k:"Work", v:"11 tasks late · 7 of them at Cranmore"},
+       {k:"Work", v:"11 tasks late · 7 of them at Active Life Cranmore"},
        {k:"Approvals", v:"PO-4471 sitting with you since 08:54"}]},
-     {kind:"agent", text:"two things need you today: the purchase order, and a yes/no on the Cranmore lease. everything else is covered."},
+     {kind:"agent", text:"two things need you today: the purchase order, and a yes/no on the Active Life Cranmore lease. everything else is covered."},
      {kind:"user", text:"put the lease on Thursday"},
-     {kind:"agent", text:"done — task created against Cranmore dispensary, due Thursday, assigned to you. i'll remind you Wednesday afternoon."}
+     {kind:"agent", text:"done — task created against Active Life Cranmore, due Thursday, assigned to you. i'll remind you Wednesday afternoon."}
    ]},
   {id:"credit", name:"Credit Control", shape:"executive-capsule", tint:"#2a2118", state:"waiting", role:"Watches payment behaviour and drafts the chase before you ask",
    when:"Yesterday", preview:"three drafts parked. nothing sent.",
@@ -3353,15 +3360,15 @@ const KPI_DEFS = {
   revenue:{label:"Revenue", value:"€412,800", delta:"+6.2%", dir:"up", hint:"30 days", hero:true},
   cash:{label:"Cash collected", value:"€368,140", delta:"+4.1%", dir:"up", hint:"30 days"},
   overdue:{label:"Overdue debt", value:"€41,200", delta:"+€8,410", dir:"down", hint:"60 days plus"},
-  margin:{label:"Gross margin", value:"31.4%", delta:"−0.6pt", dir:"down", hint:"vs last month"},
+  margin:{label:"Gross margin", value:"31.4%", delta:"+2.4pts", dir:"up", hint:"vs last month"},
   jobs:{label:"Jobs completed", value:"126", delta:"+4", dir:"up", hint:"30 days"},
   nps:{label:"Repeat rate", value:"68%", delta:"+3pt", dir:"up", hint:"customers ordering again"},
   pipeline:{label:"Open pipeline", value:"€212,400", delta:"+11%", dir:"up", hint:"quoted, not won"},
-  utilisation:{label:"Pharmacist hours", value:"84%", delta:"−2pt", dir:"down", hint:"billable share"}
+  utilisation:{label:"Pharmacist hours", value:"62 vs 71 hours", delta:"−9h", dir:"down", hint:"this week vs last"}
 };
 
 const ASPECT_DEFS = [
-  {id:"sales", label:"Sales", color:"#c8f04b", owner:"AOIFE KELLY", description:"OTC, nursing-home accounts and scripts out the door.",
+  {id:"sales", label:"Sales", color:"#2BB673", owner:"AOIFE KELLY", description:"OTC, nursing-home accounts and scripts out the door.",
    kind:"columns", chartTitle:"Revenue by month", chartUnit:"EUR",
    chart:[["Sep",288,"€288k"],["Oct",301,"€301k"],["Nov",352,"€352k"],["Dec",376,"€376k"],["Jan",268,"€268k"],["Feb",294,"€294k"],["Mar",318,"€318k"],["Apr",341,"€341k"],["May",362,"€362k"],["Jun",384,"€384k"],["Jul",398,"€398k"],["Aug",413,"€413k"]],
    splitTitle:"Where it came from",
@@ -3395,16 +3402,16 @@ const ASPECT_DEFS = [
      ["Cost per enquiry","€18.40","−€2.10","up","blended",[.8,.76,.7,.66,.6,.56,.5,.46,.4]],
      ["Repeat rate","68%","+3pt","up","ordering again",[.5,.54,.58,.56,.62,.64,.66,.7,.74]]]},
   {id:"operations", label:"Operations", color:"#dcded6", owner:"ORLA BUCKLEY", description:"Pharmacists, deliveries, MDS runs and the work queue.",
-   kind:"stacked", legend:["Wine Street","Cranmore dispensary","O'Connell Street"], stacked:[["Sep",[34,28,9]],["Oct",[36,30,9]],["Nov",[39,32,10]],["Dec",[37,31,10]],["Jan",[32,27,8]],["Feb",[35,29,9]],["Mar",[40,33,10]],["Apr",[43,35,11]],["May",[46,37,12]],["Jun",[49,39,12]],["Jul",[52,42,13]],["Aug",[64,48,14]]], chartTitle:"Jobs completed by month", chartUnit:"JOBS",
+   kind:"stacked", legend:["Ward's Pharmacy","Active Life Cranmore","Active Life New Sligo","Active Life Eden Quay"], stacked:[["Sep",[34,28,9,7]],["Oct",[36,30,9,8]],["Nov",[39,32,10,8]],["Dec",[37,31,10,8]],["Jan",[32,27,8,6]],["Feb",[35,29,9,7]],["Mar",[40,33,10,8]],["Apr",[43,35,11,9]],["May",[46,37,12,9]],["Jun",[49,39,12,10]],["Jul",[52,42,13,10]],["Aug",[64,48,14,11]]], chartTitle:"Jobs completed by month", chartUnit:"JOBS",
    chart:[["Sep",88,"88"],["Oct",94,"94"],["Nov",102,"102"],["Dec",96,"96"],["Jan",84,"84"],["Feb",91,"91"],["Mar",104,"104"],["Apr",112,"112"],["May",118,"118"],["Jun",121,"121"],["Jul",124,"124"],["Aug",126,"126"]],
    splitTitle:"By location",
-   split:[["Wine Street","64","51%",1],["Cranmore dispensary","48","38%",0],["O'Connell Street","14","11%",0]],
+   split:[["Ward's Pharmacy","64","47%",1],["Active Life Cranmore","48","35%",0],["Active Life New Sligo","14","10%",0],["Active Life Eden Quay","11","8%",0]],
    tableCols:["Pharmacist","Jobs","On time","Location"],
-   table:[["Orla Buckley","41","94%","Cranmore"],["Patricia Montes","34","88%","Wine Street"],["Aoife Kelly","28","96%","Wine Street"],["Unassigned","4","—","Cranmore"]],
+   table:[["Orla Buckley","41","94%","Active Life Cranmore"],["Patricia Montes","34","88%","Ward's Pharmacy"],["Aoife Kelly","28","96%","Ward's Pharmacy"],["Unassigned","4","—","Active Life Cranmore"]],
    metrics:[["Jobs completed","126","+4","up","30 days",[.5,.6,.5,.66,.6,.7,.66,.76,.84]],
      ["Overdue tasks","11","+3","down","past due",[.3,.36,.3,.44,.4,.5,.56,.7,.85]],
      ["Visits completed","38","+11%","up","30 days",[.4,.5,.6,.5,.66,.6,.72,.8,.9]],
-     ["Pharmacist hours","84%","−2pt","down","billable",[.8,.78,.8,.76,.78,.74,.76,.72,.7]]]},
+     ["Pharmacist hours","62 vs 71 hours","−9h","down","this week",[.8,.78,.8,.76,.78,.74,.76,.72,.62]]]},
   {id:"finance", label:"Finance", color:"#7fd8a4", owner:"NICOLA CLEARY", description:"Cash in, debt ageing and margin after cost.",
    kind:"area", chartTitle:"Cash collected by month", chartUnit:"EUR",
    chart:[["Sep",252,"€252k"],["Oct",268,"€268k"],["Nov",296,"€296k"],["Dec",318,"€318k"],["Jan",246,"€246k"],["Feb",264,"€264k"],["Mar",288,"€288k"],["Apr",306,"€306k"],["May",324,"€324k"],["Jun",342,"€342k"],["Jul",358,"€358k"],["Aug",368,"€368k"]],
@@ -3414,7 +3421,7 @@ const ASPECT_DEFS = [
    table:[["Riverside Care Centre","€28,410","+42.0%","74 days"],["Sligo Medical Centre","€9,240","+11.2%","63 days"],["St Anne's Nursing Home","€3,560","−4.4%","61 days"],["Calry Medical Centre","€1,180","−22.0%","8 days"]],
    metrics:[["Cash collected","€368,140","+4.1%","up","30 days",[.5,.56,.5,.62,.58,.68,.66,.74,.8]],
      ["Overdue debt","€41,200","+€8,410","down","60 days plus",[.3,.34,.4,.38,.46,.5,.6,.7,.84]],
-     ["Gross margin","31.4%","−0.6pt","down","vs last month",[.7,.72,.7,.68,.68,.66,.64,.62,.6]],
+     ["Gross margin","31.4%","+2.4pts","up","vs last month",[.5,.52,.54,.56,.58,.6,.62,.66,.7]],
      ["Days to pay","38","+6","down","weighted",[.4,.44,.42,.5,.52,.6,.62,.7,.76]]]},
   {id:"support", label:"Support", color:"#e2705c", owner:"AOIFE KELLY", description:"Callbacks, owing scripts and what came back twice.",
    kind:"dots", target:12, targetLabel:"Target: 12 callbacks a month or fewer", chartTitle:"Callbacks by month", chartUnit:"COUNT",
@@ -3468,7 +3475,7 @@ const OPS_DEFS = [
    why:"A lapsed certificate stopped two jobs last year.",
    saved:"3 hours a month",
    steps:[["Trigger","60 days before a document expires"],["Find","The owner of the certificate"],["Check","Has a renewal already been booked?"],["Send","Notify the owner and Operations"],["Update","Create the renewal task"]],
-   runs:[["Today 14:20","3s","failed","0 of 2","€0.00","No contact on file for O'Connell Street"],["Yesterday 14:20","4s","failed","0 of 1","€0.00","No contact on file for O'Connell Street"],["Fri 14:20","5s","ok","1 notified","€0.01"]]},
+   runs:[["Today 14:20","3s","failed","0 of 2","€0.00","No contact on file for Active Life New Sligo"],["Yesterday 14:20","4s","failed","0 of 1","€0.00","No contact on file for Active Life New Sligo"],["Fri 14:20","5s","ok","1 notified","€0.01"]]},
   {id:"o5", name:"Morning briefing", kind:"routine", owner:"Briefing Agent", ownerKind:"agent", initials:"BR",
    trigger:"Weekdays, 07:00", triggerKind:"schedule", next:runLabel(nextWorkday(), "07:00"), last:"Delivered 07:02", status:"healthy", rate:100, on:true,
    what:"Reads the whole business overnight and tells you the two things that actually need you.",
@@ -3539,16 +3546,16 @@ const WORK_SECTIONS = [
 const WORK_TASKS = [
   {id:"w1", title:"Chase INV-10428 — Riverside Care", status:"In progress", priority:"High", who:"NC",
    due:"2d overdue", late:true, client:"Riverside Care Centre", day:"Today", mins:"25 mins", view:"Due tasks"},
-  {id:"w2", title:"Reassign Van 01 jobs off Cranmore", status:"In progress", priority:"High", who:"PD",
-   due:"Due today", late:false, client:"Cranmore dispensary", day:"Today", mins:"50 mins", view:"Due tasks"},
+  {id:"w2", title:"Reassign Van 01 jobs off Active Life Cranmore", status:"In progress", priority:"High", who:"PD",
+   due:"Due today", late:false, client:"Active Life Cranmore", day:"Today", mins:"50 mins", view:"Due tasks"},
   {id:"w3", title:"Approve purchase order PO-4471", status:"Review", priority:"Medium", who:"PD",
    due:"Due 12:00", late:false, client:"Uniphar", day:"Today", mins:"15 mins", view:"Review"},
   {id:"w4", title:"Sign off August counter stocktake", status:"Not started", priority:"Medium", who:"OB",
-   due:"No due date", late:false, client:"Wine Street", day:"Any day", mins:"Mins", view:"All tasks"},
-  {id:"w5", title:"Cranmore lease decision", status:"Not started", priority:"High", who:"PD",
-   due:"Thursday", late:false, client:"Cranmore dispensary", day:"Thu", mins:"1 hour", view:"All tasks"},
+   due:"No due date", late:false, client:"Ward's Pharmacy", day:"Any day", mins:"Mins", view:"All tasks"},
+  {id:"w5", title:"Active Life Cranmore lease decision", status:"Not started", priority:"High", who:"PD",
+   due:"Thursday", late:false, client:"Active Life Cranmore", day:"Thu", mins:"1 hour", view:"All tasks"},
   {id:"w6", title:"VAT return — August", status:"Done", priority:"Medium", who:"NC",
-   due:"Filed Friday", late:false, client:"Wine Street", day:"Fri", mins:"2 hours", view:"Done", done:true}
+   due:"Filed Friday", late:false, client:"Ward's Pharmacy", day:"Fri", mins:"2 hours", view:"Done", done:true}
 ];
 
 const WORKFLOWS = [
@@ -3608,7 +3615,7 @@ const FACE_TINTS = [
 
 /* ---- ontology graph: generation, Dijkstra traversal, canvas render ---- */
 const CLUSTERS = [
-  ["Organisations", "#c8f04b", 0.00, 0.62, 46],
+  ["Organisations", "#2BB673", 0.00, 0.62, 46],
   ["People",        "#6ad0f0", 0.90, 0.70, 52],
   ["Files",         "#9d8cf5", 1.75, 0.66, 58],
   ["Tasks",         "#f0c04b", 2.55, 0.72, 44],
@@ -3879,7 +3886,7 @@ class Component extends DCLogic {
   /* Several shortest-path searches run at once, each with its own hue. The
      settling order and parent tree are solved up front; the animation only
      reveals them, so every spark follows a route the graph really has. */
-  QUERY_HUES(){ return ["#c8f04b", "#6ad0f0", "#9d8cf5", "#f0c04b", "#f07a9d", "#5fe0a8"]; }
+  QUERY_HUES(){ return ["#2BB673", "#6ad0f0", "#9d8cf5", "#f0c04b", "#f07a9d", "#5fe0a8"]; }
 
   /* Keyword search: match the query against cluster names, then trace a real
      path between two matches (or around one, if only a single cluster hits)
@@ -4112,7 +4119,7 @@ class Component extends DCLogic {
       const cs = getComputedStyle(cv);
       const dk = cs.getPropertyValue("--ink").trim() !== "#16181c";
       this._css = {dark:dk, pathInk: dk ? "#ffffff" : "#16181c",
-        matchInk: cs.getPropertyValue("--accent").trim() || "#c8f04b"};
+        matchInk: cs.getPropertyValue("--accent").trim() || "#2BB673"};
       this._cssAt = now;
     }
     const dark = this._css.dark, pathInk = this._css.pathInk, matchInk = this._css.matchInk;
@@ -5504,13 +5511,13 @@ class Component extends DCLogic {
 
     const TASKS = [
       {id:"t1", title:"Chase INV-10428 — Riverside Care", due:"09:30", who:"NC", queue:["mine","overdue"], subject:"Riverside Care Centre", priority:"high", late:true},
-      {id:"t2", title:"Reassign Van 01 jobs off Cranmore", due:"11:00", who:"PD", queue:["mine","overdue"], subject:"Cranmore dispensary", priority:"high", late:true},
+      {id:"t2", title:"Reassign Van 01 jobs off Active Life Cranmore", due:"11:00", who:"PD", queue:["mine","overdue"], subject:"Active Life Cranmore", priority:"high", late:true},
       {id:"t3", title:"Approve purchase order PO-4471", due:"12:00", who:"PD", queue:["mine"], subject:"PO-4471", priority:"normal"},
       {id:"t4", title:"Call St John's Nursing Home about Thursday", due:"14:00", who:"PM", queue:["mine","team"], subject:"St John's Nursing Home", priority:"normal"},
-      {id:"t5", title:"Sign off August counter stocktake", due:"16:30", who:"OB", queue:["team"], subject:"Wine Street", priority:"low"},
+      {id:"t5", title:"Sign off August counter stocktake", due:"16:30", who:"OB", queue:["team"], subject:"Ward's Pharmacy", priority:"low"},
       {id:"t6", title:"Assign pharmacist to Thursday dispensary check", due:"Tomorrow", who:"—", queue:["unassigned","upcoming"], subject:"site-visits.visit", priority:"high"},
-      {id:"t7", title:"VAT return — August", due:"Fri", who:"NC", queue:["team","upcoming"], subject:"Wine Street", priority:"normal"},
-      {id:"t8", title:"Cranmore lease decision", due:"Thu", who:"PD", queue:["mine","upcoming"], subject:"Cranmore dispensary", priority:"high"}
+      {id:"t7", title:"VAT return — August", due:"Fri", who:"NC", queue:["team","upcoming"], subject:"Ward's Pharmacy", priority:"normal"},
+      {id:"t8", title:"Active Life Cranmore lease decision", due:"Thu", who:"PD", queue:["mine","upcoming"], subject:"Active Life Cranmore", priority:"high"}
     ];
     const decorateTask = (t) => {
       const done = !!st.done[t.id];
@@ -5615,9 +5622,10 @@ class Component extends DCLogic {
          cardBg:"var(--surface)", cardBorder:"var(--track)", ink:INK, bars:bars([.4,.5,.44,.6,.5,.55,.48,.6,.5,.45], AMBER)}
        ],
        breakdown:[
-        {key:"Wine Street", value:money(214600), pct:"72%", color:LIME},
-        {key:"Cranmore dispensary", value:money(156800), pct:"53%", color:"var(--track)"},
-        {key:"O'Connell Street", value:money(41400), pct:"18%", color:"var(--track)"}
+        {key:"Ward's Pharmacy", value:money(214600), pct:"52%", color:LIME},
+        {key:"Active Life Cranmore", value:money(156800), pct:"38%", color:"var(--track)"},
+        {key:"Active Life New Sligo", value:money(41400), pct:"10%", color:"var(--track)"},
+        {key:"Active Life Eden Quay", value:money(2840), pct:"1%", color:"var(--track)"}
        ]},
       {title:"site-visits", description:"Contributed by an installed module.", hasBreakdown:false,
        metrics:[
@@ -6069,7 +6077,7 @@ class Component extends DCLogic {
       visitWidget: [
         {title:"Flu clinic · St John's Nursing Home", when:"Wed 09:00", dot:LIME},
         {title:"Pre-install survey · Strandhill FP", when:"Wed 14:00", dot:LIME},
-        {title:"Depot check · Cranmore", when:"Thu 09:00", dot:AMBER}
+        {title:"Depot check · Active Life Cranmore", when:"Thu 09:00", dot:AMBER}
       ],
 
       /* dashboard */
