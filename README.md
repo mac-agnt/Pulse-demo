@@ -13,6 +13,8 @@ This is not Healthcare Abroad. This branch is a client overlay of the Pulse-demo
 | `AgentFace.dc.html` | Agent avatar component. |
 | `vercel.json` | Serves every unmatched path as `index.html`. |
 
+Branding in `index.html`: **Audrey Weston** present, **Healthcare** present, **Kilbride** absent, **Healthcare Abroad** absent.
+
 ## Local preview
 
 ```bash
@@ -23,6 +25,22 @@ Then open http://pulse.localhost:8080
 
 ## Vercel
 
-Preferred production URL: https://healthcare-iv-pulse.vercel.app
+Preferred production URL: **https://healthcare-iv-pulse.vercel.app**
 
-That hostname is already assigned to project `healthcare-iv-pulse` on team **agnt-ie-crms-25**. Publish this branch as that project's production branch (or run `vercel deploy --prod --scope agnt-ie-crms-25` from a checkout of `healthcare-iv-pulse`). Do not merge this overlay into `main`.
+That hostname is already assigned to project `healthcare-iv-pulse` on team **agnt-ie-crms-25** (`team_ykvh6KOTqmxAB0Eei4xF38Gb`). This overlay could not create a production deployment there (403: no production-deploy permission on that existing project). Do not merge this branch into `main`.
+
+Publish from a Vercel login that owns AGNTie CRMS25:
+
+```bash
+git checkout healthcare-iv-pulse
+npx vercel link --scope agnt-ie-crms-25 --yes --project healthcare-iv-pulse
+npx vercel deploy --prod --scope agnt-ie-crms-25
+```
+
+Set the project's production branch to `healthcare-iv-pulse` if the project is git-connected.
+
+### Interim public URL
+
+Until the AGNTie project is published, a bootstrap that loads this branch's HTML is live at:
+
+**https://aw-healthcare-iv.vercel.app**
