@@ -426,7 +426,7 @@ nav{scrollbar-width:none}
 <div style="flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:0 4px 0 12px;cursor:pointer">
 <div style="display:flex;align-items:center">
 <sc-for list="{{ team }}" as="p" hint-placeholder-count="3">
-<div style="width:26px;height:26px;border-radius:50%;background:{{ p.bg }};border:2px solid var(--surface);color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:600;margin-left:-8px">{{ p.i }}</div>
+<div style="width:26px;height:26px;border-radius:50%;background:{{ p.bg }};border:2px solid var(--surface);color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:600;margin-left:-6px">{{ p.i }}</div>
 </sc-for>
 </div>
 <sc-if value="{{ showProfileText }}" hint-placeholder-val="{{ true }}">
@@ -1605,8 +1605,8 @@ class Component extends DCLogic {
       brandStyle: railOpen
         ? "flex:1;min-width:0;overflow:hidden;opacity:1"
         : "display:none",
-      logoCollapsedStyle: railOpen ? "display:none" : "width:30px;height:30px;flex:none;border-radius:10px;object-fit:contain",
-      logoExpandedStyle: railOpen ? "height:28px;object-fit:contain;margin-right:auto" : "display:none",
+      logoCollapsedStyle: railOpen ? "display:none" : "width:34px;height:34px;flex:none;border-radius:10px;object-fit:contain;background:rgba(255,255,255,.08);padding:3px;cursor:pointer",
+      logoExpandedStyle: railOpen ? "height:32px;object-fit:contain;margin-right:auto;cursor:pointer" : "display:none",
       railRowStyle: "display:flex;align-items:center;gap:10px;"
         + (railOpen ? "width:100%;padding:0 10px;" : "justify-content:center;width:40px;"),
       railOpen, railLabel: railOpen ? "Collapse sidebar" : "Expand sidebar",
