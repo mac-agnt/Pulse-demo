@@ -22,6 +22,12 @@ python3 serve.py
 
 Then open http://pulse.localhost:8080
 
+## Live preview
+
+https://alp-cdn-git-active-life-pharmacy-agnt-ie-crms-25.vercel.app
+
+AGNTie project `alp-cdn` (git alias of this branch). Do not merge to frozen `main`.
+
 ## CDN
 
 jsDelivr branch snapshot:
