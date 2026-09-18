@@ -21,3 +21,10 @@ python3 serve.py
 ```
 
 Then open http://pulse.localhost:8080
+
+## CDN
+
+jsDelivr branch snapshot:
+
+- https://cdn.jsdelivr.net/gh/mac-agnt/Pulse-demo@active-life-pharmacy/index.html
+- https://cdn.jsdelivr.net/gh/mac-agnt/Pulse-demo@active-life-pharmacy/support.js
