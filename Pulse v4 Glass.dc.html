@@ -195,16 +195,16 @@ nav{scrollbar-width:none}
 <div style="position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:999;display:flex;align-items:center;gap:7px;height:28px;padding:0 14px;background:rgba(200,240,75,.12);border:1px solid rgba(200,240,75,.3);border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--accent);backdrop-filter:blur(20px);pointer-events:none">
 <span style="width:5px;height:5px;border-radius:50%;background:var(--accent);animation:breathe 2.6s ease-in-out infinite"></span>DEMO DATA · PROPOSED OPERATING MODEL · FICTIONAL DATA ONLY</div>
 
-<!-- Scenario controls -->
+<!-- Scenario controls modal -->
 <sc-if value="{{ scenarioOpen }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ closeScenario }}" style="position:fixed;inset:0;z-index:100;background:var(--scrim);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center">
+<div onClick="{{ closeScenario }}" style="position:fixed;inset:0;z-index:100;background:var(--scrim);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;animation:scrimIn .2s ease both">
 <div onClick="{{ stop }}" style="width:min(520px,90vw);background:var(--overlay);border:1px solid var(--border);border-radius:24px;backdrop-filter:blur(20px);box-shadow:0 24px 60px rgba(0,0,0,.5);overflow:hidden;animation:popIn .3s var(--ease) both">
 <div style="padding:22px 24px 16px;border-bottom:1px solid var(--border)">
 <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.13em;color:var(--faint)">DEMO SCENARIO CONTROLS</div>
 <div style="font-size:19px;font-weight:500;letter-spacing:-.4px;margin-top:6px">Mary Byrne — Hip Treatment</div>
 <div style="font-size:13px;color:var(--dim);margin-top:6px;line-height:1.55">Step through the connected story. Each stage updates Patients, Referrals, Care Network, Travel &amp; Transport and Claims &amp; Funding.</div>
 </div>
-<div style="padding:16px 24px 24px">
+<div style="padding:16px 24px 24px;max-height:60vh;overflow-y:auto">
 <sc-for list="{{ scenarioSteps }}" as="step" hint-placeholder-count="6">
 <button onClick="{{ step.go }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:6px;background:{{ step.bg }};border:1px solid {{ step.border }};border-radius:14px;cursor:pointer;text-align:left;transition:background .2s var(--ease),border-color .2s var(--ease)" style-hover="background:var(--surface-2);border-color:var(--border-strong)">
 <span style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ step.numBg }};color:{{ step.numColor }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">{{ step.num }}</span>
@@ -212,28 +212,107 @@ nav{scrollbar-width:none}
 <div style="font-size:13px;font-weight:500;color:{{ step.titleColor }}">{{ step.title }}</div>
 <div style="font-size:11.5px;color:var(--dim);margin-top:2px">{{ step.desc }}</div>
 </div>
-<sc-if value="{{ step.current }}" hint-placeholder-val="{{ false }}">
-<span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--accent)">CURRENT</span>
-</sc-if>
-<sc-if value="{{ step.done }}" hint-placeholder-val="{{ false }}">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-</sc-if>
+<sc-if value="{{ step.current }}" hint-placeholder-val="{{ false }}"><span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--accent)">CURRENT</span></sc-if>
+<sc-if value="{{ step.done }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></sc-if>
 </button>
 </sc-for>
 <div style="display:flex;gap:8px;margin-top:14px">
-<button onClick="{{ resetScenario }}" style="flex:1;height:38px;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--border);border-radius:12px;background:none;color:var(--body);font-size:13px;cursor:pointer;transition:border-color .2s var(--ease),color .2s var(--ease)" style-hover="border-color:var(--border-strong);color:var(--ink)">
+<button onClick="{{ resetScenario }}" style="flex:1;height:38px;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--border);border-radius:12px;background:none;color:var(--body);font-size:13px;cursor:pointer" style-hover="border-color:var(--border-strong);color:var(--ink)">
 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5v5h5 M4.2 14a8 8 0 1 0 .3-5.3"/></svg>Reset demo</button>
-<button onClick="{{ closeScenario }}" style="flex:1;height:38px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-size:13px;font-weight:500;cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--accent-hover)">Close</button>
+<button onClick="{{ closeScenario }}" style="flex:1;height:38px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-size:13px;font-weight:500;cursor:pointer" style-hover="background:var(--accent-hover)">Close</button>
 </div>
 </div>
 </div>
 </div>
 </sc-if>
 
+<!-- Inbox detail slide-over -->
+<sc-if value="{{ inboxDetailOpen }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeInboxDetail }}" style="position:fixed;inset:0;z-index:68;background:var(--scrim);backdrop-filter:blur(6px);display:flex;justify-content:flex-end;animation:scrimIn .2s ease both">
+<div onClick="{{ stop }}" style="width:min(540px,100%);height:100%;display:flex;flex-direction:column;background:var(--overlay);border-left:1px solid var(--border);backdrop-filter:blur(20px);box-shadow:-30px 0 80px rgba(0,0,0,.5);animation:popIn .3s var(--ease) both">
+<div style="flex:none;display:flex;align-items:flex-start;gap:12px;padding:22px 24px 18px;border-bottom:1px solid var(--border)">
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:center;gap:9px"><span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.13em;color:var(--faint)">{{ inboxDetail.kind }}</span><span style="width:7px;height:7px;border-radius:50%;background:{{ inboxDetail.dot }}"></span></div>
+<div style="font-size:19px;font-weight:500;letter-spacing:-.4px;margin-top:8px;line-height:1.3">{{ inboxDetail.title }}</div>
+</div>
+<button onClick="{{ closeInboxDetail }}" style="flex:none;width:30px;height:30px;border:1px solid var(--border);border-radius:50%;background:none;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="color:var(--ink)">
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12 M18 6 6 18"/></svg></button>
+</div>
+<div style="flex:1;min-height:0;overflow-y:auto;padding:20px 24px 28px">
+<div style="font-size:14px;line-height:1.65;color:var(--body)">{{ inboxDetail.why }}</div>
+<div style="margin-top:14px;padding:14px 16px;background:var(--chip);border:1px solid var(--chip-border);border-radius:14px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--faint)">DETAIL</div>
+<div style="font-size:13px;line-height:1.6;color:var(--body);margin-top:6px">{{ inboxDetail.detail }}</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:20px">
+<button onClick="{{ inboxDetail.approve }}" style="height:38px;padding:0 20px;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:13px;font-weight:500;cursor:pointer" style-hover="background:var(--accent-hover)">{{ inboxDetail.actionLabel }}</button>
+<button onClick="{{ inboxDetail.secondary }}" style="height:38px;padding:0 20px;border:1px solid var(--border);border-radius:999px;background:none;color:var(--ink);font-size:13px;cursor:pointer" style-hover="border-color:var(--border-strong)">{{ inboxDetail.secondaryLabel }}</button>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- Trip detail slide-over -->
+<sc-if value="{{ tripDetailOpen }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeTripDetail }}" style="position:fixed;inset:0;z-index:68;background:var(--scrim);backdrop-filter:blur(6px);display:flex;justify-content:flex-end;animation:scrimIn .2s ease both">
+<div onClick="{{ stop }}" style="width:min(540px,100%);height:100%;display:flex;flex-direction:column;background:var(--overlay);border-left:1px solid var(--border);backdrop-filter:blur(20px);box-shadow:-30px 0 80px rgba(0,0,0,.5);animation:popIn .3s var(--ease) both">
+<div style="flex:none;display:flex;align-items:flex-start;gap:12px;padding:22px 24px 18px;border-bottom:1px solid var(--border)">
+<div style="flex:1"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.13em;color:var(--faint)">TRIP DETAIL</div><div style="font-size:19px;font-weight:500;letter-spacing:-.4px;margin-top:8px">Itinerary</div></div>
+<button onClick="{{ closeTripDetail }}" style="flex:none;width:30px;height:30px;border:1px solid var(--border);border-radius:50%;background:none;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="color:var(--ink)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12 M18 6 6 18"/></svg></button>
+</div>
+<div style="flex:1;min-height:0;overflow-y:auto;padding:20px 24px 28px">
+<sc-for list="{{ tripFields }}" as="f" hint-placeholder-count="8">
+<div style="display:flex;align-items:baseline;gap:16px;padding:10px 0;border-bottom:1px solid var(--border)">
+<span style="flex:none;width:120px;font-size:12px;color:var(--dim)">{{ f.label }}</span>
+<span style="flex:1;font-size:13px">{{ f.value }}</span>
+</div>
+</sc-for>
+<button onClick="{{ tripPatientLink }}" style="height:38px;padding:0 20px;margin-top:20px;border:1px solid var(--border);border-radius:999px;background:none;color:var(--ink);font-size:13px;cursor:pointer" style-hover="border-color:var(--accent)">Open patient record</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- Claim detail slide-over -->
+<sc-if value="{{ claimDetailOpen }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeClaimDetail }}" style="position:fixed;inset:0;z-index:68;background:var(--scrim);backdrop-filter:blur(6px);display:flex;justify-content:flex-end;animation:scrimIn .2s ease both">
+<div onClick="{{ stop }}" style="width:min(540px,100%);height:100%;display:flex;flex-direction:column;background:var(--overlay);border-left:1px solid var(--border);backdrop-filter:blur(20px);box-shadow:-30px 0 80px rgba(0,0,0,.5);animation:popIn .3s var(--ease) both">
+<div style="flex:none;display:flex;align-items:flex-start;gap:12px;padding:22px 24px 18px;border-bottom:1px solid var(--border)">
+<div style="flex:1"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.13em;color:var(--faint)">CLAIM DETAIL</div><div style="font-size:19px;font-weight:500;letter-spacing:-.4px;margin-top:8px">Evidence &amp; status</div></div>
+<button onClick="{{ closeClaimDetail }}" style="flex:none;width:30px;height:30px;border:1px solid var(--border);border-radius:50%;background:none;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="color:var(--ink)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12 M18 6 6 18"/></svg></button>
+</div>
+<div style="flex:1;min-height:0;overflow-y:auto;padding:20px 24px 28px">
+<sc-for list="{{ claimFields }}" as="f" hint-placeholder-count="6">
+<div style="display:flex;align-items:baseline;gap:16px;padding:10px 0;border-bottom:1px solid var(--border)">
+<span style="flex:none;width:140px;font-size:12px;color:var(--dim)">{{ f.label }}</span>
+<span style="flex:1;font-size:13px">{{ f.value }}</span>
+</div>
+</sc-for>
+<button onClick="{{ claimPatientLink }}" style="height:38px;padding:0 20px;margin-top:20px;border:1px solid var(--border);border-radius:999px;background:none;color:var(--ink);font-size:13px;cursor:pointer" style-hover="border-color:var(--accent)">Open patient record</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- Notifications dropdown -->
+<sc-if value="{{ showNotifs }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:60px;right:22px;z-index:40;width:min(376px,86vw);background:var(--overlay);border:1px solid var(--border);border-radius:22px;backdrop-filter:blur(20px);box-shadow:0 24px 60px rgba(0,0,0,.5);overflow:hidden;animation:popIn .26s var(--ease) both">
+<div style="display:flex;align-items:center;padding:16px 20px 10px"><span style="font-size:13.5px;font-weight:500;flex:1">Notifications</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ inboxCount }} OPEN</span></div>
+<sc-for list="{{ notifications }}" as="n" hint-placeholder-count="4">
+<div style="display:flex;gap:11px;padding:11px 20px;border-top:1px solid var(--border)">
+<span style="width:6px;height:6px;border-radius:50%;flex:none;margin-top:6px;background:{{ n.dot }}"></span>
+<div style="min-width:0"><div style="font-size:13px;line-height:1.45;color:var(--ink)">{{ n.text }}</div><div style="font-size:11.5px;color:var(--faint);margin-top:2px">{{ n.meta }}</div></div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- ═══ SIDEBAR NAV RAIL ═══ -->
 <nav style="{{ railOuter }}">
 <div style="{{ railRowStyle }}margin-bottom:12px">
-<button onClick="{{ toggleRail }}" title="{{ railLabel }}" style="width:30px;height:30px;flex:none;border:0;border-radius:10px;background:var(--accent);color:var(--on-accent);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;padding:0;transition:transform .2s var(--ease)" style-hover="transform:scale(1.07)" style-active="transform:scale(.94)">H</button>
-<span style="{{ brandStyle }}">Healthcare Abroad</span>
+<img src="./vendor/ha-logo-white.png" alt="Healthcare Abroad" style="{{ logoExpandedStyle }}" onClick="{{ toggleRail }}">
+<img src="./vendor/ha-logo-white.png" alt="HA" style="{{ logoCollapsedStyle }}" onClick="{{ toggleRail }}">
 <sc-if value="{{ railOpen }}" hint-placeholder-val="{{ false }}">
 <button onClick="{{ toggleRail }}" title="{{ railLabel }}" style="width:28px;height:28px;flex:none;border:0;border-radius:9px;background:none;color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s var(--ease),color .2s var(--ease)" style-hover="background:var(--track);color:var(--ink)">
 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16 M4 12h10 M4 18h16"/></svg></button>
@@ -264,9 +343,9 @@ nav{scrollbar-width:none}
 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="{{ settingsGlyphStyle }}"><path d="M5.5 20v-5.5 M5.5 9.5V4 M12 20v-7.5 M12 7.5V4 M18.5 20v-4 M18.5 11V4 M3 12.5h5 M9.5 5.5h5 M16 14h5"/></svg>
 <span style="{{ settingsInlineStyle }}">Settings</span>
 </button>
-<!-- Scenario control button -->
-<button onClick="{{ openScenario }}" style="{{ railRowStyle }}padding:8px 0;margin-top:4px" style-hover="background:var(--surface-2);color:var(--ink)">
-<div style="width:30px;height:30px;flex:none;border-radius:50%;background:var(--accent-soft);border:1px solid var(--accent-line);color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer">
+<!-- Mary Byrne story button -->
+<button onClick="{{ openScenario }}" style="{{ railRowStyle }}padding:8px 0;margin-top:4px;border:0;border-radius:13px;background:none;cursor:pointer;color:var(--accent)" style-hover="background:var(--surface-2)">
+<div style="width:30px;height:30px;flex:none;border-radius:50%;background:var(--accent-soft);border:1px solid var(--accent-line);color:var(--accent);display:flex;align-items:center;justify-content:center">
 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l10 6-10 6V6Z"/></svg></div>
 <sc-if value="{{ railOpen }}" hint-placeholder-val="{{ false }}">
 <span style="flex:1;min-width:0;font-size:12px;color:var(--accent);white-space:nowrap;overflow:hidden">Mary Byrne story</span>
@@ -274,17 +353,35 @@ nav{scrollbar-width:none}
 </button>
 <div style="{{ railRowStyle }}padding-top:8px">
 <div style="width:30px;height:30px;flex:none;border-radius:50%;background:var(--track);color:var(--body);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:500;cursor:pointer">SC</div>
-<span style="{{ brandStyle }}">Sarah Collins</span>
+<span style="{{ brandStyle }}"><span style="font-size:13px;font-weight:500;white-space:nowrap">Sarah Collins</span></span>
 </div>
 </nav>
 
+<!-- Hover label for collapsed rail -->
 <span style="{{ hoverLabel.style }}">
 <span style="position:absolute;left:-4px;top:50%;width:8px;height:8px;background:var(--tooltip);border-left:1px solid var(--border);border-bottom:1px solid var(--border);transform:translateY(-50%) rotate(45deg)"></span>
 <span style="width:5px;height:5px;border-radius:50%;background:var(--accent)"></span>{{ hoverLabel.label }}</span>
 
+<!-- ═══ MAIN CONTENT ═══ -->
 <main style="position:relative;z-index:1;flex:1;min-width:0;display:flex;flex-direction:column">
+
+<!-- ═══ HEADER BAR — the full Glass bar ═══ -->
 <header style="position:relative;z-index:2;flex:none;padding:14px 22px 12px">
 <div style="display:flex;align-items:center;gap:0;height:44px;padding:0 5px;background:var(--surface);border:1px solid var(--border);border-radius:999px;backdrop-filter:blur(28px);box-shadow:var(--card-shadow);transition:border-color .24s var(--ease)">
+
+<!-- Agent face on Agents page -->
+<sc-if value="{{ isAgents }}" hint-placeholder-val="{{ false }}">
+<div style="flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:0 12px 0 6px">
+<dc-import name="AgentFace" shape="{{ agent.shape }}" state="{{ agent.state }}" tint="{{ agent.tint }}" size="30" hint-size="30px,30px"></dc-import>
+<div style="min-width:0">
+<div style="font-size:12.5px;font-weight:500;line-height:1.2;white-space:nowrap">{{ agent.name }}</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint);line-height:1.3">{{ agent.role }}</div>
+</div>
+</div>
+<div style="width:1px;height:22px;flex:none;background:var(--border)"></div>
+</sc-if>
+
+<!-- Pill nav group -->
 <sc-if value="{{ showPillNav }}" hint-placeholder-val="{{ true }}">
 <div style="{{ navGroupStyle }}">
 <span style="{{ navThumb }}"></span>
@@ -298,24 +395,40 @@ nav{scrollbar-width:none}
 </sc-for>
 </div>
 </sc-if>
+
+<!-- Search field -->
 <div style="flex:1 1 auto;min-width:0;display:flex;align-items:center;justify-content:center;padding:0 10px">
 <button onClick="{{ openPalette }}" title="{{ searchHint }}" style="{{ searchBarStyle }}" style-hover="border-color:var(--accent-line);color:var(--ink);background:var(--surface-strong)">
 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="flex:none"><path d="m21 21-4.3-4.3 M17 11a6 6 0 1 1-12 0 6 6 0 0 1 12 0"/></svg>
+<sc-if value="{{ searchExpanded }}" hint-placeholder-val="{{ true }}">
 <span style="flex:1;min-width:0;text-align:left;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ searchHint }}</span>
 <span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">⌘K</span>
+</sc-if>
 </button>
 </div>
+
+<!-- Context hint -->
 <sc-if value="{{ showHint }}" hint-placeholder-val="{{ true }}">
 <span style="flex:0 1 auto;min-width:0;padding:0 12px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.11em;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ contextHint }}</span>
 </sc-if>
+
+<!-- Right-side controls (theme, bell, avatars, profile) -->
 <sc-if value="{{ barOpen }}" hint-placeholder-val="{{ true }}">
 <div style="width:1px;height:22px;flex:none;background:var(--border)"></div>
 <div style="flex:0 0 auto;display:flex;align-items:center;gap:2px;padding:0 3px">
 <button onClick="{{ toggleTheme }}" title="{{ themeLabel }}" style="width:32px;height:32px;border:0;border-radius:50%;background:none;cursor:pointer;color:var(--dim);display:flex;align-items:center;justify-content:center;transition:background .2s var(--ease),color .2s var(--ease)" style-hover="background:var(--track);color:var(--ink)">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{ themeIcon }}"/></svg></button>
+<button onClick="{{ toggleNotifs }}" style="position:relative;width:32px;height:32px;border:0;border-radius:50%;background:none;cursor:pointer;color:var(--dim);display:flex;align-items:center;justify-content:center;transition:background .2s var(--ease),color .2s var(--ease)" style-hover="background:var(--track);color:var(--ink)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5a6 6 0 0 1 12 0c0 6.5 2.6 8.5 2.6 8.5H3.4S6 15 6 8.5Z M10.3 20.5a1.94 1.94 0 0 0 3.4 0"/></svg>
+<span style="position:absolute;top:5px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--accent)"></span></button>
 </div>
 <div style="width:1px;height:22px;flex:none;background:var(--border)"></div>
 <div style="flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:0 4px 0 12px;cursor:pointer">
+<div style="display:flex;align-items:center">
+<sc-for list="{{ team }}" as="p" hint-placeholder-count="3">
+<div style="width:26px;height:26px;border-radius:50%;background:{{ p.bg }};border:2px solid var(--surface);color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:600;margin-left:-8px">{{ p.i }}</div>
+</sc-for>
+</div>
 <sc-if value="{{ showProfileText }}" hint-placeholder-val="{{ true }}">
 <div style="min-width:0">
 <div style="font-size:12px;font-weight:500;line-height:1.2;white-space:nowrap">Sarah Collins</div>
@@ -329,6 +442,7 @@ nav{scrollbar-width:none}
 </div>
 </header>
 
+<!-- ═══ PAGE CONTENT ═══ -->
 <div style="flex:1;min-height:0;overflow-y:auto;padding:0 22px">
 
 <!-- HOME PAGE -->
@@ -344,10 +458,15 @@ nav{scrollbar-width:none}
 </sc-if>
 <sc-if value="{{ threadOpen }}" hint-placeholder-val="{{ false }}">
 <div style="flex:0 0 auto;width:100%;max-width:880px;margin:0 auto;padding:14px 4px 8px">
+<div style="display:flex;align-items:flex-start;gap:20px;padding-bottom:22px">
+<div style="flex:1;min-width:0;padding-top:2px">
 <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;color:var(--faint)">CONVERSATION</div>
-<div style="font-size:19px;font-weight:500;letter-spacing:-0.45px;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ threadTitle }}</div>
+<div style="font-size:19px;font-weight:500;letter-spacing:-.45px;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ threadTitle }}</div>
+</div>
+<button onClick="{{ newThread }}" style="flex:none;height:30px;padding:0 13px;background:var(--surface);border:1px solid var(--border);border-radius:999px;font-size:12px;color:var(--body);cursor:pointer" style-hover="border-color:var(--border-strong);color:var(--ink)">New chat</button>
+</div>
 <sc-for list="{{ thread }}" as="m" hint-placeholder-count="0">
-<div style="margin-top:20px">
+<div style="margin-bottom:24px">
 <sc-if value="{{ m.isUser }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;justify-content:flex-end"><div style="max-width:76%;padding:12px 18px;background:var(--surface-2);border:1px solid var(--border);border-radius:20px 20px 6px 20px;font-size:14.5px;line-height:1.55;backdrop-filter:blur(24px)">{{ m.text }}</div></div>
 </sc-if>
@@ -376,7 +495,7 @@ nav{scrollbar-width:none}
 <sc-if value="{{ m.hasActions }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px">
 <sc-for list="{{ m.actions }}" as="a" hint-placeholder-count="2">
-<button onClick="{{ a.run }}" style="height:34px;padding:0 16px;border:1px solid {{ a.border }};background:{{ a.bg }};color:{{ a.color }};border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;transition:background .2s var(--ease),transform .18s var(--ease)">{{ a.label }}</button>
+<button onClick="{{ a.run }}" style="height:34px;padding:0 16px;border:1px solid {{ a.border }};background:{{ a.bg }};color:{{ a.color }};border-radius:999px;font-size:13px;font-weight:500;cursor:pointer">{{ a.label }}</button>
 </sc-for>
 </div>
 </sc-if>
@@ -406,37 +525,27 @@ nav{scrollbar-width:none}
 </div>
 </div>
 </div>
+<!-- Right widget rail -->
 <sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
 <aside style="width:352px;flex:none;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:2px 0 6px 20px">
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;backdrop-filter:blur(20px) saturate(1.3);box-shadow:var(--card-shadow);padding:20px 22px 10px">
-<div style="display:flex;align-items:center;gap:10px">
-<div style="flex:1;font-size:13.5px;font-weight:500">Action inbox</div>
-<span style="height:24px;display:flex;align-items:center;padding:0 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim)">{{ inboxCount }}</span>
-</div>
+<div style="display:flex;align-items:center;gap:10px"><div style="flex:1;font-size:13.5px;font-weight:500">Action inbox</div><span style="height:24px;display:flex;align-items:center;padding:0 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim)">{{ inboxCount }}</span></div>
 <div style="margin-top:8px">
 <sc-for list="{{ inboxItems }}" as="i" hint-placeholder-count="4">
 <div onClick="{{ i.go }}" style="display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)">
 <span style="width:7px;height:7px;border-radius:50%;flex:none;margin-top:5px;background:{{ i.dot }}"></span>
-<div style="flex:1;min-width:0">
-<div style="font-size:13px;line-height:1.4">{{ i.title }}</div>
-<div style="font-size:11.5px;color:var(--dim);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ i.why }}</div>
-</div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;line-height:1.4">{{ i.title }}</div><div style="font-size:11.5px;color:var(--dim);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ i.why }}</div></div>
 </div>
 </sc-for>
 </div>
 </div>
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;backdrop-filter:blur(20px) saturate(1.3);box-shadow:var(--card-shadow);padding:20px 22px 10px">
-<div style="display:flex;align-items:center;gap:10px">
-<div style="flex:1;font-size:13.5px;font-weight:500">Upcoming travel</div>
-</div>
+<div style="font-size:13.5px;font-weight:500">Upcoming travel</div>
 <div style="margin-top:8px">
 <sc-for list="{{ upcomingTravel }}" as="t" hint-placeholder-count="3">
 <div style="display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--border)">
 <span style="width:7px;height:7px;border-radius:50%;flex:none;margin-top:5px;background:{{ t.dot }}"></span>
-<div style="flex:1;min-width:0">
-<div style="font-size:13px;line-height:1.4">{{ t.title }}</div>
-<div style="font-size:11.5px;color:var(--dim);margin-top:3px">{{ t.when }}</div>
-</div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;line-height:1.4">{{ t.title }}</div><div style="font-size:11.5px;color:var(--dim);margin-top:3px">{{ t.when }}</div></div>
 </div>
 </sc-for>
 </div>
@@ -461,58 +570,43 @@ nav{scrollbar-width:none}
 <!-- PATIENTS PAGE -->
 <sc-if value="{{ isPatients }}" hint-placeholder-val="{{ false }}">
 <div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
-<div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;padding:20px 4px 22px">
-<div style="flex:1;min-width:280px">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">PATIENTS</div>
-<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ patientsTitle }}</h1>
+<div style="display:flex;align-items:flex-start;gap:20px;padding:20px 4px 22px">
+<div style="flex:1"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">PATIENTS</div><h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ patientsTitle }}</h1></div>
 </div>
-</div>
-
 <sc-if value="{{ patientProfile }}" hint-placeholder-val="{{ false }}">
-<div style="background:var(--surface);border:1px solid var(--border);border-radius:22px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:22px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden;animation:panelIn .4s var(--ease) both">
 <div style="display:flex;align-items:center;gap:14px;padding:22px 24px;border-bottom:1px solid var(--border)">
 <div style="width:48px;height:48px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">{{ profileInitials }}</div>
-<div style="flex:1;min-width:0">
-<div style="font-size:20px;font-weight:500;letter-spacing:-.5px">{{ profileName }}</div>
-<div style="font-size:13px;color:var(--dim);margin-top:2px">{{ profileSummary }}</div>
-</div>
+<div style="flex:1;min-width:0"><div style="font-size:20px;font-weight:500;letter-spacing:-.5px">{{ profileName }}</div><div style="font-size:13px;color:var(--dim);margin-top:2px">{{ profileSummary }}</div></div>
 <span style="{{ profileStatusStyle }}">{{ profileStatus }}</span>
-<button onClick="{{ closeProfile }}" style="width:30px;height:30px;border:1px solid var(--border);border-radius:50%;background:none;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="color:var(--ink)">
-<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12 M18 6 6 18"/></svg></button>
+<button onClick="{{ closeProfile }}" style="width:30px;height:30px;border:1px solid var(--border);border-radius:50%;background:none;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="color:var(--ink)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12 M18 6 6 18"/></svg></button>
 </div>
 <div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
 <sc-for list="{{ profileTabs }}" as="tab" hint-placeholder-count="5">
-<button onClick="{{ tab.pick }}" style="flex:1;padding:12px 16px;border:0;background:none;font-size:13px;cursor:pointer;color:{{ tab.color }};border-bottom:2px solid {{ tab.accent }};font-weight:{{ tab.weight }};transition:color .2s var(--ease)" style-hover="color:var(--ink)">{{ tab.label }}</button>
+<button onClick="{{ tab.pick }}" style="flex:1;padding:12px 16px;border:0;background:none;font-size:13px;cursor:pointer;color:{{ tab.color }};border-bottom:2px solid {{ tab.accent }};font-weight:{{ tab.weight }}" style-hover="color:var(--ink)">{{ tab.label }}</button>
 </sc-for>
 </div>
 <div style="padding:20px 24px 24px">
-<sc-for list="{{ profileFields }}" as="f" hint-placeholder-count="6">
+<sc-for list="{{ profileFields }}" as="f" hint-placeholder-count="8">
 <div style="display:flex;align-items:baseline;gap:16px;padding:10px 0;border-bottom:1px solid var(--border)">
 <span style="flex:none;width:160px;font-size:12px;color:var(--dim)">{{ f.label }}</span>
-<span style="flex:1;font-size:13px;color:var(--ink)">{{ f.value }}</span>
+<span style="flex:1;font-size:13px">{{ f.value }}</span>
 </div>
 </sc-for>
 </div>
 </div>
 </sc-if>
-
 <sc-if value="{{ showPatientList }}" hint-placeholder-val="{{ true }}">
 <sc-if value="{{ patientViewBoard }}" hint-placeholder-val="{{ false }}">
-<div style="display:grid;grid-template-columns:repeat({{ boardCols }},minmax(180px,1fr));gap:12px;overflow-x:auto;padding-bottom:8px">
+<div style="display:grid;grid-template-columns:repeat({{ boardCols }},minmax(160px,1fr));gap:12px;overflow-x:auto;padding-bottom:8px">
 <sc-for list="{{ boardColumns }}" as="col" hint-placeholder-count="4">
-<div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:14px;min-height:200px">
-<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-<span style="font-size:13px;font-weight:500">{{ col.title }}</span>
-<span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ col.count }}</span>
-</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:14px;min-height:180px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span style="font-size:13px;font-weight:500">{{ col.title }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ col.count }}</span></div>
 <sc-for list="{{ col.patients }}" as="p" hint-placeholder-count="2">
 <div onClick="{{ p.open }}" style="padding:12px;margin-bottom:8px;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:border-color .2s var(--ease),transform .18s var(--ease)" style-hover="border-color:var(--accent-line);transform:translateY(-2px)">
 <div style="font-size:13px;font-weight:500">{{ p.name }}</div>
 <div style="font-size:11.5px;color:var(--dim);margin-top:4px">{{ p.treatment }}</div>
-<div style="display:flex;align-items:center;gap:6px;margin-top:8px">
-<span style="width:5px;height:5px;border-radius:50%;background:{{ p.dot }}"></span>
-<span style="font-size:11px;color:var(--faint)">{{ p.issue }}</span>
-</div>
+<div style="display:flex;align-items:center;gap:6px;margin-top:8px"><span style="width:5px;height:5px;border-radius:50%;background:{{ p.dot }}"></span><span style="font-size:11px;color:var(--faint)">{{ p.issue }}</span></div>
 </div>
 </sc-for>
 </div>
@@ -522,16 +616,11 @@ nav{scrollbar-width:none}
 <sc-if value="{{ patientViewList }}" hint-placeholder-val="{{ true }}">
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
 <div style="display:grid;grid-template-columns:1.5fr 1.2fr 1fr 1fr .8fr .8fr;border-bottom:1px solid var(--border);background:var(--surface-faint)">
-<sc-for list="{{ patientCols }}" as="c" hint-placeholder-count="6">
-<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div>
-</sc-for>
+<sc-for list="{{ patientCols }}" as="c" hint-placeholder-count="6"><div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div></sc-for>
 </div>
 <sc-for list="{{ patientRows }}" as="p" hint-placeholder-count="8">
 <div onClick="{{ p.open }}" style="display:grid;grid-template-columns:1.5fr 1.2fr 1fr 1fr .8fr .8fr;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
-<div style="display:flex;align-items:center;gap:11px;padding:13px 20px">
-<span style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ p.bg }};color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">{{ p.initials }}</span>
-<span style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.name }}</span>
-</div>
+<div style="display:flex;align-items:center;gap:11px;padding:13px 20px"><span style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ p.bg }};color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">{{ p.initials }}</span><span style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.name }}</span></div>
 <div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ p.treatment }}</div>
 <div style="display:flex;align-items:center;padding:13px 20px"><span style="{{ p.stageStyle }}">{{ p.stage }}</span></div>
 <div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ p.coordinator }}</div>
@@ -548,29 +637,24 @@ nav{scrollbar-width:none}
 <!-- REFERRALS PAGE -->
 <sc-if value="{{ isReferrals }}" hint-placeholder-val="{{ false }}">
 <div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
-<div style="padding:20px 4px 22px">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">REFERRALS &amp; PAPERWORK</div>
-<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ referralsTitle }}</h1>
-</div>
+<div style="padding:20px 4px 22px"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">REFERRALS &amp; PAPERWORK</div><h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ referralsTitle }}</h1></div>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
 <sc-for list="{{ referralStats }}" as="s" hint-placeholder-count="3">
-<div style="padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:18px">
-<div style="font-size:11.5px;color:var(--dim)">{{ s.label }}</div>
-<div style="font-size:24px;font-weight:500;letter-spacing:-.8px;margin-top:7px;color:{{ s.color }}">{{ s.value }}</div>
-</div>
+<div style="padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:18px"><div style="font-size:11.5px;color:var(--dim)">{{ s.label }}</div><div style="font-size:24px;font-weight:500;letter-spacing:-.8px;margin-top:7px;color:{{ s.color }}">{{ s.value }}</div></div>
 </sc-for>
 </div>
+<sc-if value="{{ referralsEmpty }}" hint-placeholder-val="{{ false }}">
+<div style="padding:52px;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:20px"><div style="font-size:14px;font-weight:500">No requests in this view</div><div style="font-size:13px;color:var(--dim);margin-top:6px">Try a different tab.</div></div>
+</sc-if>
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
-<div style="display:grid;grid-template-columns:1.5fr 1.2fr 1fr .8fr .8fr .7fr;border-bottom:1px solid var(--border);background:var(--surface-faint)">
-<sc-for list="{{ referralCols }}" as="c" hint-placeholder-count="6">
-<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div>
-</sc-for>
+<div style="display:grid;grid-template-columns:1.3fr 1.2fr 1.4fr .7fr .7fr .7fr;border-bottom:1px solid var(--border);background:var(--surface-faint)">
+<sc-for list="{{ referralCols }}" as="c" hint-placeholder-count="6"><div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div></sc-for>
 </div>
 <sc-for list="{{ referralRows }}" as="r" hint-placeholder-count="6">
-<div onClick="{{ r.open }}" style="display:grid;grid-template-columns:1.5fr 1.2fr 1fr .8fr .8fr .7fr;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
+<div onClick="{{ r.open }}" style="display:grid;grid-template-columns:1.3fr 1.2fr 1.4fr .7fr .7fr .7fr;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
 <div style="display:flex;align-items:center;padding:13px 20px;font-size:13px">{{ r.patient }}</div>
 <div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ r.source }}</div>
-<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ r.items }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:12px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.items }}</div>
 <div style="display:flex;align-items:center;padding:13px 20px;font-size:12px;color:var(--dim)">{{ r.requested }}</div>
 <div style="display:flex;align-items:center;padding:13px 20px"><span style="{{ r.statusStyle }}">{{ r.status }}</span></div>
 <div style="display:flex;align-items:center;padding:13px 20px;font-size:12px;color:var(--dim)">{{ r.owner }}</div>
@@ -583,23 +667,20 @@ nav{scrollbar-width:none}
 <!-- CARE NETWORK PAGE -->
 <sc-if value="{{ isCareNetwork }}" hint-placeholder-val="{{ false }}">
 <div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
-<div style="padding:20px 4px 22px">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">CARE NETWORK</div>
-<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ careNetworkTitle }}</h1>
-</div>
+<div style="padding:20px 4px 22px"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">CARE NETWORK</div><h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ careNetworkTitle }}</h1></div>
+<sc-if value="{{ showHospitals }}" hint-placeholder-val="{{ true }}">
 <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
 <sc-for list="{{ hospitals }}" as="h" hint-placeholder-count="4">
-<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px;transition:transform .24s var(--ease),border-color .2s var(--ease)" style-hover="transform:translateY(-3px);border-color:var(--border-strong)">
+<div onClick="{{ h.open }}" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px;cursor:pointer;transition:transform .24s var(--ease),border-color .2s var(--ease)" style-hover="transform:translateY(-3px);border-color:var(--border-strong)">
 <div style="display:flex;align-items:center;gap:12px">
 <span style="width:40px;height:40px;border-radius:12px;background:{{ h.tint }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--on-accent)">{{ h.initials }}</span>
-<div style="flex:1;min-width:0">
-<div style="font-size:15px;font-weight:500">{{ h.name }}</div>
-<div style="font-size:12px;color:var(--dim);margin-top:2px">{{ h.location }}</div>
+<div style="flex:1"><div style="font-size:15px;font-weight:500">{{ h.name }}</div><div style="font-size:12px;color:var(--dim);margin-top:2px">{{ h.location }}</div></div>
 </div>
-</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
-<div style="padding:10px;background:var(--surface-2);border-radius:12px"><div style="font-size:10.5px;color:var(--faint)">TREATMENTS</div><div style="font-size:16px;font-weight:500;margin-top:4px">{{ h.treatments }}</div></div>
-<div style="padding:10px;background:var(--surface-2);border-radius:12px"><div style="font-size:10.5px;color:var(--faint)">ACTIVE CASES</div><div style="font-size:16px;font-weight:500;margin-top:4px">{{ h.activeCases }}</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-top:16px">
+<div style="padding:10px;background:var(--surface-2);border-radius:12px"><div style="font-size:10px;color:var(--faint)">TREATMENTS</div><div style="font-size:16px;font-weight:500;margin-top:4px">{{ h.treatments }}</div></div>
+<div style="padding:10px;background:var(--surface-2);border-radius:12px"><div style="font-size:10px;color:var(--faint)">ACTIVE</div><div style="font-size:16px;font-weight:500;margin-top:4px">{{ h.activeCases }}</div></div>
+<div style="padding:10px;background:var(--surface-2);border-radius:12px"><div style="font-size:10px;color:var(--faint)">RESPONSE</div><div style="font-size:12px;margin-top:4px;color:var(--dim)">{{ h.response }}</div></div>
+<div style="padding:10px;background:var(--surface-2);border-radius:12px"><div style="font-size:10px;color:var(--faint)">DOCS</div><div style="font-size:12px;margin-top:4px;color:var(--dim)">{{ h.docs }}</div></div>
 </div>
 <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
 <sc-for list="{{ h.categories }}" as="cat" hint-placeholder-count="3">
@@ -609,36 +690,47 @@ nav{scrollbar-width:none}
 </div>
 </sc-for>
 </div>
-</div>
 </sc-if>
-
-<!-- TRAVEL & TRANSPORT PAGE -->
-<sc-if value="{{ isTravel }}" hint-placeholder-val="{{ false }}">
-<div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
-<div style="padding:20px 4px 22px">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">TRAVEL &amp; TRANSPORT</div>
-<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ travelTitle }}</h1>
+<sc-if value="{{ showSurgeons }}" hint-placeholder-val="{{ false }}">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden">
+<div style="display:grid;grid-template-columns:1.3fr 1fr 1.2fr 1fr .5fr .6fr;border-bottom:1px solid var(--border);background:var(--surface-faint)">
+<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">Surgeon</div>
+<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">Specialty</div>
+<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">Hospital</div>
+<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">Languages</div>
+<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">Cases</div>
+<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">Verified</div>
 </div>
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
-<sc-for list="{{ travelStats }}" as="s" hint-placeholder-count="4">
-<div style="padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:18px">
-<div style="font-size:11.5px;color:var(--dim)">{{ s.label }}</div>
-<div style="font-size:22px;font-weight:500;letter-spacing:-.8px;margin-top:7px;color:{{ s.color }}">{{ s.value }}</div>
-<div style="font-size:11px;color:var(--faint);margin-top:4px">{{ s.hint }}</div>
+<sc-for list="{{ surgeons }}" as="s" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:1.3fr 1fr 1.2fr 1fr .5fr .6fr;border-top:1px solid var(--border);transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;font-weight:500">{{ s.name }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ s.specialty }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ s.hospital }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:12px;color:var(--dim)">{{ s.lang }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:13px">{{ s.cases }}</div>
+<div style="display:flex;align-items:center;padding:13px 20px;font-size:12px;color:{{ s.verifiedColor }}">{{ s.verifiedLabel }}</div>
 </div>
 </sc-for>
 </div>
-<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
-<div style="display:flex;align-items:center;gap:14px;padding:18px 24px;border-bottom:1px solid var(--border)">
-<div style="flex:1;font-size:15px;font-weight:500">Trip planner</div>
+</sc-if>
 </div>
+</sc-if>
+
+<!-- TRAVEL PAGE -->
+<sc-if value="{{ isTravel }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
+<div style="padding:20px 4px 22px"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">TRAVEL &amp; TRANSPORT</div><h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ travelTitle }}</h1></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+<sc-for list="{{ travelStats }}" as="s" hint-placeholder-count="4">
+<div style="padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:18px"><div style="font-size:11.5px;color:var(--dim)">{{ s.label }}</div><div style="font-size:22px;font-weight:500;letter-spacing:-.8px;margin-top:7px;color:{{ s.color }}">{{ s.value }}</div><div style="font-size:11px;color:var(--faint);margin-top:4px">{{ s.hint }}</div></div>
+</sc-for>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
+<div style="display:flex;align-items:center;gap:14px;padding:18px 24px;border-bottom:1px solid var(--border)"><div style="flex:1;font-size:15px;font-weight:500">Trip planner</div></div>
 <sc-for list="{{ trips }}" as="trip" hint-placeholder-count="4">
 <div onClick="{{ trip.open }}" style="display:flex;align-items:center;gap:16px;padding:16px 24px;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
 <span style="width:36px;height:36px;flex:none;border-radius:50%;background:{{ trip.bg }};color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">{{ trip.initials }}</span>
-<div style="flex:1;min-width:0">
-<div style="font-size:14px;font-weight:500">{{ trip.patient }} · {{ trip.treatment }}</div>
-<div style="font-size:12px;color:var(--dim);margin-top:3px">{{ trip.dates }} · {{ trip.destination }}</div>
-</div>
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:500">{{ trip.patient }} · {{ trip.treatment }}</div><div style="font-size:12px;color:var(--dim);margin-top:3px">{{ trip.dates }} · {{ trip.dest }}</div></div>
 <span style="{{ trip.statusStyle }}">{{ trip.status }}</span>
 </div>
 </sc-for>
@@ -646,48 +738,39 @@ nav{scrollbar-width:none}
 </div>
 </sc-if>
 
-<!-- CLAIMS & FUNDING PAGE -->
+<!-- CLAIMS PAGE -->
 <sc-if value="{{ isClaims }}" hint-placeholder-val="{{ false }}">
 <div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
-<div style="padding:20px 4px 22px">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">CLAIMS &amp; FUNDING</div>
-<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ claimsTitle }}</h1>
-</div>
+<div style="padding:20px 4px 22px"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">CLAIMS &amp; FUNDING</div><h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ claimsTitle }}</h1></div>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
 <sc-for list="{{ claimStats }}" as="s" hint-placeholder-count="3">
-<div style="padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:18px">
-<div style="font-size:11.5px;color:var(--dim)">{{ s.label }}</div>
-<div style="font-size:24px;font-weight:500;letter-spacing:-.8px;margin-top:7px;color:{{ s.color }}">{{ s.value }}</div>
-</div>
+<div style="padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:18px"><div style="font-size:11.5px;color:var(--dim)">{{ s.label }}</div><div style="font-size:24px;font-weight:500;letter-spacing:-.8px;margin-top:7px;color:{{ s.color }}">{{ s.value }}</div></div>
 </sc-for>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<sc-if value="{{ showClaimsTracker }}" hint-placeholder-val="{{ true }}">
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px">
 <div style="font-size:15px;font-weight:500;margin-bottom:14px">Patient reimbursement claims</div>
 <sc-for list="{{ claims }}" as="cl" hint-placeholder-count="4">
 <div onClick="{{ cl.open }}" style="display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border);cursor:pointer" style-hover="background:var(--surface-2)">
 <span style="width:7px;height:7px;border-radius:50%;flex:none;background:{{ cl.dot }}"></span>
-<div style="flex:1;min-width:0">
-<div style="font-size:13px;font-weight:500">{{ cl.patient }}</div>
-<div style="font-size:11.5px;color:var(--dim);margin-top:2px">{{ cl.treatment }} · {{ cl.amount }}</div>
-</div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500">{{ cl.patient }}</div><div style="font-size:11.5px;color:var(--dim);margin-top:2px">{{ cl.treatment }} · {{ cl.amount }}</div></div>
 <span style="{{ cl.statusStyle }}">{{ cl.status }}</span>
 </div>
 </sc-for>
 </div>
+</sc-if>
+<sc-if value="{{ showFunding }}" hint-placeholder-val="{{ false }}">
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px">
 <div style="font-size:15px;font-weight:500;margin-bottom:14px">Funding applications</div>
 <sc-for list="{{ funding }}" as="f" hint-placeholder-count="3">
 <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border)">
 <span style="width:7px;height:7px;border-radius:50%;flex:none;background:{{ f.dot }}"></span>
-<div style="flex:1;min-width:0">
-<div style="font-size:13px;font-weight:500">{{ f.patient }}</div>
-<div style="font-size:11.5px;color:var(--dim);margin-top:2px">{{ f.lender }} · {{ f.status }}</div>
-</div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500">{{ f.patient }}</div><div style="font-size:11.5px;color:var(--dim);margin-top:2px">{{ f.lender }}</div></div>
+<span style="{{ f.statusStyle }}">{{ f.status }}</span>
 </div>
 </sc-for>
 </div>
-</div>
+</sc-if>
 </div>
 </sc-if>
 
@@ -695,21 +778,13 @@ nav{scrollbar-width:none}
 <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ false }}">
 <div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
 <div style="position:sticky;top:0;z-index:12;margin:0 -22px;padding:14px 22px 14px;background:var(--bg);border-bottom:1px solid var(--border)">
-<div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
-<div style="flex:1;min-width:0">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.13em;color:var(--faint)">CORE KPIS · ILLUSTRATIVE FIGURES</div>
-<div style="font-size:19px;font-weight:500;letter-spacing:-.5px;margin-top:5px">Healthcare Abroad · Operations</div>
-</div>
-</div>
+<div style="display:flex;align-items:center;gap:12px;padding-bottom:12px"><div style="flex:1"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.13em;color:var(--faint)">CORE KPIS · ILLUSTRATIVE FIGURES</div><div style="font-size:19px;font-weight:500;letter-spacing:-.5px;margin-top:5px">Healthcare Abroad · Operations</div></div></div>
 <div style="display:grid;grid-template-columns:repeat({{ kpiColumns }},1fr);gap:10px">
 <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
-<div style="position:relative;padding:14px 16px;background:{{ k.bg }};border:1px solid {{ k.border }};border-radius:18px;color:{{ k.ink }};transition:transform .24s var(--ease)" style-hover="transform:translateY(-2px)">
+<div style="padding:14px 16px;background:{{ k.bg }};border:1px solid {{ k.border }};border-radius:18px;color:{{ k.ink }};transition:transform .24s var(--ease)" style-hover="transform:translateY(-2px)">
 <div style="font-size:11.5px;opacity:.72">{{ k.label }}</div>
 <div style="font-size:22px;font-weight:500;letter-spacing:-.8px;margin-top:7px;line-height:1">{{ k.value }}</div>
-<div style="display:flex;align-items:center;gap:7px;margin-top:7px">
-<span style="font-size:11.5px;color:{{ k.deltaColor }}">{{ k.delta }}</span>
-<span style="font-size:10.5px;opacity:.55">{{ k.hint }}</span>
-</div>
+<div style="display:flex;align-items:center;gap:7px;margin-top:7px"><span style="font-size:11.5px;color:{{ k.deltaColor }}">{{ k.delta }}</span><span style="font-size:10.5px;opacity:.55">{{ k.hint }}</span></div>
 </div>
 </sc-for>
 </div>
@@ -719,10 +794,7 @@ nav{scrollbar-width:none}
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px;animation:springIn .5s var(--ease) both">
 <div style="font-size:14px;font-weight:500;margin-bottom:14px">{{ card.title }}</div>
 <sc-for list="{{ card.rows }}" as="row" hint-placeholder-count="3">
-<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--border)">
-<span style="flex:1;font-size:13px">{{ row.label }}</span>
-<span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:{{ row.color }}">{{ row.value }}</span>
-</div>
+<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--border)"><span style="flex:1;font-size:13px">{{ row.label }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:{{ row.color }}">{{ row.value }}</span></div>
 </sc-for>
 </div>
 </sc-for>
@@ -738,12 +810,11 @@ nav{scrollbar-width:none}
 <div style="flex:1;min-height:0;overflow-y:auto;padding:0 8px 6px">
 <sc-for list="{{ agentList }}" as="a" hint-placeholder-count="6">
 <div onClick="{{ a.open }}" style="{{ a.rowStyle }}">
+<sc-if value="{{ a.isSolo }}" hint-placeholder-val="{{ true }}">
 <dc-import name="AgentFace" shape="{{ a.shape }}" state="{{ a.state }}" tint="{{ a.tint }}" size="34" hint-size="34px,34px"></dc-import>
+</sc-if>
 <div style="flex:1;min-width:0">
-<div style="display:flex;align-items:center;gap:8px">
-<span style="flex:1;min-width:0;font-size:13.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ a.name }}</span>
-<span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ a.when }}</span>
-</div>
+<div style="display:flex;align-items:center;gap:8px"><span style="flex:1;min-width:0;font-size:13.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ a.name }}</span><span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ a.when }}</span></div>
 <div style="font-size:12px;color:var(--dim);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ a.preview }}</div>
 </div>
 </div>
@@ -753,22 +824,38 @@ nav{scrollbar-width:none}
 <div style="flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:24px;backdrop-filter:blur(20px) saturate(1.3);box-shadow:var(--card-shadow);overflow:hidden">
 <div style="flex:none;display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border)">
 <dc-import name="AgentFace" shape="{{ agent.shape }}" state="{{ agent.state }}" tint="{{ agent.tint }}" size="32" hint-size="32px,32px"></dc-import>
-<div style="flex:1;min-width:0">
-<div style="font-size:14.5px;font-weight:500">{{ agent.name }}</div>
-<div style="font-size:11.5px;color:var(--dim);margin-top:2px">{{ agent.role }}</div>
-</div>
+<div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:500">{{ agent.name }}</div><div style="font-size:11.5px;color:var(--dim);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ agent.role }}</div></div>
 </div>
 <div style="flex:1;min-height:0;overflow-y:auto;padding:20px 22px">
 <sc-for list="{{ agentThread }}" as="m" hint-placeholder-count="4">
 <div style="{{ m.wrapStyle }}">
-<sc-if value="{{ m.isStamp }}" hint-placeholder-val="{{ false }}">
-<div style="width:100%;text-align:center;font-size:11.5px;color:var(--faint);padding:8px 0 14px">{{ m.text }}</div>
+<sc-if value="{{ m.isStamp }}" hint-placeholder-val="{{ false }}"><div style="width:100%;text-align:center;font-size:11.5px;color:var(--faint);padding:8px 0 14px">{{ m.text }}</div></sc-if>
+<sc-if value="{{ m.isRoutine }}" hint-placeholder-val="{{ false }}">
+<div style="width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:6px 0 18px;font-size:12.5px;color:var(--dim)">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z M12 7.6V12l3 1.8"/></svg>{{ m.text }}<span style="color:var(--ink)">{{ m.routine }}</span></div>
 </sc-if>
 <sc-if value="{{ m.isBubble }}" hint-placeholder-val="{{ true }}">
-<div style="max-width:80%"><div style="{{ m.bubbleStyle }}">{{ m.text }}</div></div>
+<div style="max-width:80%;display:flex;flex-direction:column;gap:5px;align-items:{{ m.alignItems }}">
+<div style="{{ m.bubbleStyle }}">{{ m.text }}
+<sc-if value="{{ m.hasLines }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:7px;margin-top:12px">
+<sc-for list="{{ m.lines }}" as="l" hint-placeholder-count="3">
+<div style="display:flex;gap:9px;font-size:13.5px;line-height:1.5"><span style="flex:none;color:var(--accent)">✓</span><span><span style="font-weight:500">{{ l.k }}</span> <span style="color:var(--faint)">→</span> {{ l.v }}</span></div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
 </sc-if>
 </div>
 </sc-for>
+</div>
+<div style="flex:none;padding:12px 16px 16px">
+<div style="display:flex;align-items:center;gap:10px;padding:8px 8px 8px 16px;background:var(--surface-2);border:1px solid var(--border);border-radius:999px">
+<input value="{{ agentDraft }}" onChange="{{ setAgentDraft }}" onKeyDown="{{ onAgentKey }}" placeholder="{{ agentPlaceholder }}" style="flex:1;min-width:0;border:0;outline:0;background:none;font-size:14.5px"></input>
+<button style="width:34px;height:34px;flex:none;border:0;border-radius:50%;background:var(--accent);color:var(--on-accent);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:var(--accent-hover)">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5 M5 12l7-7 7 7"/></svg></button>
+</div>
 </div>
 </div>
 </div>
@@ -777,18 +864,14 @@ nav{scrollbar-width:none}
 <!-- WORK PAGE -->
 <sc-if value="{{ isWork }}" hint-placeholder-val="{{ false }}">
 <div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
-<div style="padding:20px 4px 22px">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">WORKSPACE</div>
-<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ workTitle }}</h1>
-</div>
+<div style="padding:20px 4px 22px"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">WORKSPACE</div><h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">{{ workTitle }}</h1></div>
+<sc-if value="{{ showWorkTasks }}" hint-placeholder-val="{{ true }}">
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
-<div style="display:grid;grid-template-columns:1.5fr 1.3fr 1fr .8fr .8fr;border-bottom:1px solid var(--border);background:var(--surface-faint)">
-<sc-for list="{{ workCols }}" as="c" hint-placeholder-count="5">
-<div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div>
-</sc-for>
+<div style="display:grid;grid-template-columns:1.5fr 1.1fr .9fr .7fr .7fr;border-bottom:1px solid var(--border);background:var(--surface-faint)">
+<sc-for list="{{ workCols }}" as="c" hint-placeholder-count="5"><div style="padding:10px 20px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div></sc-for>
 </div>
 <sc-for list="{{ workRows }}" as="t" hint-placeholder-count="8">
-<div style="display:grid;grid-template-columns:1.5fr 1.3fr 1fr .8fr .8fr;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
+<div onClick="{{ t.open }}" style="display:grid;grid-template-columns:1.5fr 1.1fr .9fr .7fr .7fr;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
 <div style="display:flex;align-items:center;padding:13px 20px;font-size:13px">{{ t.title }}</div>
 <div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ t.patient }}</div>
 <div style="display:flex;align-items:center;padding:13px 20px;font-size:13px;color:var(--dim)">{{ t.owner }}</div>
@@ -797,28 +880,50 @@ nav{scrollbar-width:none}
 </div>
 </sc-for>
 </div>
+</sc-if>
+<sc-if value="{{ showWorkApprovals }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ workApprovals }}" as="a" hint-placeholder-count="2">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px">
+<div style="display:flex;align-items:center;gap:10px">
+<span style="width:7px;height:7px;border-radius:50%;background:{{ a.dot }}"></span>
+<div style="flex:1;font-size:14px;font-weight:500">{{ a.title }}</div>
+<span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ a.age }}</span>
+</div>
+<div style="font-size:13px;color:var(--dim);margin-top:8px;line-height:1.55">{{ a.why }}</div>
+<div style="display:flex;gap:8px;margin-top:14px">
+<sc-if value="{{ a.approved }}" hint-placeholder-val="{{ false }}">
+<span style="height:34px;padding:0 16px;border:1px solid var(--ok);border-radius:999px;font-size:13px;color:var(--ok);display:flex;align-items:center;gap:6px">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Approved (simulated)</span>
+</sc-if>
+<button onClick="{{ a.approve }}" style="height:34px;padding:0 16px;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:13px;font-weight:500;cursor:pointer" style-hover="background:var(--accent-hover)">{{ a.actionLabel }}</button>
+<button onClick="{{ a.open }}" style="height:34px;padding:0 16px;border:1px solid var(--border);border-radius:999px;background:none;color:var(--ink);font-size:13px;cursor:pointer" style-hover="border-color:var(--border-strong)">Details</button>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ showWorkOther }}" hint-placeholder-val="{{ false }}">
+<div style="padding:52px;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:20px">
+<div style="font-size:14px;font-weight:500">Coming soon</div>
+<div style="font-size:13px;color:var(--dim);margin-top:6px">Workflow automation and scheduling will appear here once configured.</div>
+</div>
+</sc-if>
 </div>
 </sc-if>
 
 <!-- RECORDS PAGE -->
 <sc-if value="{{ isRecords }}" hint-placeholder-val="{{ false }}">
 <div style="padding-bottom:26px;animation:pageIn .62s var(--ease) both">
-<div style="position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 0 32px">
-<h1 style="margin:0;font-size:clamp(32px,4vw,48px);font-weight:500;letter-spacing:-2px;line-height:1.02">Records</h1>
-<p style="margin:14px 0 0;max-width:520px;font-size:15px;line-height:1.6;color:var(--dim)">Contacts directory — patients, GPs, hospitals, surgeons, hotels, drivers and staff.</p>
-</div>
+<div style="padding:20px 4px 22px"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">RECORDS</div><h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">Directory</h1><p style="margin:10px 0 0;font-size:14px;color:var(--dim)">Contacts — patients, GPs, hospitals, surgeons, hotels, drivers and staff.</p></div>
+<sc-if value="{{ showRecordsContacts }}" hint-placeholder-val="{{ true }}">
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
 <div style="display:grid;grid-template-columns:1.5fr 1.2fr 1.3fr .9fr .8fr;border-bottom:1px solid var(--border);background:var(--surface-faint)">
-<sc-for list="{{ recordCols }}" as="c" hint-placeholder-count="5">
-<div style="padding:10px 24px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div>
-</sc-for>
+<sc-for list="{{ recordCols }}" as="c" hint-placeholder-count="5"><div style="padding:10px 24px;font-size:11.5px;font-weight:500;color:var(--faint)">{{ c }}</div></sc-for>
 </div>
 <sc-for list="{{ recordRows }}" as="p" hint-placeholder-count="8">
-<div style="display:grid;grid-template-columns:1.5fr 1.2fr 1.3fr .9fr .8fr;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
-<div style="display:flex;align-items:center;gap:11px;padding:13px 24px">
-<span style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ p.bg }};color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">{{ p.initials }}</span>
-<span style="font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.name }}</span>
-</div>
+<div onClick="{{ p.open }}" style="display:grid;grid-template-columns:1.5fr 1.2fr 1.3fr .9fr .8fr;border-top:1px solid var(--border);cursor:pointer;transition:background .2s var(--ease)" style-hover="background:var(--surface-2)">
+<div style="display:flex;align-items:center;gap:11px;padding:13px 24px"><span style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ p.bg }};color:#0b0c0b;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">{{ p.initials }}</span><span style="font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.name }}</span></div>
 <div style="display:flex;align-items:center;padding:13px 24px;font-size:13px;color:var(--dim)">{{ p.role }}</div>
 <div style="display:flex;align-items:center;padding:13px 24px;font-size:13px;color:var(--dim)">{{ p.email }}</div>
 <div style="display:flex;align-items:center;padding:13px 24px;font-size:13px;color:var(--dim)">{{ p.org }}</div>
@@ -826,28 +931,26 @@ nav{scrollbar-width:none}
 </div>
 </sc-for>
 </div>
+</sc-if>
+<sc-if value="{{ showRecordsFiles }}" hint-placeholder-val="{{ false }}">
+<div style="padding:52px;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:20px"><div style="font-size:14px;font-weight:500">Files</div><div style="font-size:13px;color:var(--dim);margin-top:6px">Document files linked to patient cases will appear here.</div></div>
+</sc-if>
+<sc-if value="{{ showRecordsOntology }}" hint-placeholder-val="{{ false }}">
+<div style="padding:52px;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:20px"><div style="font-size:14px;font-weight:500">Ontology</div><div style="font-size:13px;color:var(--dim);margin-top:6px">The relationship graph linking patients to GPs, hospitals, trips, claims and documents.</div></div>
+</sc-if>
 </div>
 </sc-if>
 
 <!-- ACTIVITY PAGE -->
 <sc-if value="{{ isActivity }}" hint-placeholder-val="{{ false }}">
 <div style="padding-bottom:34px;animation:pageIn .62s var(--ease) both">
-<div style="padding:20px 4px 22px">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">ACTIVITY</div>
-<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">Everything happening now</h1>
-</div>
+<div style="padding:20px 4px 22px"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">ACTIVITY</div><h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">Everything happening now</h1></div>
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
-<div style="display:flex;align-items:center;gap:14px;padding:18px 24px;border-bottom:1px solid var(--border)">
-<div style="flex:1;font-size:15px;font-weight:500">Event log</div>
-<span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ activityCount }} EVENTS</span>
-</div>
+<div style="display:flex;align-items:center;gap:14px;padding:18px 24px;border-bottom:1px solid var(--border)"><div style="flex:1;font-size:15px;font-weight:500">Event log</div><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)">{{ activityCount }} EVENTS</span></div>
 <sc-for list="{{ activityRows }}" as="e" hint-placeholder-count="10">
 <div style="display:flex;gap:14px;padding:14px 24px;border-top:1px solid var(--border)">
 <span style="width:7px;height:7px;border-radius:50%;flex:none;margin-top:6px;background:{{ e.dot }}"></span>
-<div style="flex:1;min-width:0">
-<div style="font-size:13px;line-height:1.4">{{ e.title }}</div>
-<div style="font-size:11.5px;color:var(--dim);margin-top:3px">{{ e.actor }} · {{ e.event }}</div>
-</div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;line-height:1.4">{{ e.title }}</div><div style="font-size:11.5px;color:var(--dim);margin-top:3px">{{ e.actor }} · {{ e.event }}</div><div style="font-size:11px;color:var(--faint);margin-top:2px">{{ e.rel }}</div></div>
 <span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--faint)">{{ e.when }}</span>
 </div>
 </sc-for>
@@ -858,23 +961,19 @@ nav{scrollbar-width:none}
 <!-- SETTINGS PAGE -->
 <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
 <div style="max-width:1320px;padding-bottom:38px;animation:pageIn .62s var(--ease) both">
-<div style="padding:20px 4px 20px">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">ADMIN</div>
-<h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">Settings</h1>
-<div style="font-size:14px;color:var(--dim);margin-top:9px">How Pulse is set up for Healthcare Abroad — staff, integrations, approval rules, agent permissions.</div>
+<div style="padding:20px 4px 20px"><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:var(--faint)">ADMIN</div><h1 style="margin:8px 0 0;font-size:38px;font-weight:500;letter-spacing:-1.5px;line-height:1">Settings</h1><div style="font-size:14px;color:var(--dim);margin-top:9px">How Pulse is set up for Healthcare Abroad — staff, integrations, approval rules, agent permissions.</div></div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:22px;backdrop-filter:blur(20px);box-shadow:var(--card-shadow);overflow:hidden">
+<div style="display:flex;align-items:flex-start;gap:12px;padding:22px 24px 18px;border-bottom:1px solid var(--border)">
+<div style="flex:1"><div style="font-size:20px;font-weight:500;letter-spacing:-.5px">{{ settingsTitle }}</div></div>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-<sc-for list="{{ settingsCards }}" as="card" hint-placeholder-count="4">
-<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px">
-<div style="font-size:14px;font-weight:500;margin-bottom:14px">{{ card.title }}</div>
-<sc-for list="{{ card.rows }}" as="row" hint-placeholder-count="3">
-<div style="display:flex;align-items:baseline;gap:12px;padding:10px 0;border-top:1px solid var(--border)">
-<span style="flex:none;width:140px;font-size:12px;color:var(--dim)">{{ row.k }}</span>
-<span style="flex:1;font-size:13px;color:var(--ink)">{{ row.v }}</span>
+<div style="padding:20px 24px 24px">
+<sc-for list="{{ settingsRows }}" as="row" hint-placeholder-count="5">
+<div style="display:flex;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--border)">
+<span style="flex:none;width:180px;font-size:12px;color:var(--dim)">{{ row.k }}</span>
+<span style="flex:1;font-size:13px;color:var(--ink);line-height:1.5">{{ row.v }}</span>
 </div>
 </sc-for>
 </div>
-</sc-for>
 </div>
 </div>
 </sc-if>
@@ -885,12 +984,12 @@ nav{scrollbar-width:none}
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
-/* Healthcare Abroad — Pulse demo data and logic
+/* Healthcare Abroad — Pulse v4 Glass demo
    Proposed operating model with fictional data only.
    Prices, availability and financial figures are illustrative. */
 
 const MONO = "'IBM Plex Mono',monospace";
-const INK = "var(--ink)", BODY = "var(--body)", DIM = "var(--dim)", FAINT = "var(--faint)";
+const INK = "var(--ink)", BODY = "var(--body)", DIM = "var(--dim)", FAINT = "var(--faint)", MID="var(--mid)";
 const LIME = "var(--accent)", GREEN = "var(--ok)", AMBER = "var(--warn)", RED = "var(--bad)", NEUTRAL = "var(--neutral)";
 
 /* ── date helpers ─────────────────────────────────────────────── */
@@ -900,9 +999,9 @@ const dayMonth = (d) => d.getDate() + " " + d.toLocaleDateString("en-IE",{month:
 const longDate = (d) => d.toLocaleDateString("en-IE",{day:"numeric",month:"long",year:"numeric"});
 const weekdayDate = (d) => d.toLocaleDateString("en-IE",{weekday:"short",day:"numeric",month:"short"});
 const nextWeekday = (dow) => { let d = new Date(TODAY); while(d.getDay()!==dow) d.setDate(d.getDate()+1); return d; };
-const daysFromToday = (d) => Math.round((d - TODAY) / 86400000);
+const monthEnd = (n) => { const d = new Date(TODAY.getFullYear(), TODAY.getMonth() + n + 1, 0); return d; };
 
-/* ── icons (SVG paths) ────────────────────────────────────────── */
+/* ── SVG icon paths ───────────────────────────────────────────── */
 const ICONS = {
   helios:"M2 12h4l2.5-6 3.5 12 3-8 2 2h5",
   navAgents:"M12 12.5a3.6 3.6 0 1 0 0-7.2 3.6 3.6 0 0 0 0 7.2Z M5 20.2c.9-3.1 3.6-4.9 7-4.9s6.1 1.8 7 4.9",
@@ -910,18 +1009,20 @@ const ICONS = {
   navWork:"M9.2 4h5.6A1.6 1.6 0 0 1 16.4 5.6V8H7.6V5.6A1.6 1.6 0 0 1 9.2 4Z M5 8h14a1.6 1.6 0 0 1 1.6 1.6v8.8a1.6 1.6 0 0 1-1.6 1.6H5a1.6 1.6 0 0 1-1.6-1.6V9.6A1.6 1.6 0 0 1 5 8Z M12 12v4",
   navRecords:"M4 5h16v11H8l-4 4V5Z",
   pulseLine:"M2 12h4l2.5-6 3.5 12 3-8 2 2h5",
-  patients:"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M20 8v6 M23 11h-6",
+  patients:"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
   referrals:"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8",
   careNetwork:"M18 20V10 M12 20V4 M6 20v-6",
-  travel:"M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 5 6.2 3.7 7.5 10 12l-3.5 2-2 -.8-1.3 1.3 3 1.5 1.5 3 1.3-1.3-.8-2 2-3.5 4.5 6.3Z",
-  claims:"M12 1v22 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+  travel:"M2 12l9-9 9 9 M4 10v10h16V10 M9.5 21v-6h5v6",
+  claims:"M12 1v22 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6",
+  approvals:"M9 11l3 3L22 4 M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11",
+  health:"M22 12h-4l-3 9L9 3l-3 9H2"
 };
 
 /* ── nav ──────────────────────────────────────────────────────── */
 const NAV = [
   {label:"Home", icon:"helios", page:"Home"},
   {label:"Agents", icon:"navAgents", page:"Agents"},
-  {label:"Dashboard", icon:"navDash", page:"Dashboard"},
+  {label:"Dashboard", icon:"navDash", page:"Dashboard", dot:true},
   {divider:true},
   {label:"Patients", icon:"patients", page:"Patients"},
   {label:"Referrals", icon:"referrals", page:"Referrals"},
@@ -931,319 +1032,274 @@ const NAV = [
   {divider:true},
   {label:"Work", icon:"navWork", page:"Work"},
   {label:"Records", icon:"navRecords", page:"Records"},
-  {label:"Activity", icon:"pulseLine", page:"Activity"}
-];
-
-/* ── fictional providers ──────────────────────────────────────── */
-const GPS = [
-  {name:"Dr Fiona Murphy", practice:"Rathfarnham Medical Centre", phone:"+353 1 493 2100"},
-  {name:"Dr Patrick Doyle", practice:"Tallaght Family Practice", phone:"+353 1 451 8800"},
-  {name:"Dr Sinéad Brennan", practice:"Dundrum Health Centre", phone:"+353 1 298 6600"},
-  {name:"Dr Liam Keane", practice:"Churchtown Medical", phone:"+353 1 298 0044"}
-];
-const HOSPITALS = [
-  {id:"h1", name:"Hospital Quirón Barcelona", loc:"Barcelona, Spain", categories:["Orthopaedics","Cardiology","Oncology"], treatments:12, activeCases:4, tint:"var(--accent)"},
-  {id:"h2", name:"Teknon Medical Centre", loc:"Barcelona, Spain", categories:["Orthopaedics","Neurology"], treatments:8, activeCases:2, tint:"#9fd6f0"},
-  {id:"h3", name:"Hospital HM Montepríncipe", loc:"Madrid, Spain", categories:["Cardiac surgery","Spine"], treatments:6, activeCases:1, tint:"#e6c78a"},
-  {id:"h4", name:"Clínica Universidad de Navarra", loc:"Pamplona, Spain", categories:["Oncology","Orthopaedics","Diagnostics"], treatments:15, activeCases:3, tint:"#7fd8a4"}
-];
-const SURGEONS = [
-  {name:"Dr Carlos Martínez", specialty:"Orthopaedic surgery", hospital:"Hospital Quirón Barcelona", lang:"Spanish, English"},
-  {name:"Dr Ana López", specialty:"Orthopaedic surgery", hospital:"Teknon Medical Centre", lang:"Spanish, English, Catalan"},
-  {name:"Dr Miguel Fernández", specialty:"Cardiac surgery", hospital:"Hospital HM Montepríncipe", lang:"Spanish, English"}
-];
-const HOTELS = [
-  {name:"Hotel Arts Barcelona", loc:"Barcelona", nights:"€185/night (illustrative)"},
-  {name:"Hotel Catalonia Ramblas", loc:"Barcelona", nights:"€95/night (illustrative)"},
-  {name:"NH Madrid Ribera del Manzanares", loc:"Madrid", nights:"€110/night (illustrative)"}
-];
-const DRIVERS = [
-  {name:"Miguel Rodríguez", area:"Barcelona", vehicle:"Mercedes V-Class", lang:"Spanish, English"},
-  {name:"Javier García", area:"Barcelona", vehicle:"Toyota Proace", lang:"Spanish"}
+  {label:"Activity", icon:"pulseLine", page:"Activity", dot:true}
 ];
 
 /* ── fictional patients (~15) ─────────────────────────────────── */
 const STAGES = ["Enquiry","Referral Collection","Hospital Review","Booking","Ready to Travel","In Treatment","Aftercare","Closed"];
 const PATIENTS = [
-  {id:"p1", name:"Mary Byrne", initials:"MB", treatment:"Hip replacement", stage:1, gp:0, hospital:0, surgeon:0, coordinator:"Sarah Collins", destination:"Barcelona", issue:"Missing referral letter", dot:AMBER, bg:"var(--accent)"},
-  {id:"p2", name:"Thomas O'Brien", initials:"TO", treatment:"Knee replacement", stage:3, gp:1, hospital:0, surgeon:0, coordinator:"Sarah Collins", destination:"Barcelona", issue:"", dot:GREEN, bg:"#9fd6f0"},
-  {id:"p3", name:"Catherine Walsh", initials:"CW", treatment:"Cardiac assessment", stage:4, gp:2, hospital:2, surgeon:2, coordinator:"Aoife Ryan", destination:"Madrid", issue:"Awaiting travel dates", dot:AMBER, bg:"#e6c78a"},
-  {id:"p4", name:"Seán Kelly", initials:"SK", treatment:"Spinal decompression", stage:5, gp:3, hospital:3, surgeon:null, coordinator:"Aoife Ryan", destination:"Pamplona", issue:"In hospital", dot:GREEN, bg:"#7fd8a4"},
-  {id:"p5", name:"Brigid Nolan", initials:"BN", treatment:"Hip replacement", stage:6, gp:0, hospital:0, surgeon:0, coordinator:"Sarah Collins", destination:"Barcelona", issue:"Follow-up due", dot:LIME, bg:"var(--accent)"},
-  {id:"p6", name:"Dermot McCarthy", initials:"DM", treatment:"Cataract surgery", stage:7, gp:1, hospital:1, surgeon:null, coordinator:"Aoife Ryan", destination:"Barcelona", issue:"Closed", dot:NEUTRAL, bg:"var(--track)"},
-  {id:"p7", name:"Eileen Doyle", initials:"ED", treatment:"Knee arthroscopy", stage:2, gp:2, hospital:null, surgeon:null, coordinator:"Sarah Collins", destination:"TBD", issue:"Hospital review pending", dot:AMBER, bg:"#e6c78a"},
-  {id:"p8", name:"Patrick Healy", initials:"PH", treatment:"Hip resurfacing", stage:0, gp:3, hospital:null, surgeon:null, coordinator:"Aoife Ryan", destination:"TBD", issue:"Initial enquiry", dot:FAINT, bg:"var(--track)"},
-  {id:"p9", name:"Margaret Ryan", initials:"MR", treatment:"Shoulder replacement", stage:3, gp:0, hospital:3, surgeon:null, coordinator:"Sarah Collins", destination:"Pamplona", issue:"", dot:GREEN, bg:"#9fd6f0"},
-  {id:"p10", name:"John Fitzpatrick", initials:"JF", treatment:"ACL reconstruction", stage:1, gp:1, hospital:null, surgeon:null, coordinator:"Aoife Ryan", destination:"TBD", issue:"GP referral requested", dot:AMBER, bg:"var(--accent)"},
-  {id:"p11", name:"Siobhán Murphy", initials:"SM", treatment:"Gallbladder removal", stage:4, gp:2, hospital:0, surgeon:null, coordinator:"Sarah Collins", destination:"Barcelona", issue:"Travel pack ready", dot:GREEN, bg:"#7fd8a4"},
-  {id:"p12", name:"Michael Daly", initials:"MD", treatment:"Hernia repair", stage:6, gp:3, hospital:1, surgeon:null, coordinator:"Aoife Ryan", destination:"Barcelona", issue:"Aftercare check", dot:LIME, bg:"#e6c78a"},
-  {id:"p13", name:"Áine Brennan", initials:"ÁB", treatment:"Knee replacement", stage:5, gp:0, hospital:0, surgeon:0, coordinator:"Sarah Collins", destination:"Barcelona", issue:"In treatment", dot:GREEN, bg:"var(--accent)"},
-  {id:"p14", name:"Rory Connolly", initials:"RC", treatment:"Hip replacement", stage:2, gp:1, hospital:null, surgeon:null, coordinator:"Aoife Ryan", destination:"TBD", issue:"Awaiting hospital review", dot:AMBER, bg:"#9fd6f0"},
-  {id:"p15", name:"Fionnuala Lynch", initials:"FL", treatment:"Rotator cuff repair", stage:0, gp:2, hospital:null, surgeon:null, coordinator:"Sarah Collins", destination:"TBD", issue:"New enquiry", dot:FAINT, bg:"var(--track)"}
+  {id:"p1",name:"Mary Byrne",initials:"MB",treatment:"Hip replacement",stage:1,gp:"Dr Fiona Murphy",gpPractice:"Rathfarnham Medical Centre",hospital:"Hospital Quirón Barcelona",surgeon:"Dr Carlos Martínez",coordinator:"Sarah Collins",destination:"Barcelona",issue:"Missing referral letter",dot:AMBER,bg:"var(--accent)",hotel:"Hotel Catalonia Ramblas",driver:"Miguel Rodríguez",claimAmt:"€14,800",claimStatus:"Draft",funding:"Cabot Financial",fundingStatus:"Documents requested"},
+  {id:"p2",name:"Thomas O'Brien",initials:"TO",treatment:"Knee replacement",stage:3,gp:"Dr Patrick Doyle",gpPractice:"Tallaght Family Practice",hospital:"Hospital Quirón Barcelona",surgeon:"Dr Carlos Martínez",coordinator:"Sarah Collins",destination:"Barcelona",issue:"Awaiting booking approval",dot:LIME,bg:"#9fd6f0",hotel:"Hotel Arts Barcelona",driver:"Miguel Rodríguez",claimAmt:"€16,200",claimStatus:"Draft",funding:"Humm",fundingStatus:"Approved"},
+  {id:"p3",name:"Catherine Walsh",initials:"CW",treatment:"Cardiac assessment",stage:4,gp:"Dr Sinéad Brennan",gpPractice:"Dundrum Health Centre",hospital:"Hospital HM Montepríncipe",surgeon:"Dr Miguel Fernández",coordinator:"Aoife Ryan",destination:"Madrid",issue:"",dot:GREEN,bg:"#e6c78a",hotel:"NH Madrid Ribera",driver:"—",claimAmt:"€8,400",claimStatus:"Draft",funding:"Not required",fundingStatus:"Self-funding"},
+  {id:"p4",name:"Seán Kelly",initials:"SK",treatment:"Spinal decompression",stage:5,gp:"Dr Liam Keane",gpPractice:"Churchtown Medical",hospital:"Clínica Universidad de Navarra",surgeon:"—",coordinator:"Aoife Ryan",destination:"Pamplona",issue:"In hospital",dot:GREEN,bg:"#7fd8a4",hotel:"—",driver:"—",claimAmt:"€22,600",claimStatus:"Collecting Evidence",funding:"Not required",fundingStatus:"Self-funding"},
+  {id:"p5",name:"Brigid Nolan",initials:"BN",treatment:"Hip replacement",stage:6,gp:"Dr Fiona Murphy",gpPractice:"Rathfarnham Medical Centre",hospital:"Hospital Quirón Barcelona",surgeon:"Dr Carlos Martínez",coordinator:"Sarah Collins",destination:"Barcelona",issue:"Follow-up due",dot:LIME,bg:"var(--accent)",hotel:"Hotel Catalonia Ramblas",driver:"Miguel Rodríguez",claimAmt:"€14,280",claimStatus:"Staff Review",funding:"Not required",fundingStatus:"Self-funding"},
+  {id:"p6",name:"Dermot McCarthy",initials:"DM",treatment:"Cataract surgery",stage:7,gp:"Dr Patrick Doyle",gpPractice:"Tallaght Family Practice",hospital:"Teknon Medical Centre",surgeon:"Dr Ana López",coordinator:"Aoife Ryan",destination:"Barcelona",issue:"Closed",dot:NEUTRAL,bg:"var(--track)",hotel:"—",driver:"—",claimAmt:"€4,800",claimStatus:"Submitted",funding:"Not required",fundingStatus:"N/A"},
+  {id:"p7",name:"Eileen Doyle",initials:"ED",treatment:"Knee arthroscopy",stage:2,gp:"Dr Sinéad Brennan",gpPractice:"Dundrum Health Centre",hospital:"—",surgeon:"—",coordinator:"Sarah Collins",destination:"TBD",issue:"Hospital review pending",dot:AMBER,bg:"#e6c78a",hotel:"—",driver:"—",claimAmt:"—",claimStatus:"—",funding:"—",fundingStatus:"—"},
+  {id:"p8",name:"Patrick Healy",initials:"PH",treatment:"Hip resurfacing",stage:0,gp:"Dr Liam Keane",gpPractice:"Churchtown Medical",hospital:"—",surgeon:"—",coordinator:"Aoife Ryan",destination:"TBD",issue:"Initial enquiry",dot:FAINT,bg:"var(--track)",hotel:"—",driver:"—",claimAmt:"—",claimStatus:"—",funding:"—",fundingStatus:"—"},
+  {id:"p9",name:"Margaret Ryan",initials:"MR",treatment:"Shoulder replacement",stage:3,gp:"Dr Fiona Murphy",gpPractice:"Rathfarnham Medical Centre",hospital:"Clínica Universidad de Navarra",surgeon:"—",coordinator:"Sarah Collins",destination:"Pamplona",issue:"",dot:GREEN,bg:"#9fd6f0",hotel:"—",driver:"—",claimAmt:"—",claimStatus:"Draft",funding:"Not required",fundingStatus:"Self-funding"},
+  {id:"p10",name:"John Fitzpatrick",initials:"JF",treatment:"ACL reconstruction",stage:1,gp:"Dr Patrick Doyle",gpPractice:"Tallaght Family Practice",hospital:"—",surgeon:"—",coordinator:"Aoife Ryan",destination:"TBD",issue:"GP referral requested",dot:AMBER,bg:"var(--accent)",hotel:"—",driver:"—",claimAmt:"—",claimStatus:"—",funding:"—",fundingStatus:"—"},
+  {id:"p11",name:"Siobhán Murphy",initials:"SM",treatment:"Gallbladder removal",stage:4,gp:"Dr Sinéad Brennan",gpPractice:"Dundrum Health Centre",hospital:"Hospital Quirón Barcelona",surgeon:"—",coordinator:"Sarah Collins",destination:"Barcelona",issue:"",dot:GREEN,bg:"#7fd8a4",hotel:"Hotel Catalonia Ramblas",driver:"Javier García",claimAmt:"€7,200",claimStatus:"Draft",funding:"Not required",fundingStatus:"Self-funding"},
+  {id:"p12",name:"Michael Daly",initials:"MD",treatment:"Hernia repair",stage:6,gp:"Dr Liam Keane",gpPractice:"Churchtown Medical",hospital:"Teknon Medical Centre",surgeon:"—",coordinator:"Aoife Ryan",destination:"Barcelona",issue:"Aftercare check",dot:LIME,bg:"#e6c78a",hotel:"—",driver:"—",claimAmt:"€6,200",claimStatus:"Collecting Evidence",funding:"Not required",fundingStatus:"Self-funding"},
+  {id:"p13",name:"Áine Brennan",initials:"ÁB",treatment:"Knee replacement",stage:5,gp:"Dr Fiona Murphy",gpPractice:"Rathfarnham Medical Centre",hospital:"Hospital Quirón Barcelona",surgeon:"Dr Carlos Martínez",coordinator:"Sarah Collins",destination:"Barcelona",issue:"In treatment",dot:GREEN,bg:"var(--accent)",hotel:"Hotel Arts Barcelona",driver:"Miguel Rodríguez",claimAmt:"€15,600",claimStatus:"Draft",funding:"Not required",fundingStatus:"Self-funding"},
+  {id:"p14",name:"Rory Connolly",initials:"RC",treatment:"Hip replacement",stage:2,gp:"Dr Patrick Doyle",gpPractice:"Tallaght Family Practice",hospital:"—",surgeon:"—",coordinator:"Aoife Ryan",destination:"TBD",issue:"Awaiting hospital review",dot:AMBER,bg:"#9fd6f0",hotel:"—",driver:"—",claimAmt:"—",claimStatus:"—",funding:"—",fundingStatus:"—"},
+  {id:"p15",name:"Fionnuala Lynch",initials:"FL",treatment:"Rotator cuff repair",stage:0,gp:"Dr Sinéad Brennan",gpPractice:"Dundrum Health Centre",hospital:"—",surgeon:"—",coordinator:"Sarah Collins",destination:"TBD",issue:"New enquiry",dot:FAINT,bg:"var(--track)",hotel:"—",driver:"—",claimAmt:"—",claimStatus:"—",funding:"—",fundingStatus:"—"}
+];
+
+/* ── hospitals ────────────────────────────────────────────────── */
+const HOSPITALS = [
+  {id:"h1",name:"Hospital Quirón Barcelona",loc:"Barcelona, Spain",cats:["Orthopaedics","Cardiology","Oncology"],treatments:12,active:4,tint:"var(--accent)",response:"1.2 days avg",docs:"94% on time"},
+  {id:"h2",name:"Teknon Medical Centre",loc:"Barcelona, Spain",cats:["Orthopaedics","Neurology"],treatments:8,active:2,tint:"#9fd6f0",response:"1.8 days avg",docs:"91% on time"},
+  {id:"h3",name:"Hospital HM Montepríncipe",loc:"Madrid, Spain",cats:["Cardiac surgery","Spine"],treatments:6,active:1,tint:"#e6c78a",response:"2.1 days avg",docs:"88% on time"},
+  {id:"h4",name:"Clínica Universidad de Navarra",loc:"Pamplona, Spain",cats:["Oncology","Orthopaedics","Diagnostics"],treatments:15,active:3,tint:"#7fd8a4",response:"1.4 days avg",docs:"96% on time"}
+];
+
+const SURGEONS = [
+  {name:"Dr Carlos Martínez",specialty:"Orthopaedic surgery",hospital:"Hospital Quirón Barcelona",lang:"Spanish, English",cases:8,verified:true},
+  {name:"Dr Ana López",specialty:"Orthopaedic surgery",hospital:"Teknon Medical Centre",lang:"Spanish, English, Catalan",cases:4,verified:true},
+  {name:"Dr Miguel Fernández",specialty:"Cardiac surgery",hospital:"Hospital HM Montepríncipe",lang:"Spanish, English",cases:2,verified:true},
+  {name:"Dr Elena García",specialty:"General surgery",hospital:"Clínica Universidad de Navarra",lang:"Spanish, English, French",cases:5,verified:false}
+];
+
+/* ── referral rows ────────────────────────────────────────────── */
+const REFERRAL_ROWS = [
+  {id:"r1",patient:"Mary Byrne",case:"MB-2024-001",source:"Dr Fiona Murphy",sourceType:"gp",items:"GP referral letter, X-ray report",requested:dayMonth(addDays(TODAY,-6)),lastFollowUp:dayMonth(addDays(TODAY,-2)),owner:"Sarah Collins",status:"Part Received"},
+  {id:"r2",patient:"Thomas O'Brien",case:"TO-2024-002",source:"Dr Patrick Doyle",sourceType:"gp",items:"GP referral, blood work, MRI",requested:dayMonth(addDays(TODAY,-14)),lastFollowUp:"—",owner:"Sarah Collins",status:"Complete"},
+  {id:"r3",patient:"Catherine Walsh",case:"CW-2024-003",source:"Dr Sinéad Brennan",sourceType:"gp",items:"Cardiology referral, ECG",requested:dayMonth(addDays(TODAY,-10)),lastFollowUp:dayMonth(addDays(TODAY,-5)),owner:"Aoife Ryan",status:"Received"},
+  {id:"r4",patient:"Eileen Doyle",case:"ED-2024-007",source:"Dr Sinéad Brennan",sourceType:"gp",items:"Orthopaedic referral",requested:dayMonth(addDays(TODAY,-3)),lastFollowUp:"—",owner:"Sarah Collins",status:"Needs Review"},
+  {id:"r5",patient:"John Fitzpatrick",case:"JF-2024-010",source:"Dr Patrick Doyle",sourceType:"gp",items:"GP referral, MRI report",requested:dayMonth(addDays(TODAY,-1)),lastFollowUp:"—",owner:"Aoife Ryan",status:"Requested"},
+  {id:"r6",patient:"Rory Connolly",case:"RC-2024-014",source:"Dr Patrick Doyle",sourceType:"gp",items:"GP referral, X-ray",requested:dayMonth(addDays(TODAY,-5)),lastFollowUp:dayMonth(addDays(TODAY,-1)),owner:"Aoife Ryan",status:"Part Received"},
+  {id:"r7",patient:"Margaret Ryan",case:"MR-2024-009",source:"Dr Fiona Murphy",sourceType:"gp",items:"Shoulder assessment, imaging",requested:dayMonth(addDays(TODAY,-8)),lastFollowUp:"—",owner:"Sarah Collins",status:"Complete"},
+  {id:"r8",patient:"Mary Byrne",case:"MB-2024-001",source:"Hospital Quirón Barcelona",sourceType:"hospital",items:"Surgical assessment, pre-op blood work",requested:dayMonth(addDays(TODAY,-4)),lastFollowUp:"—",owner:"Sarah Collins",status:"Requested"},
+  {id:"r9",patient:"Siobhán Murphy",case:"SM-2024-011",source:"Hospital Quirón Barcelona",sourceType:"hospital",items:"Pre-operative assessment",requested:dayMonth(addDays(TODAY,-7)),lastFollowUp:dayMonth(addDays(TODAY,-3)),owner:"Sarah Collins",status:"Received"}
+];
+
+/* ── trips ────────────────────────────────────────────────────── */
+const TRIPS = [
+  {id:"t1",patient:"Catherine Walsh",patientId:"p3",treatment:"Cardiac assessment",outbound:weekdayDate(addDays(TODAY,3)),ret:weekdayDate(addDays(TODAY,6)),dest:"Madrid",hotel:"NH Madrid Ribera",hotelNights:"3 nights",flight:"Aer Lingus EI 542",driver:"Local taxi (arranged)",companion:"Tom Walsh (husband)",status:"Ready",assistReq:"Wheelchair assistance at airport"},
+  {id:"t2",patient:"Thomas O'Brien",patientId:"p2",treatment:"Knee replacement",outbound:weekdayDate(addDays(TODAY,15)),ret:weekdayDate(addDays(TODAY,22)),dest:"Barcelona",hotel:"Hotel Arts Barcelona",hotelNights:"7 nights",flight:"Ryanair FR 1862",driver:"Miguel Rodríguez",companion:"None",status:"Pending approval",assistReq:"None"},
+  {id:"t3",patient:"Siobhán Murphy",patientId:"p11",treatment:"Gallbladder removal",outbound:weekdayDate(addDays(TODAY,10)),ret:weekdayDate(addDays(TODAY,14)),dest:"Barcelona",hotel:"Hotel Catalonia Ramblas",hotelNights:"4 nights",flight:"Aer Lingus EI 544",driver:"Javier García",companion:"Maeve Murphy (daughter)",status:"Travel pack ready",assistReq:"None"},
+  {id:"t4",patient:"Mary Byrne",patientId:"p1",treatment:"Hip replacement",outbound:"TBD",ret:"TBD",dest:"Barcelona",hotel:"TBD",hotelNights:"—",flight:"—",driver:"—",companion:"Daughter (TBC)",status:"Blocked — referral",assistReq:"Mobility assistance required"}
+];
+
+/* ── work tasks ───────────────────────────────────────────────── */
+const WORK_TASKS = [
+  {id:"w1",title:"Chase GP referral — Mary Byrne",patient:"Mary Byrne",patientId:"p1",owner:"Sarah Collins",due:dayMonth(addDays(TODAY,-2)),dueColor:RED,status:"Overdue",reason:"GP referral letter 4 days overdue from Dr Murphy"},
+  {id:"w2",title:"Review booking — Thomas O'Brien",patient:"Thomas O'Brien",patientId:"p2",owner:"Sarah Collins",due:dayMonth(TODAY),dueColor:LIME,status:"Awaiting approval",reason:"Quirón Barcelona confirmed "+dayMonth(addDays(TODAY,15))+" for knee replacement. €16,200 (illustrative)."},
+  {id:"w3",title:"Prepare travel pack — Catherine Walsh",patient:"Catherine Walsh",patientId:"p3",owner:"Aoife Ryan",due:dayMonth(addDays(TODAY,1)),dueColor:DIM,status:"In progress",reason:"Departure "+weekdayDate(addDays(TODAY,3))+". Pack needs itinerary, addresses, contacts, pickup details."},
+  {id:"w4",title:"Confirm hotel — Thomas O'Brien",patient:"Thomas O'Brien",patientId:"p2",owner:"Aoife Ryan",due:dayMonth(addDays(TODAY,3)),dueColor:DIM,status:"Pending",reason:"Hotel Arts Barcelona, 7 nights from "+weekdayDate(addDays(TODAY,15))},
+  {id:"w5",title:"Check aftercare — Brigid Nolan",patient:"Brigid Nolan",patientId:"p5",owner:"Sarah Collins",due:dayMonth(addDays(TODAY,5)),dueColor:DIM,status:"Not started",reason:"Post-operative follow-up due"},
+  {id:"w6",title:"Review claim evidence — Brigid Nolan",patient:"Brigid Nolan",patientId:"p5",owner:"Sarah Collins",due:dayMonth(addDays(TODAY,2)),dueColor:AMBER,status:"Needs review",reason:"€100 discrepancy between invoice (€14,280) and payment receipt (€14,180). Surgeon signature missing."},
+  {id:"w7",title:"Coordinate return flight — Seán Kelly",patient:"Seán Kelly",patientId:"p4",owner:"Aoife Ryan",due:dayMonth(addDays(TODAY,7)),dueColor:DIM,status:"Pending",reason:"Recovery timeline from Clínica Navarra needed before booking"},
+  {id:"w8",title:"Request hospital records — Eileen Doyle",patient:"Eileen Doyle",patientId:"p7",owner:"Sarah Collins",due:dayMonth(addDays(TODAY,4)),dueColor:DIM,status:"Not started",reason:"Consultation date mismatch — referral says 14 March, GP letter says 18 March"}
+];
+
+/* ── claims ────────────────────────────────────────────────────── */
+const CLAIMS_DATA = [
+  {id:"c1",patient:"Brigid Nolan",patientId:"p5",treatment:"Hip replacement",amount:"€14,280 (illustrative)",status:"Staff Review",dot:AMBER,evidence:["Hospital invoice","Payment receipt","Discharge summary","GP referral"],missing:["Surgeon signature on S2 form"],discrepancy:"€100 mismatch: invoice €14,280 vs payment receipt €14,180"},
+  {id:"c2",patient:"Dermot McCarthy",patientId:"p6",treatment:"Cataract surgery",amount:"€4,800 (illustrative)",status:"Submitted",dot:GREEN,evidence:["Hospital invoice","Payment receipt","Referral letter","Post-op report"],missing:[],discrepancy:"None"},
+  {id:"c3",patient:"Michael Daly",patientId:"p12",treatment:"Hernia repair",amount:"€6,200 (illustrative)",status:"Collecting Evidence",dot:AMBER,evidence:["Hospital invoice","Referral letter"],missing:["Payment receipt","Discharge summary"],discrepancy:"None"},
+  {id:"c4",patient:"Áine Brennan",patientId:"p13",treatment:"Knee replacement",amount:"€15,600 (illustrative)",status:"Draft",dot:FAINT,evidence:[],missing:["All documents — treatment in progress"],discrepancy:"None"}
+];
+const FUNDING_DATA = [
+  {id:"f1",patient:"Mary Byrne",patientId:"p1",lender:"Cabot Financial",status:"Documents requested",dot:AMBER,docsNeeded:["Income verification","Treatment quote","Loan application form"]},
+  {id:"f2",patient:"Thomas O'Brien",patientId:"p2",lender:"Humm (illustrative)",status:"Approved",dot:GREEN,docsNeeded:[]},
+  {id:"f3",patient:"Margaret Ryan",patientId:"p9",lender:"Not required",status:"Self-funding",dot:NEUTRAL,docsNeeded:[]}
 ];
 
 /* ── agent definitions ────────────────────────────────────────── */
 const AGENT_DEFS = [
-  {id:"briefing", name:"Daily Briefing", shape:"crown-pebble", tint:"#191c1f", state:"complete",
+  {id:"briefing",name:"Daily Briefing",shape:"crown-pebble",tint:"#191c1f",state:"complete",
    role:"Departures, blocked cases, urgent changes, decisions needed today",
-   when:"08:02", preview:"two departures this week. one case is blocked.",
+   when:"08:02",preview:"two departures this week. one case is blocked.",
    thread:[
-     {kind:"stamp", text:"Today 08:00"},
-     {kind:"agent", text:"morning briefing:", lines:[
-       {k:"Departures", v:"Catherine Walsh (Madrid, " + weekdayDate(addDays(TODAY,3)) + ") and Seán Kelly (Pamplona, in hospital)"},
-       {k:"Blocked", v:"Mary Byrne — missing GP referral letter, 4 days overdue"},
-       {k:"Decisions", v:"Thomas O'Brien booking approval needed for Quirón Barcelona"}]},
-     {kind:"agent", text:"Mary Byrne's case can't progress until the referral letter arrives. I've prepared a follow-up for Dr Murphy's practice — sending is a write tool, so it waits for your yes."}
+     {kind:"stamp",text:"Today 08:00"},
+     {kind:"routine",text:"Ran routine ",routine:"Morning briefing"},
+     {kind:"agent",text:"morning briefing:",lines:[
+       {k:"Departures",v:"Catherine Walsh (Madrid, "+weekdayDate(addDays(TODAY,3))+") · Seán Kelly already in Pamplona"},
+       {k:"Blocked",v:"Mary Byrne — missing GP referral letter, 4 days overdue"},
+       {k:"Decisions",v:"Thomas O'Brien booking approval — Quirón Barcelona, "+dayMonth(addDays(TODAY,15))}]},
+     {kind:"agent",text:"Mary Byrne's case cannot progress until the referral letter arrives. I have prepared a follow-up for Dr Murphy's practice — sending is a write tool, so it waits for your yes."}
    ]},
-  {id:"referral", name:"Referral Coordinator", shape:"executive-capsule", tint:"#2a2118", state:"waiting",
+  {id:"referral",name:"Referral Coordinator",shape:"executive-capsule",tint:"#2a2118",state:"waiting",
    role:"GP and hospital requests, overdue responses, prepare follow-ups",
-   when:"Yesterday", preview:"three referral requests outstanding.",
+   when:"Yesterday",preview:"three referral requests outstanding.",
    thread:[
-     {kind:"stamp", text:"Yesterday 16:40"},
-     {kind:"agent", text:"three referral requests are outstanding. Mary Byrne's GP referral from Dr Murphy is 4 days overdue — I've drafted a targeted follow-up specifying the missing letter."},
-     {kind:"agent", text:"Eileen Doyle's records arrived but the consultation date on the referral doesn't match the GP letter. Flagged for review."}
+     {kind:"stamp",text:"Yesterday 16:40"},
+     {kind:"agent",text:"three referral requests are outstanding. Mary Byrne's GP referral from Dr Murphy is 4 days overdue — I have drafted a targeted follow-up specifying the missing letter."},
+     {kind:"agent",text:"Eileen Doyle's records arrived but the consultation date on the referral doesn't match the GP letter. Flagged for review — not silently overwritten."}
    ]},
-  {id:"document", name:"Document Assistant", shape:"rim-capsule", tint:"#1b2430", state:"working",
+  {id:"document",name:"Document Assistant",shape:"rim-capsule",tint:"#1b2430",state:"working",
    role:"Extract info, organise files, flag missing or inconsistent details",
-   when:"09:12", preview:"processing incoming scan for Mary Byrne.",
+   when:"09:12",preview:"processing incoming scan for Mary Byrne.",
    thread:[
-     {kind:"stamp", text:"Today 09:10"},
-     {kind:"agent", text:"incoming scan matched to Mary Byrne (case MB-2024-001). Extracted: patient name, DOB, GP details, diagnosis. Missing: consultant signature on page 2. Names match the case file. Flagged the missing signature for review. [simulated]"}
+     {kind:"stamp",text:"Today 09:10"},
+     {kind:"agent",text:"incoming scan matched to Mary Byrne (case MB-2024-001). Extracted: patient name, DOB, GP details, diagnosis reference. Missing: consultant signature on page 2. Names match the case file. Source document linked. [simulated AI extraction]"}
    ]},
-  {id:"journey", name:"Journey Coordinator", shape:"low-dome", tint:"#241b2e", state:"working",
+  {id:"journey",name:"Journey Coordinator",shape:"low-dome",tint:"#241b2e",state:"working",
    role:"Itineraries, arrangements affected by booking changes",
-   when:"Yesterday", preview:"one itinerary needs updating — date changed.",
+   when:"Yesterday",preview:"one itinerary needs updating — date changed.",
    thread:[
-     {kind:"stamp", text:"Yesterday 14:20"},
-     {kind:"agent", text:"Hospital Quirón Barcelona revised Thomas O'Brien's procedure date from " + dayMonth(addDays(TODAY,12)) + " to " + dayMonth(addDays(TODAY,15)) + ". Affected: hotel (3 nights → same hotel, shifted), airport transfer (rebooked with Miguel), return flight (needs rebooking). Prepared the changes for your approval."}
+     {kind:"stamp",text:"Yesterday 14:20"},
+     {kind:"agent",text:"Hospital Quirón Barcelona revised Thomas O'Brien's procedure date from "+dayMonth(addDays(TODAY,12))+" to "+dayMonth(addDays(TODAY,15))+". I have identified the affected arrangements:"},
+     {kind:"agent",text:"• Hotel Arts: 7 nights shifted by 3 days\n• Airport transfer: rebooking needed with Miguel Rodríguez\n• Return flight: FR 1862 needs rebooking\n• Extra cost: approximately €180 (illustrative)\n\nPrepared the proposed changes for your approval. Unconfirmed supplier changes stay pending."}
    ]},
-  {id:"claimsAgent", name:"Claims Assistant", shape:"control-cube", tint:"#16241f", state:"thinking",
+  {id:"claimsAgent",name:"Claims Assistant",shape:"control-cube",tint:"#16241f",state:"thinking",
    role:"Evidence packs, items needing review or professional completion",
-   when:"Mon", preview:"Brigid Nolan pack ready for review.",
+   when:"Mon",preview:"Brigid Nolan pack ready for review.",
    thread:[
-     {kind:"stamp", text:"Monday 11:20"},
-     {kind:"agent", text:"Brigid Nolan's HSE reimbursement evidence pack is assembled. Invoice total €14,280 (illustrative) but payment receipt shows €14,180 — €100 discrepancy flagged. The treating surgeon's section needs a professional signature. Pack is ready for staff review, not automatically submittable. [simulated]"}
+     {kind:"stamp",text:"Monday 11:20"},
+     {kind:"agent",text:"Brigid Nolan's HSE reimbursement evidence pack is assembled. Items I compared [simulated]:\n• Invoice total: €14,280\n• Payment receipt total: €14,180\n• Discrepancy: €100 — flagged for staff review\n• Surgeon's section on S2 form: signature missing\n\nA complete pack is ready for review — not automatically eligible or guaranteed reimbursed."}
    ]},
-  {id:"accounts", name:"Hospital Accounts", shape:"shield", tint:"#2b1b1e", state:"attention",
+  {id:"accounts",name:"Hospital Accounts",shape:"shield",tint:"#2b1b1e",state:"attention",
    role:"Hospital fees owed to the business vs payments received",
-   when:"02:16", preview:"one outstanding payment from Quirón.",
+   when:"02:16",preview:"one outstanding payment from Quirón.",
    thread:[
-     {kind:"stamp", text:"Today 08:30"},
-     {kind:"agent", text:"Hospital Quirón Barcelona has €28,400 (illustrative) in outstanding coordination fees from 3 completed cases. Oldest is 34 days. This is money owed to Healthcare Abroad for coordination services — separate from patient HSE claims."}
+     {kind:"stamp",text:"Today 08:30"},
+     {kind:"agent",text:"Hospital Quirón Barcelona has €28,400 (illustrative) in outstanding coordination fees from 3 completed cases. Oldest invoice is 34 days. This is money owed to Healthcare Abroad for coordination services — kept separate from patient HSE reimbursement claims."}
    ]}
 ];
 
 /* ── Helios answers ───────────────────────────────────────────── */
 const ANSWERS = {
-  travel:{tool:"patients_travel_find", effect:"read",
-    text:"Two patients are travelling this week. Catherine Walsh departs for Madrid on " + weekdayDate(addDays(TODAY,3)) + " and Seán Kelly is already in Pamplona.",
+  travel:{tool:"patients_travel_find",effect:"read",
+    text:"Two patients are travelling this week. Catherine Walsh departs for Madrid on "+weekdayDate(addDays(TODAY,3))+" — her travel pack is being prepared. Seán Kelly is already in Pamplona for spinal decompression.",
     cols:["Patient","Destination","Date","Status"],
     rows:[["Catherine Walsh","Madrid",weekdayDate(addDays(TODAY,3)),"Ready to travel"],["Seán Kelly","Pamplona","In hospital","In treatment"]],
-    actions:[["Open Catherine Walsh",0],["Open Travel",0]]},
-  blocked:{tool:"patients_status_find", effect:"read",
-    text:"One case is blocked: Mary Byrne's hip replacement is waiting on a GP referral letter from Dr Fiona Murphy at Rathfarnham Medical Centre. It's 4 days overdue. The Referral Coordinator has prepared a follow-up.",
+    actions:[["Open Catherine Walsh",0],["Open Travel & Transport",0]]},
+  blocked:{tool:"patients_status_find",effect:"read",
+    text:"One case is blocked: Mary Byrne's hip replacement is waiting on a GP referral letter from Dr Fiona Murphy at Rathfarnham Medical Centre. The letter is 4 days overdue. The Referral Coordinator has prepared a targeted follow-up — sending is a write tool, so it waits for your yes.",
     cols:["Patient","Treatment","Blocked by","Overdue"],
     rows:[["Mary Byrne","Hip replacement","Missing GP referral","4 days"]],
     actions:[["Send follow-up (simulated)",1],["Open Mary Byrne",0]]},
-  approval:{tool:"approvals_find", effect:"read",
-    text:"One approval is waiting for you: Thomas O'Brien's booking at Hospital Quirón Barcelona. The hospital confirmed " + dayMonth(addDays(TODAY,15)) + " for knee replacement. Quoted price €16,200 (illustrative). Hotel and transfer are provisionally arranged pending your approval.",
-    actions:[["Approve booking",1],["Open Thomas O'Brien",0]]}
+  approval:{tool:"approvals_find",effect:"read",
+    text:"One approval is waiting for you: Thomas O'Brien's booking at Hospital Quirón Barcelona. The hospital confirmed "+dayMonth(addDays(TODAY,15))+" for knee replacement. Quoted price €16,200 (illustrative). Hotel and transfer are provisionally arranged pending your approval.",
+    actions:[["Approve booking (simulated)",1],["Open Thomas O'Brien",0]]}
 };
-
-function pickAnswer(q) {
+function pickAnswer(q){
   const ql = q.toLowerCase();
-  if (ql.includes("travel") || ql.includes("next week") || ql.includes("depart")) return ANSWERS.travel;
-  if (ql.includes("block") || ql.includes("stuck") || ql.includes("missing")) return ANSWERS.blocked;
-  if (ql.includes("approv") || ql.includes("waiting") || ql.includes("need")) return ANSWERS.approval;
-  return ANSWERS.blocked;
+  if (ql.includes("travel")||ql.includes("next week")||ql.includes("depart")) return ANSWERS.travel;
+  if (ql.includes("block")||ql.includes("stuck")||ql.includes("missing")) return ANSWERS.blocked;
+  if (ql.includes("approv")||ql.includes("waiting")||ql.includes("need")) return ANSWERS.approval;
+  return {tool:"patients_search",effect:"read",text:"I can see "+PATIENTS.length+" patients across the pipeline. "+PATIENTS.filter(p=>p.stage>0&&p.stage<7).length+" have active cases. The three things that need attention today: Mary Byrne's missing referral, Thomas O'Brien's booking approval, and Brigid Nolan's claim discrepancy.",actions:[["Open Patients",0],["Open Work",0]]};
 }
 
-/* ── scenario steps (Mary Byrne connected story) ──────────────── */
+/* ── scenario steps ───────────────────────────────────────────── */
 const SCENARIO_STEPS = [
-  {num:"1", title:"Referral arrives", desc:"GP referral appears in Referrals & Paperwork"},
-  {num:"2", title:"Document extraction", desc:"Document Assistant extracts details, finds missing item"},
-  {num:"3", title:"Follow-up prepared", desc:"Referral Coordinator drafts targeted follow-up"},
-  {num:"4", title:"File complete", desc:"Completed referral ready for hospital review"},
-  {num:"5", title:"Hospital selected", desc:"Staff select confirmed option from Care Network"},
-  {num:"6", title:"Travel plan created", desc:"Proposed travel plan in Travel & Transport"},
-  {num:"7", title:"Date changed", desc:"Hospital changes procedure date"},
-  {num:"8", title:"Changes prepared", desc:"Pulse identifies affected arrangements"},
-  {num:"9", title:"Approved", desc:"Coordinator approves; pending confirmations visible"},
-  {num:"10", title:"Claims assembled", desc:"Evidence pack assembled after simulated treatment"},
-  {num:"11", title:"Discrepancy flagged", desc:"Mismatched payment amount flagged for review"},
-  {num:"12", title:"Complete audit", desc:"Activity records full sequence with approvals"}
+  {num:"1",title:"Referral arrives",desc:"GP referral appears in Referrals & Paperwork"},
+  {num:"2",title:"Document extraction",desc:"Document Assistant extracts details, finds missing item"},
+  {num:"3",title:"Follow-up prepared",desc:"Referral Coordinator drafts targeted follow-up"},
+  {num:"4",title:"File complete",desc:"Completed referral ready for hospital review"},
+  {num:"5",title:"Hospital selected",desc:"Staff select confirmed option from Care Network"},
+  {num:"6",title:"Travel plan created",desc:"Proposed travel plan in Travel & Transport"},
+  {num:"7",title:"Date changed",desc:"Hospital changes procedure date"},
+  {num:"8",title:"Changes prepared",desc:"Pulse identifies affected arrangements"},
+  {num:"9",title:"Approved",desc:"Coordinator approves; pending confirmations visible"},
+  {num:"10",title:"Claims assembled",desc:"Evidence pack assembled after simulated treatment"},
+  {num:"11",title:"Discrepancy flagged",desc:"Mismatched payment amount flagged for review"},
+  {num:"12",title:"Complete audit",desc:"Activity records full sequence with approvals"}
 ];
 
 /* ── inbox items ──────────────────────────────────────────────── */
-const INBOX_ITEMS = [
-  {title:"Mary Byrne — GP referral 4 days overdue", why:"Referral letter from Dr Murphy hasn't arrived. Follow-up prepared.", dot:AMBER},
-  {title:"Thomas O'Brien — booking approval needed", why:"Quirón Barcelona confirmed " + dayMonth(addDays(TODAY,15)) + ". Needs your yes.", dot:LIME},
-  {title:"Hospital date change — Thomas O'Brien", why:"Procedure moved from " + dayMonth(addDays(TODAY,12)) + " to " + dayMonth(addDays(TODAY,15)) + ". Hotel, transfer affected.", dot:AMBER},
-  {title:"Brigid Nolan — claim discrepancy", why:"€100 mismatch between invoice and payment receipt. Staff review needed.", dot:RED}
-];
-
-/* ── work tasks ───────────────────────────────────────────────── */
-const WORK_TASKS = [
-  {title:"Chase GP referral — Mary Byrne", patient:"Mary Byrne", owner:"Sarah Collins", due:dayMonth(addDays(TODAY,-2)), dueColor:RED, status:"Overdue"},
-  {title:"Review booking — Thomas O'Brien", patient:"Thomas O'Brien", owner:"Sarah Collins", due:dayMonth(TODAY), dueColor:LIME, status:"Awaiting approval"},
-  {title:"Prepare travel pack — Catherine Walsh", patient:"Catherine Walsh", owner:"Aoife Ryan", due:dayMonth(addDays(TODAY,1)), dueColor:DIM, status:"In progress"},
-  {title:"Confirm hotel — Thomas O'Brien", patient:"Thomas O'Brien", owner:"Aoife Ryan", due:dayMonth(addDays(TODAY,3)), dueColor:DIM, status:"Pending"},
-  {title:"Check aftercare — Brigid Nolan", patient:"Brigid Nolan", owner:"Sarah Collins", due:dayMonth(addDays(TODAY,5)), dueColor:DIM, status:"Not started"},
-  {title:"Review claim evidence — Brigid Nolan", patient:"Brigid Nolan", owner:"Sarah Collins", due:dayMonth(addDays(TODAY,2)), dueColor:AMBER, status:"Needs review"},
-  {title:"Coordinate return flight — Seán Kelly", patient:"Seán Kelly", owner:"Aoife Ryan", due:dayMonth(addDays(TODAY,7)), dueColor:DIM, status:"Pending"},
-  {title:"Request hospital records — Eileen Doyle", patient:"Eileen Doyle", owner:"Sarah Collins", due:dayMonth(addDays(TODAY,4)), dueColor:DIM, status:"Not started"}
-];
-
-/* ── referral rows ────────────────────────────────────────────── */
-const REFERRAL_ROWS = [
-  {patient:"Mary Byrne", source:"Dr Fiona Murphy", items:"GP referral letter, X-ray report", requested:dayMonth(addDays(TODAY,-6)), status:"Part Received", owner:"Sarah Collins"},
-  {patient:"Thomas O'Brien", source:"Dr Patrick Doyle", items:"GP referral, blood work, MRI", requested:dayMonth(addDays(TODAY,-14)), status:"Complete", owner:"Sarah Collins"},
-  {patient:"Catherine Walsh", source:"Dr Sinéad Brennan", items:"Cardiology referral, ECG", requested:dayMonth(addDays(TODAY,-10)), status:"Received", owner:"Aoife Ryan"},
-  {patient:"Eileen Doyle", source:"Dr Sinéad Brennan", items:"Orthopaedic referral", requested:dayMonth(addDays(TODAY,-3)), status:"Needs Review", owner:"Sarah Collins"},
-  {patient:"John Fitzpatrick", source:"Dr Patrick Doyle", items:"GP referral, MRI report", requested:dayMonth(addDays(TODAY,-1)), status:"Requested", owner:"Aoife Ryan"},
-  {patient:"Rory Connolly", source:"Dr Patrick Doyle", items:"GP referral, X-ray", requested:dayMonth(addDays(TODAY,-5)), status:"Part Received", owner:"Aoife Ryan"},
-  {patient:"Margaret Ryan", source:"Dr Fiona Murphy", items:"Shoulder assessment, imaging", requested:dayMonth(addDays(TODAY,-8)), status:"Complete", owner:"Sarah Collins"}
-];
-
-/* ── trips ────────────────────────────────────────────────────── */
-const TRIPS = [
-  {patient:"Catherine Walsh", treatment:"Cardiac assessment", dates:weekdayDate(addDays(TODAY,3)) + " – " + weekdayDate(addDays(TODAY,6)), destination:"Madrid", status:"Ready", initials:"CW", bg:"#e6c78a"},
-  {patient:"Thomas O'Brien", treatment:"Knee replacement", dates:weekdayDate(addDays(TODAY,15)) + " – " + weekdayDate(addDays(TODAY,22)), destination:"Barcelona", status:"Pending approval", initials:"TO", bg:"#9fd6f0"},
-  {patient:"Siobhán Murphy", treatment:"Gallbladder removal", dates:weekdayDate(addDays(TODAY,10)) + " – " + weekdayDate(addDays(TODAY,14)), destination:"Barcelona", status:"Travel pack ready", initials:"SM", bg:"#7fd8a4"},
-  {patient:"Mary Byrne", treatment:"Hip replacement", dates:"TBD", destination:"Barcelona", status:"Blocked — referral", initials:"MB", bg:"var(--accent)"}
-];
-
-/* ── claims ────────────────────────────────────────────────────── */
-const CLAIMS = [
-  {patient:"Brigid Nolan", treatment:"Hip replacement", amount:"€14,280 (illustrative)", status:"Staff Review", dot:AMBER},
-  {patient:"Dermot McCarthy", treatment:"Cataract surgery", amount:"€4,800 (illustrative)", status:"Submitted", dot:GREEN},
-  {patient:"Michael Daly", treatment:"Hernia repair", amount:"€6,200 (illustrative)", status:"Collecting Evidence", dot:AMBER},
-  {patient:"Áine Brennan", treatment:"Knee replacement", amount:"€15,600 (illustrative)", status:"Draft", dot:FAINT}
-];
-const FUNDING = [
-  {patient:"Mary Byrne", lender:"Cabot Financial", status:"Documents requested", dot:AMBER},
-  {patient:"Thomas O'Brien", lender:"Humm (illustrative)", status:"Approved", dot:GREEN},
-  {patient:"Margaret Ryan", lender:"Not required", status:"Self-funding", dot:NEUTRAL}
+const INBOX = [
+  {key:"ref",kind:"Task",importance:"high",title:"Mary Byrne — GP referral 4 days overdue",why:"Referral letter from Dr Murphy hasn't arrived. Follow-up prepared by the Referral Coordinator.",detail:"The referral was requested on "+dayMonth(addDays(TODAY,-6))+". Dr Murphy's practice at Rathfarnham Medical Centre has been contacted twice. The missing document is a signed GP referral letter — the X-ray report arrived separately.",actionLabel:"Send follow-up (simulated)",secondaryLabel:"Open case",dot:AMBER,age:"4d",group:"Work"},
+  {key:"book",kind:"Approval",importance:"high",title:"Thomas O'Brien — booking approval needed",why:"Quirón Barcelona confirmed "+dayMonth(addDays(TODAY,15))+". Quoted €16,200 (illustrative). Needs your yes.",detail:"The hospital confirmed a knee replacement slot. Hotel Arts Barcelona is provisionally held for 7 nights. Miguel Rodríguez is available for airport transfer. Approving writes the decision as you and updates the case, calendar, and travel plan.",actionLabel:"Approve booking (simulated)",secondaryLabel:"Open case",dot:LIME,age:"18m",group:"Approvals"},
+  {key:"date",kind:"Alert",importance:"normal",title:"Hospital date change — Thomas O'Brien",why:"Procedure moved from "+dayMonth(addDays(TODAY,12))+" to "+dayMonth(addDays(TODAY,15))+". Hotel, transfer, flight affected.",detail:"The Journey Coordinator has identified all affected arrangements and prepared proposed changes with estimated extra cost of €180 (illustrative). Coordinator reviews and approves before suppliers are contacted.",actionLabel:"Review changes",secondaryLabel:"Open trip",dot:AMBER,age:"Yesterday",group:"Alerts"},
+  {key:"claim",kind:"Task",importance:"normal",title:"Brigid Nolan — claim discrepancy",why:"€100 mismatch between invoice (€14,280) and payment receipt (€14,180). Staff review needed.",detail:"The Claims Assistant flagged this during evidence pack preparation. The surgeon's signature is also missing from the S2 form. A complete pack is ready for review — not automatically submittable.",actionLabel:"Open claim",secondaryLabel:"Ask Claims Assistant",dot:RED,age:"Mon",group:"Work"}
 ];
 
 /* ── activity events ──────────────────────────────────────────── */
 const ACTIVITY_EVENTS = [
-  {title:"GP referral received — partial — Mary Byrne", actor:"Document Assistant", event:"referral.received", when:"2h", dot:AMBER},
-  {title:"Booking approved — Thomas O'Brien", actor:"Sarah Collins", event:"booking.approved", when:"4h", dot:GREEN},
-  {title:"Hospital date changed — Quirón Barcelona", actor:"Hospital Quirón Barcelona", event:"appointment.changed", when:"Yesterday", dot:AMBER},
-  {title:"Claim evidence pack prepared — Brigid Nolan", actor:"Claims Assistant", event:"claim.pack.prepared", when:"Yesterday", dot:LIME},
-  {title:"Travel pack sent — Catherine Walsh", actor:"Aoife Ryan", event:"travel.pack.sent", when:"Yesterday", dot:GREEN},
-  {title:"Discrepancy flagged — invoice vs receipt — Brigid Nolan", actor:"Claims Assistant", event:"claim.discrepancy", when:dayMonth(addDays(TODAY,-2)), dot:RED},
-  {title:"Follow-up prepared — Dr Murphy — Mary Byrne", actor:"Referral Coordinator", event:"referral.followup", when:dayMonth(addDays(TODAY,-2)), dot:AMBER},
-  {title:"New enquiry received — Fionnuala Lynch", actor:"System", event:"enquiry.created", when:dayMonth(addDays(TODAY,-3)), dot:LIME},
-  {title:"Aftercare check completed — Michael Daly", actor:"Aoife Ryan", event:"aftercare.completed", when:dayMonth(addDays(TODAY,-4)), dot:GREEN},
-  {title:"Coordinator assigned — Patrick Healy", actor:"Sarah Collins", event:"patient.assigned", when:dayMonth(addDays(TODAY,-5)), dot:LIME},
-  {title:"Funding application submitted — Thomas O'Brien", actor:"Aoife Ryan", event:"funding.submitted", when:dayMonth(addDays(TODAY,-5)), dot:GREEN},
-  {title:"Hospital accounts reconciled — Quirón Barcelona", actor:"Hospital Accounts", event:"accounts.reconciled", when:dayMonth(addDays(TODAY,-6)), dot:LIME}
+  {title:"GP referral received — partial — Mary Byrne",actor:"Document Assistant",event:"referral.part_received",when:"2h",dot:AMBER,rel:"Mary Byrne · MB-2024-001"},
+  {title:"Booking approval requested — Thomas O'Brien",actor:"Sarah Collins",event:"approval.requested",when:"4h",dot:LIME,rel:"Thomas O'Brien · TO-2024-002"},
+  {title:"Hospital date changed — Quirón Barcelona",actor:"Hospital Quirón Barcelona",event:"appointment.changed",when:"Yesterday",dot:AMBER,rel:"Thomas O'Brien · TO-2024-002"},
+  {title:"Claim evidence pack prepared — Brigid Nolan",actor:"Claims Assistant",event:"claim.pack.prepared",when:"Yesterday",dot:LIME,rel:"Brigid Nolan · BN-2024-005"},
+  {title:"Travel pack sent to Catherine Walsh",actor:"Aoife Ryan",event:"travel.pack.sent",when:"Yesterday",dot:GREEN,rel:"Catherine Walsh · CW-2024-003"},
+  {title:"Discrepancy flagged — invoice vs receipt",actor:"Claims Assistant",event:"claim.discrepancy",when:dayMonth(addDays(TODAY,-2)),dot:RED,rel:"Brigid Nolan · BN-2024-005"},
+  {title:"Follow-up drafted for Dr Murphy",actor:"Referral Coordinator",event:"referral.followup.prepared",when:dayMonth(addDays(TODAY,-2)),dot:AMBER,rel:"Mary Byrne · MB-2024-001"},
+  {title:"New enquiry — Fionnuala Lynch",actor:"System",event:"enquiry.created",when:dayMonth(addDays(TODAY,-3)),dot:LIME,rel:"Fionnuala Lynch · FL-2024-015"},
+  {title:"Aftercare check completed — Michael Daly",actor:"Aoife Ryan",event:"aftercare.completed",when:dayMonth(addDays(TODAY,-4)),dot:GREEN,rel:"Michael Daly · MD-2024-012"},
+  {title:"Coordinator assigned — Patrick Healy",actor:"Sarah Collins",event:"patient.assigned",when:dayMonth(addDays(TODAY,-5)),dot:LIME,rel:"Patrick Healy · PH-2024-008"},
+  {title:"Funding application submitted — Thomas O'Brien",actor:"Aoife Ryan",event:"funding.submitted",when:dayMonth(addDays(TODAY,-5)),dot:GREEN,rel:"Thomas O'Brien · TO-2024-002"},
+  {title:"Hospital accounts reconciled — Quirón Barcelona",actor:"Hospital Accounts",event:"accounts.reconciled",when:dayMonth(addDays(TODAY,-6)),dot:LIME,rel:"Quirón Barcelona"}
 ];
 
 /* ── records directory ────────────────────────────────────────── */
 const RECORDS = [
-  {name:"Mary Byrne", initials:"MB", role:"Patient", email:"marybyrne@example.ie", org:"—", tag:"Patient", bg:"var(--accent)"},
-  {name:"Thomas O'Brien", initials:"TO", role:"Patient", email:"tobrien@example.ie", org:"—", tag:"Patient", bg:"#9fd6f0"},
-  {name:"Dr Fiona Murphy", initials:"FM", role:"GP", email:"fmurphy@rathfarnham.ie", org:"Rathfarnham Medical", tag:"GP", bg:"#e6c78a"},
-  {name:"Dr Carlos Martínez", initials:"CM", role:"Surgeon", email:"cmartinez@quiron.es", org:"Quirón Barcelona", tag:"Surgeon", bg:"#7fd8a4"},
-  {name:"Sarah Collins", initials:"SC", role:"Patient Coordinator", email:"sarah@healthcareabroad.ie", org:"Healthcare Abroad", tag:"Staff", bg:"var(--accent)"},
-  {name:"Aoife Ryan", initials:"AR", role:"Patient Coordinator", email:"aoife@healthcareabroad.ie", org:"Healthcare Abroad", tag:"Staff", bg:"#9fd6f0"},
-  {name:"Miguel Rodríguez", initials:"MR", role:"Driver", email:"miguel@transfers.es", org:"Barcelona Transfers", tag:"Driver", bg:"#e6c78a"},
-  {name:"Hotel Arts Barcelona", initials:"HA", role:"Hotel", email:"reservations@hotelartsbarcelona.com", org:"—", tag:"Hotel", bg:"var(--track)"},
-  {name:"Catherine Walsh", initials:"CW", role:"Patient", email:"cwalsh@example.ie", org:"—", tag:"Patient", bg:"#e6c78a"},
-  {name:"Seán Kelly", initials:"SK", role:"Patient", email:"skelly@example.ie", org:"—", tag:"Patient", bg:"#7fd8a4"},
-  {name:"Dr Patrick Doyle", initials:"PD", role:"GP", email:"pdoyle@tallaght.ie", org:"Tallaght Family Practice", tag:"GP", bg:"#9fd6f0"},
-  {name:"Dr Ana López", initials:"AL", role:"Surgeon", email:"alopez@teknon.es", org:"Teknon Medical Centre", tag:"Surgeon", bg:"var(--accent)"}
+  {name:"Mary Byrne",initials:"MB",role:"Patient",email:"—",org:"—",tag:"Patient",bg:"var(--accent)"},
+  {name:"Thomas O'Brien",initials:"TO",role:"Patient",email:"—",org:"—",tag:"Patient",bg:"#9fd6f0"},
+  {name:"Catherine Walsh",initials:"CW",role:"Patient",email:"—",org:"—",tag:"Patient",bg:"#e6c78a"},
+  {name:"Seán Kelly",initials:"SK",role:"Patient",email:"—",org:"—",tag:"Patient",bg:"#7fd8a4"},
+  {name:"Dr Fiona Murphy",initials:"FM",role:"GP",email:"fmurphy@rathfarnham.ie",org:"Rathfarnham Medical",tag:"GP",bg:"#e6c78a"},
+  {name:"Dr Patrick Doyle",initials:"PD",role:"GP",email:"pdoyle@tallaght.ie",org:"Tallaght Family Practice",tag:"GP",bg:"#9fd6f0"},
+  {name:"Dr Carlos Martínez",initials:"CM",role:"Surgeon",email:"cmartinez@quiron.es",org:"Quirón Barcelona",tag:"Surgeon",bg:"#7fd8a4"},
+  {name:"Dr Ana López",initials:"AL",role:"Surgeon",email:"alopez@teknon.es",org:"Teknon Medical Centre",tag:"Surgeon",bg:"var(--accent)"},
+  {name:"Sarah Collins",initials:"SC",role:"Patient Coordinator",email:"sarah@healthcareabroad.ie",org:"Healthcare Abroad",tag:"Staff",bg:"var(--accent)"},
+  {name:"Aoife Ryan",initials:"AR",role:"Patient Coordinator",email:"aoife@healthcareabroad.ie",org:"Healthcare Abroad",tag:"Staff",bg:"#9fd6f0"},
+  {name:"Niamh Cronin",initials:"NC",role:"Claims Officer",email:"niamh@healthcareabroad.ie",org:"Healthcare Abroad",tag:"Staff",bg:"#e6c78a"},
+  {name:"Miguel Rodríguez",initials:"MR",role:"Driver",email:"—",org:"Barcelona Transfers",tag:"Driver",bg:"#e6c78a"},
+  {name:"Hotel Arts Barcelona",initials:"HA",role:"Hotel",email:"reservations@hotelartsbarcelona.com",org:"—",tag:"Hotel",bg:"var(--track)"},
+  {name:"Hotel Catalonia Ramblas",initials:"HC",role:"Hotel",email:"reservations@cataloniaramblas.com",org:"—",tag:"Hotel",bg:"var(--track)"}
 ];
 
 /* ── KPIs (illustrative) ──────────────────────────────────────── */
 const KPI_DEFS = {
-  enquiries:{label:"Enquiries", value:"184", delta:"+31", dir:"up", hint:"30 days (illustrative)", hero:true},
-  booked:{label:"Booked treatments", value:"42", delta:"+8", dir:"up", hint:"30 days (illustrative)"},
-  completed:{label:"Completed journeys", value:"28", delta:"+5", dir:"up", hint:"30 days (illustrative)"},
-  conversion:{label:"Conversion", value:"23%", delta:"+2pt", dir:"up", hint:"enquiry to booking (illustrative)"},
-  overdueDocs:{label:"Overdue documents", value:"6", delta:"+2", dir:"down", hint:"past due date"}
+  enquiries:{label:"Enquiries",value:"184",delta:"+31",dir:"up",hint:"30 days (illustrative)",hero:true},
+  booked:{label:"Booked treatments",value:"42",delta:"+8",dir:"up",hint:"30 days (illustrative)"},
+  completed:{label:"Completed journeys",value:"28",delta:"+5",dir:"up",hint:"30 days (illustrative)"},
+  conversion:{label:"Conversion",value:"23%",delta:"+2pt",dir:"up",hint:"enquiry to booking (illustrative)"},
+  overdueDocs:{label:"Overdue documents",value:"6",delta:"+2",dir:"down",hint:"past due date"}
 };
 
-/* ── dashboard cards ──────────────────────────────────────────── */
-const DASH_CARDS = [
-  {title:"Patient pipeline", rows:[
-    {label:"Enquiry", value:"34", color:DIM},
-    {label:"Referral collection", value:"18", color:DIM},
-    {label:"Hospital review", value:"12", color:DIM},
-    {label:"Booked / ready", value:"22", color:LIME},
-    {label:"In treatment", value:"8", color:GREEN},
-    {label:"Aftercare", value:"6", color:DIM}
-  ]},
-  {title:"Business revenue (illustrative)", rows:[
-    {label:"Hospital coordination fees", value:"€142,800", color:LIME},
-    {label:"Direct costs", value:"€86,400", color:DIM},
-    {label:"Contribution per case", value:"€2,014", color:DIM},
-    {label:"Outstanding from hospitals", value:"€28,400", color:AMBER}
-  ]},
-  {title:"Treatment payments (illustrative)", rows:[
-    {label:"Patient payments to hospitals", value:"€384,200", color:DIM},
-    {label:"HSE reimbursements submitted", value:"€218,600", color:DIM},
-    {label:"HSE reimbursements received", value:"€196,400", color:GREEN},
-    {label:"Claims pending", value:"€22,200", color:AMBER}
-  ]},
-  {title:"Admin workload", rows:[
-    {label:"Open tasks", value:"24", color:DIM},
-    {label:"Overdue tasks", value:"3", color:RED},
-    {label:"Pending approvals", value:"2", color:AMBER},
-    {label:"Documents in review", value:"5", color:DIM}
-  ]}
-];
-
-/* ── settings cards ───────────────────────────────────────────── */
+/* ── settings ─────────────────────────────────────────────────── */
 const SETTINGS_CARDS = [
-  {title:"Deployment", rows:[
-    {k:"Client", v:"healthcare-abroad"},
-    {k:"App name", v:"Healthcare Abroad Operations"},
-    {k:"Public site", v:"https://www.healthcareabroad.ie/"},
-    {k:"Phone", v:"+353 (0)1 267 8011"},
-    {k:"Address", v:"7 Upper Ballymount Road, Dublin 24"},
-    {k:"Hours", v:"Mon–Sun 08:00–20:00"}
-  ]},
-  {title:"Staff & roles", rows:[
-    {k:"Patient Coordinator", v:"Sarah Collins, Aoife Ryan"},
-    {k:"Claims Officer", v:"Niamh Cronin"},
-    {k:"Manager", v:"David McCarthy"},
-    {k:"Approval rules", v:"Bookings >€10k need manager approval"}
-  ]},
-  {title:"Agent permissions", rows:[
-    {k:"Daily Briefing", v:"Read patients, read travel, read claims"},
-    {k:"Referral Coordinator", v:"Read referrals, prepare follow-ups (write needs approval)"},
-    {k:"Document Assistant", v:"Read documents, extract info (simulated)"},
-    {k:"Claims Assistant", v:"Read claims, prepare packs (write needs approval)"}
-  ]},
-  {title:"Integrations (simulated)", rows:[
-    {k:"Email", v:"Simulated — drafts shown, not sent"},
-    {k:"Hospital booking", v:"Simulated — requests shown, not placed"},
-    {k:"HSE submission", v:"Simulated — packs prepared, not submitted"},
-    {k:"Funding lenders", v:"Simulated — applications shown, not sent"}
-  ]}
+  {title:"Deployment",rows:[{k:"Client",v:"healthcare-abroad"},{k:"App name",v:"Healthcare Abroad Operations"},{k:"Public site",v:"https://www.healthcareabroad.ie/"},{k:"Phone",v:"+353 (0)1 267 8011"},{k:"Email",v:"info@healthcareabroad.ie"},{k:"Address",v:"7 Upper Ballymount Road, Dublin 24"},{k:"Hours",v:"Mon–Sun 08:00–20:00"}]},
+  {title:"Staff & roles",rows:[{k:"Patient Coordinator",v:"Sarah Collins, Aoife Ryan"},{k:"Claims Officer",v:"Niamh Cronin"},{k:"Manager",v:"David McCarthy"},{k:"Approval rules",v:"Bookings over €10,000 need manager approval"},{k:"Driver visibility",v:"Drivers see only pickup details and assistance requirements"}]},
+  {title:"Agent permissions",rows:[{k:"Daily Briefing",v:"Read patients, read travel, read claims"},{k:"Referral Coordinator",v:"Read referrals, prepare follow-ups (write needs approval)"},{k:"Document Assistant",v:"Read documents, extract info (simulated AI)"},{k:"Journey Coordinator",v:"Read trips, identify affected arrangements (write needs approval)"},{k:"Claims Assistant",v:"Read claims, prepare packs (write needs approval)"},{k:"Hospital Accounts",v:"Read coordination fees, read payments"}]},
+  {title:"Integrations (simulated)",rows:[{k:"Email",v:"Simulated — drafts shown, not sent"},{k:"Hospital booking",v:"Simulated — requests shown, not placed"},{k:"HSE submission",v:"Simulated — packs prepared, not submitted"},{k:"Funding lenders",v:"Simulated — applications shown, not sent"},{k:"Flights / hotels",v:"Simulated — availability shown, not booked"}]}
 ];
 
-/* ════════════════════════════════════════════════════════════════
-   Component
-   ════════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════════ */
 class Component extends DCLogic {
   state = {
     w: typeof window === "undefined" ? 1440 : window.innerWidth,
-    theme: "dark",
-    page: "Home",
-    draft: "", query: "", thread: [], typed: 0,
-    paletteOpen: false, showNotifs: false,
-    railOpen: false, barOpen: true,
-    hovered: null, hoverLabel: "", hoverTop: 0,
-    scenarioOpen: false, scenarioStep: 0,
-    patientView: "list", profileOpen: null, profileTab: "Overview",
-    referralsTab: "requests", careTab: "hospitals", travelTab: "trips", claimsTab: "claims",
-    agentId: "briefing", agentDraft: "",
-    workSection: "tasks"
+    theme:"dark", page:"Home",
+    draft:"", query:"", thread:[], typed:0,
+    paletteOpen:false, showNotifs:false,
+    railOpen:false, barOpen:true,
+    hovered:null, hoverLabel:"", hoverHint:"", hoverTop:0,
+    scenarioOpen:false, scenarioStep:0,
+    // patients
+    patientTab:"list", profileOpen:null, profileTab:"Overview",
+    // referrals
+    refTab:"gp", refDetailOpen:null,
+    // care network
+    careTab:"hospitals", hospitalOpen:null,
+    // travel
+    travelTab:"planner", tripOpen:null,
+    // claims
+    claimTab:"claims", claimOpen:null,
+    // work
+    workSection:"tasks", done:{}, approved:{},
+    // records
+    recSection:"contacts",
+    // activity
+    actFilter:"all",
+    // agents
+    agentId:"briefing", agentDraft:"",
+    // inbox
+    inboxOpen:null, inboxFilter:"All",
+    // settings
+    adminOpen:"deployment"
   };
 
   componentDidMount(){
@@ -1252,18 +1308,19 @@ class Component extends DCLogic {
     this._key = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k"){
         e.preventDefault();
-        if (this.state.paletteOpen) this.setState({paletteOpen:false, query:""}); else this.setState({paletteOpen:true, query:""});
+        this.setState(prev => ({paletteOpen:!prev.paletteOpen, query:""}));
       }
-      if (e.key === "Escape") this.setState({paletteOpen:false, scenarioOpen:false});
+      if (e.key === "Escape") this.setState({paletteOpen:false, showNotifs:false, scenarioOpen:false, inboxOpen:null, tripOpen:null, claimOpen:null, hospitalOpen:null, refDetailOpen:null});
     };
     window.addEventListener("keydown", this._key);
   }
   componentWillUnmount(){ window.removeEventListener("resize", this._resize); window.removeEventListener("keydown", this._key); }
 
-  go(page){ this.setState({page, profileOpen:null}); }
-  hover(key, label, e){
+  go(page){ this.setState({page, profileOpen:null, inboxOpen:null, tripOpen:null, claimOpen:null, hospitalOpen:null, refDetailOpen:null, showNotifs:false}); }
+  hover(key, label, hint, e){
     const r = e && e.currentTarget ? e.currentTarget.getBoundingClientRect() : null;
-    this.setState(prev => ({hovered:key, hoverLabel:label, hoverTop: r ? Math.round(r.top + r.height/2) : prev.hoverTop}));
+    this.setState(prev => ({hovered:key, hoverLabel:label, hoverHint:hint||"",
+      hoverTop: r ? Math.round(r.top + r.height/2) : prev.hoverTop}));
   }
   unhover(key){ this.setState(prev => (prev.hovered === key ? {hovered:null} : null)); }
 
@@ -1273,99 +1330,134 @@ class Component extends DCLogic {
       {role:"user", text:q},
       {role:"helios", full:a.text, tool:a.tool, effect:a.effect, cols:a.cols, rows:a.rows, actions:a.actions}
     ]);
-    this.setState({thread, draft:"", query:"", paletteOpen:false, page:"Home"});
+    this.setState({thread, draft:"", query:"", paletteOpen:false, page:"Home", inboxOpen:null});
   }
+
+  openPatient(id){ this.setState({page:"Patients", profileOpen:id, profileTab:"Overview", patientTab:"list"}); }
 
   renderVals(){
     const st = this.state, page = st.page;
-    const railOpen = st.railOpen;
+    const openInbox = INBOX.filter(i => !st.approved[i.key]);
+
+    const seg = (label, active, go, count) => ({label, active, inactive:!active, go, count});
 
     /* ── shared styles ─────────────────────────────────────────── */
-    const railStyle = (active) => "position:relative;width:" + (railOpen ? "100%" : "40px") + ";height:38px;flex:none;display:flex;align-items:center;"
-      + (railOpen ? "gap:11px;justify-content:flex-start;padding:0 11px;" : "gap:0;justify-content:center;")
+    const SLIDE = "transform .46s cubic-bezier(.22,.9,.16,1),background .3s var(--ease)";
+    const railStyle = (active) => "position:relative;width:" + (st.railOpen ? "100%" : "40px") + ";height:38px;flex:none;display:flex;align-items:center;"
+      + (st.railOpen ? "gap:11px;justify-content:flex-start;padding:0 11px;" : "gap:0;justify-content:center;")
       + "border:0;border-radius:13px;cursor:pointer;overflow:visible;"
-      + "transition:background .26s var(--ease),color .26s var(--ease);"
+      + "transition:background .26s var(--ease),color .26s var(--ease),transform .3s cubic-bezier(.16,1.4,.3,1);"
       + (active ? "background:var(--accent-faint);color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent-line)" : "background:none;color:var(--mid)");
-    const glyphStyle = (active, hovered) => "flex:none;transition:transform .38s cubic-bezier(.16,1.5,.3,1);"
-      + "transform:" + (active ? "scale(1.1)" : hovered ? "scale(1.06)" : "scale(1)");
+    const glyphStyle = (active, hovered) => "flex:none;transition:transform .38s cubic-bezier(.16,1.5,.3,1),opacity .22s var(--ease);"
+      + "transform:" + (active ? "scale(1.1)" : hovered ? "scale(1.06) translateY(-1px)" : "scale(1)");
+    const railOpen = st.railOpen;
     const inlineStyle = railOpen
       ? "flex:1;min-width:0;font-size:13px;text-align:left;white-space:nowrap;overflow:hidden;opacity:1"
       : "display:none";
-    const labelStyle = (shown, top) => "position:fixed;left:46px;top:" + top + "px;z-index:90;display:flex;align-items:center;gap:9px;padding:9px 15px;border-radius:14px;"
+    const labelStyle = (shown, top) => "position:fixed;left:" + (railOpen ? "246px" : "46px") + ";top:" + top + "px;z-index:90;display:flex;align-items:center;gap:9px;padding:9px 15px;border-radius:14px;"
       + "background:var(--tooltip);border:1px solid var(--border);box-shadow:0 16px 38px rgba(0,0,0,.4);"
       + "font-size:13px;font-weight:500;color:var(--tooltip-ink);white-space:nowrap;pointer-events:none;"
-      + "transform-origin:left center;" + (shown ? "visibility:visible;opacity:1;transform:translate(0,-50%) scale(1)" : "visibility:hidden;opacity:0;transform:translate(-12px,-50%) scale(.92)");
-    const tagStyle = (color) => "display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:999px;font-size:11px;font-weight:500;"
-      + "background:" + color + ";color:var(--on-accent)";
-    const statusPill = (status) => {
-      const map = {"Overdue":"var(--bad)","Part Received":AMBER,"Needs Review":AMBER,"Complete":"var(--ok)","Requested":"var(--dim)","Draft":"var(--faint)","Collecting Evidence":AMBER,"Staff Review":AMBER,"Submitted":"var(--ok)","Paid":"var(--ok)","Pending approval":AMBER,"Ready":"var(--ok)","Travel pack ready":"var(--ok)","Blocked — referral":"var(--bad)","In progress":"var(--accent)","Not started":"var(--faint)","Awaiting approval":AMBER,"Pending":"var(--dim)","Needs review":AMBER,"Received":"var(--ok)","Approved":"var(--ok)"};
-      const bg = map[status] || "var(--surface-2)";
+      + "transform-origin:left center;" + (shown && !railOpen ? "visibility:visible;opacity:1;transform:translate(0,-50%) scale(1)"
+      : "visibility:hidden;opacity:0;transform:translate(-12px,-50%) scale(.92)");
+    const statusPill = (s) => {
+      const m = {"Enquiry":"var(--faint)","Referral Collection":AMBER,"Hospital Review":AMBER,"Booking":"var(--accent)","Ready to Travel":GREEN,"In Treatment":GREEN,"Aftercare":LIME,"Closed":"var(--dim)",
+        "Overdue":"var(--bad)","Part Received":AMBER,"Needs Review":AMBER,"Complete":"var(--ok)","Requested":"var(--dim)","Draft":"var(--faint)","Collecting Evidence":AMBER,"Staff Review":AMBER,"Submitted":"var(--ok)","Paid":"var(--ok)",
+        "Pending approval":AMBER,"Ready":"var(--ok)","Travel pack ready":"var(--ok)","Blocked — referral":"var(--bad)","In progress":"var(--accent)","Not started":"var(--faint)","Awaiting approval":AMBER,"Pending":"var(--dim)",
+        "Needs review":AMBER,"Received":"var(--ok)","Approved":"var(--ok)","Documents requested":AMBER,"Self-funding":"var(--dim)"};
+      const bg = m[s] || "var(--surface-2)";
       return "display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:999px;font-size:11px;font-weight:500;background:" + bg + ";color:var(--on-accent)";
     };
-
-    const seg = (label, active, go, count) => ({label, active, inactive:!active, go, count});
+    const tagPill = (tag) => {
+      const colors = {Patient:"var(--accent)",GP:"#e6c78a",Surgeon:"#7fd8a4",Staff:"#9fd6f0",Driver:"#e6c78a",Hotel:"var(--dim)"};
+      return "display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:999px;font-size:11px;font-weight:500;background:" + (colors[tag]||"var(--surface-2)") + ";color:var(--on-accent)";
+    };
 
     /* ── nav items ─────────────────────────────────────────────── */
     const nav = NAV.map((n, idx) => n.divider
       ? {isDivider:true, isItem:false}
-      : {isItem:true, isDivider:false, label:n.label, d:ICONS[n.icon],
-         dot:false, dotStyle:"display:none",
+      : {isItem:true, isDivider:false, label:n.label, hint: railOpen ? "" : "", d:ICONS[n.icon],
+         dot: n.dot === true && openInbox.length > 0,
+         dotStyle: "position:absolute;top:5px;" + (railOpen ? "left:30px" : "right:6px") + ";width:5px;height:5px;border-radius:50%;background:var(--accent)",
          inlineStyle,
          active: n.page === page,
          glyphStyle: glyphStyle(n.page === page, st.hovered === idx),
-         style: railStyle(n.page === page) + ";animation:railIn .42s var(--ease) " + (idx * 35) + "ms both",
-         enter: (e) => { if (!railOpen) this.hover(idx, n.label, e); },
+         style: railStyle(n.page === page) + ";animation:railIn .42s var(--ease) " + (idx * 40) + "ms both",
+         enter: (e) => { if (!railOpen) this.hover(idx, n.label, "", e); },
          leave: () => this.unhover(idx),
          go: () => this.go(n.page)});
 
-    /* ── context nav per page ──────────────────────────────────── */
+    /* ── contextNav per page ───────────────────────────────────── */
     let contextNav, contextHint, searchHint;
     if (page === "Home" || page === "Dashboard"){
-      contextNav = [seg("Home", page==="Home", () => this.go("Home")), seg("Dashboard", page==="Dashboard", () => this.go("Dashboard"))];
-      contextHint = page === "Home" ? "HELIOS · HEALTHCARE ABROAD" : "DASHBOARD · ILLUSTRATIVE";
-      searchHint = "Search patients, cases, travel…";
+      contextNav = [seg("Home",page==="Home",()=>this.go("Home")), seg("Dashboard",page==="Dashboard",()=>this.go("Dashboard"))];
+      contextHint = page === "Home" ? "HELIOS · " + openInbox.length + " WAITING" : "DASHBOARD · ILLUSTRATIVE FIGURES";
+      searchHint = page === "Dashboard" ? "Search the dashboard" : "Search every record you can see";
     } else if (page === "Patients"){
-      contextNav = [seg("List", st.patientView==="list", () => this.setState({patientView:"list"})), seg("Journey board", st.patientView==="board", () => this.setState({patientView:"board"}))];
+      contextNav = [seg("List",st.patientTab==="list",()=>this.setState({patientTab:"list",profileOpen:null})),
+        seg("Journey board",st.patientTab==="board",()=>this.setState({patientTab:"board",profileOpen:null}))];
+      if (st.profileOpen) { const p = PATIENTS.find(x=>x.id===st.profileOpen); contextNav.push(seg(p ? p.name : "Profile", true, ()=>{})); }
       contextHint = "PATIENTS · " + PATIENTS.length + " CASES";
       searchHint = "Search patients";
     } else if (page === "Referrals"){
-      contextNav = [seg("Requests", true, () => {})];
+      contextNav = [seg("GP requests",st.refTab==="gp",()=>this.setState({refTab:"gp"})),
+        seg("Hospital requests",st.refTab==="hospital",()=>this.setState({refTab:"hospital"})),
+        seg("Incoming",st.refTab==="incoming",()=>this.setState({refTab:"incoming"})),
+        seg("Review",st.refTab==="review",()=>this.setState({refTab:"review"}))];
       contextHint = "REFERRALS · DOCUMENT MANAGEMENT";
-      searchHint = "Search referrals";
+      searchHint = "Search referrals and documents";
     } else if (page === "CareNetwork"){
-      contextNav = [seg("Hospitals", st.careTab==="hospitals", () => this.setState({careTab:"hospitals"})), seg("Surgeons", st.careTab==="surgeons", () => this.setState({careTab:"surgeons"}))];
+      contextNav = [seg("Hospitals",st.careTab==="hospitals",()=>this.setState({careTab:"hospitals",hospitalOpen:null})),
+        seg("Surgeons",st.careTab==="surgeons",()=>this.setState({careTab:"surgeons"})),
+        seg("Options",st.careTab==="options",()=>this.setState({careTab:"options"})),
+        seg("Performance",st.careTab==="performance",()=>this.setState({careTab:"performance"}))];
       contextHint = "CARE NETWORK · PARTNERS";
       searchHint = "Search hospitals and surgeons";
     } else if (page === "Travel"){
-      contextNav = [seg("Trips", true, () => {})];
-      contextHint = "TRAVEL · ITINERARIES";
-      searchHint = "Search trips";
+      contextNav = [seg("Trip planner",st.travelTab==="planner",()=>this.setState({travelTab:"planner",tripOpen:null})),
+        seg("Departures",st.travelTab==="departures",()=>this.setState({travelTab:"departures"})),
+        seg("Accommodation",st.travelTab==="accommodation",()=>this.setState({travelTab:"accommodation"})),
+        seg("Dispatch",st.travelTab==="dispatch",()=>this.setState({travelTab:"dispatch"})),
+        seg("Travel pack",st.travelTab==="pack",()=>this.setState({travelTab:"pack"}))];
+      contextHint = "TRAVEL · ITINERARIES & LOGISTICS";
+      searchHint = "Search trips and bookings";
     } else if (page === "Claims"){
-      contextNav = [seg("Claims", st.claimsTab==="claims", () => this.setState({claimsTab:"claims"})), seg("Funding", st.claimsTab==="funding", () => this.setState({claimsTab:"funding"}))];
+      contextNav = [seg("Claims tracker",st.claimTab==="claims",()=>this.setState({claimTab:"claims",claimOpen:null})),
+        seg("Funding",st.claimTab==="funding",()=>this.setState({claimTab:"funding"}))];
       contextHint = "CLAIMS · HSE REIMBURSEMENT";
-      searchHint = "Search claims";
+      searchHint = "Search claims and funding";
     } else if (page === "Agents"){
       contextNav = [];
-      contextHint = "AGENTS · 6 ACTIVE";
+      contextHint = "";
       searchHint = "Search agents";
     } else if (page === "Work"){
-      contextNav = [seg("Tasks", true, () => {})];
+      contextNav = [seg("Tasks",st.workSection==="tasks",()=>this.setState({workSection:"tasks"}), String(WORK_TASKS.length)),
+        seg("Approvals",st.workSection==="approvals",()=>this.setState({workSection:"approvals"}), String(INBOX.filter(i=>i.group==="Approvals").length)),
+        seg("Workflows",st.workSection==="workflows",()=>this.setState({workSection:"workflows"})),
+        seg("Schedules",st.workSection==="schedules",()=>this.setState({workSection:"schedules"}))];
       contextHint = "WORK · PATIENT TASKS";
-      searchHint = "Search tasks";
+      searchHint = "Search tasks and approvals";
     } else if (page === "Records"){
-      contextNav = [seg("Contacts", true, () => {})];
+      contextNav = [seg("Contacts",st.recSection==="contacts",()=>this.setState({recSection:"contacts"}), String(RECORDS.length)),
+        seg("Files",st.recSection==="files",()=>this.setState({recSection:"files"})),
+        seg("Ontology",st.recSection==="ontology",()=>this.setState({recSection:"ontology"}))];
       contextHint = "RECORDS · DIRECTORY";
-      searchHint = "Search contacts";
+      searchHint = "Search contacts, files and records";
     } else if (page === "Activity"){
-      contextNav = [seg("All", true, () => {})];
-      contextHint = "ACTIVITY · EVENT LOG";
-      searchHint = "Search events";
+      contextNav = [seg("Everything",st.actFilter==="all",()=>this.setState({actFilter:"all"})),
+        seg("People",st.actFilter==="people",()=>this.setState({actFilter:"people"})),
+        seg("Agents",st.actFilter==="agents",()=>this.setState({actFilter:"agents"})),
+        seg("Attention",st.actFilter==="attention",()=>this.setState({actFilter:"attention"}))];
+      contextHint = "ACTIVITY · LIVE EVENT LOG";
+      searchHint = "Search the audit trail";
     } else if (page === "Settings"){
-      contextNav = [];
+      contextNav = [seg("General",st.adminOpen==="deployment",()=>this.setState({adminOpen:"deployment"})),
+        seg("Staff",st.adminOpen==="staff",()=>this.setState({adminOpen:"staff"})),
+        seg("Agents",st.adminOpen==="agents",()=>this.setState({adminOpen:"agents"})),
+        seg("Integrations",st.adminOpen==="integrations",()=>this.setState({adminOpen:"integrations"}))];
       contextHint = "ADMIN · CONFIGURATION";
       searchHint = "Search settings";
     } else {
-      contextNav = [seg(page, true, () => {})];
+      contextNav = [seg(page, true, ()=>{})];
       contextHint = "";
       searchHint = "Search";
     }
@@ -1380,6 +1472,7 @@ class Component extends DCLogic {
         + "width:calc((100% - 4px) / " + n + ");transform:translateX(" + (i * 100) + "%);"
         + "opacity:" + (active < 0 ? 0 : 1) + ";"
         + "background-color:var(--accent);box-shadow:0 3px 14px var(--accent-line);"
+        + "background-image:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0) 55%);background-blend-mode:overlay;"
         + "transition:transform .46s cubic-bezier(.22,.9,.16,1),opacity .2s var(--ease)";
     })();
 
@@ -1387,60 +1480,109 @@ class Component extends DCLogic {
     const agentDef = AGENT_DEFS.find(a => a.id === st.agentId) || AGENT_DEFS[0];
     const agentThread = agentDef.thread.map(m => {
       const isStamp = m.kind === "stamp";
+      const isRoutine = m.kind === "routine";
       const isAgent = m.kind === "agent";
       return {
-        isStamp, isBubble: !isStamp,
-        text: m.text || "",
-        lines: m.lines,
-        hasLines: !!m.lines,
-        wrapStyle: isStamp ? "" : "display:flex;justify-content:" + (isAgent ? "flex-start" : "flex-end") + ";margin-bottom:16px",
-        bubbleStyle: "padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.6;max-width:80%;"
-          + (isAgent
-            ? "background:var(--surface-2);border:1px solid var(--border);color:var(--body)"
-            : "background:var(--accent);color:var(--on-accent)")
+        isStamp, isRoutine, isBubble: !isStamp && !isRoutine,
+        text: m.text || "", routine: m.routine || "",
+        lines: m.lines, hasLines: !!m.lines,
+        wrapStyle: isStamp || isRoutine ? "" : "display:flex;justify-content:" + (isAgent ? "flex-start" : "flex-end") + ";margin-bottom:16px",
+        bubbleStyle: isStamp || isRoutine ? "" : "padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.65;white-space:pre-line;"
+          + (isAgent ? "background:var(--surface-2);border:1px solid var(--border);color:var(--body)" : "background:var(--accent);color:var(--on-accent)"),
+        alignItems: isAgent ? "flex-start" : "flex-end"
       };
     });
 
     /* ── patient profile ───────────────────────────────────────── */
-    const profilePatient = st.profileOpen ? PATIENTS.find(p => p.id === st.profileOpen) : null;
+    const pp = st.profileOpen ? PATIENTS.find(p => p.id === st.profileOpen) : null;
     const profileTabs = ["Overview","Timeline","Documents","Treatment & travel","Funding & claim","Aftercare"].map(t => ({
       label:t, pick: () => this.setState({profileTab:t}),
       color: st.profileTab === t ? "var(--accent)" : DIM,
       accent: st.profileTab === t ? "var(--accent)" : "transparent",
       weight: st.profileTab === t ? "600" : "400"
     }));
-    const profileFields = profilePatient ? [
-      {label:"Patient", value:profilePatient.name},
-      {label:"Treatment", value:profilePatient.treatment},
-      {label:"Stage", value:STAGES[profilePatient.stage]},
-      {label:"Coordinator", value:profilePatient.coordinator},
-      {label:"Destination", value:profilePatient.destination},
-      {label:"GP", value: profilePatient.gp !== null ? GPS[profilePatient.gp].name : "—"},
-      {label:"Hospital", value: profilePatient.hospital !== null ? HOSPITALS[profilePatient.hospital].name : "Not yet selected"},
-      {label:"Outstanding issue", value: profilePatient.issue || "None"}
+    const profileFields = pp ? [
+      {label:"Patient",value:pp.name}, {label:"Treatment",value:pp.treatment}, {label:"Stage",value:STAGES[pp.stage]},
+      {label:"Coordinator",value:pp.coordinator}, {label:"Destination",value:pp.destination},
+      {label:"GP",value:pp.gp + " · " + pp.gpPractice},
+      {label:"Hospital",value:pp.hospital||"Not yet selected"}, {label:"Surgeon",value:pp.surgeon||"Not yet assigned"},
+      {label:"Hotel",value:pp.hotel||"—"}, {label:"Driver",value:pp.driver||"—"},
+      {label:"Claim amount",value:pp.claimAmt||"—"}, {label:"Claim status",value:pp.claimStatus||"—"},
+      {label:"Funding",value:pp.funding||"—"}, {label:"Funding status",value:pp.fundingStatus||"—"},
+      {label:"Outstanding issue",value: pp.issue || "None"}
     ] : [];
 
     /* ── board view ────────────────────────────────────────────── */
     const boardColumns = STAGES.map(s => {
       const pts = PATIENTS.filter(p => STAGES[p.stage] === s);
       return {title:s, count:String(pts.length), patients:pts.map(p => ({
-        name:p.name, treatment:p.treatment, dot:p.dot, issue:p.issue || "On track",
-        open: () => this.setState({profileOpen:p.id, profileTab:"Overview"})
+        name:p.name, treatment:p.treatment, dot:p.dot, issue:p.issue||"On track", coordinator:p.coordinator,
+        open: () => this.openPatient(p.id)
       }))};
     });
 
+    /* ── referral model ────────────────────────────────────────── */
+    const filteredRefs = REFERRAL_ROWS.filter(r =>
+      st.refTab === "gp" ? r.sourceType === "gp"
+      : st.refTab === "hospital" ? r.sourceType === "hospital"
+      : st.refTab === "incoming" ? (r.status === "Received" || r.status === "Part Received")
+      : st.refTab === "review" ? r.status === "Needs Review"
+      : true);
+
+    /* ── trip detail ───────────────────────────────────────────── */
+    const tripDetail = st.tripOpen ? TRIPS.find(t => t.id === st.tripOpen) : null;
+    const tripFields = tripDetail ? [
+      {label:"Patient",value:tripDetail.patient}, {label:"Treatment",value:tripDetail.treatment},
+      {label:"Outbound",value:tripDetail.outbound}, {label:"Return",value:tripDetail.ret},
+      {label:"Destination",value:tripDetail.dest}, {label:"Hotel",value:tripDetail.hotel + " · " + tripDetail.hotelNights},
+      {label:"Flight",value:tripDetail.flight}, {label:"Driver",value:tripDetail.driver},
+      {label:"Companion",value:tripDetail.companion}, {label:"Assistance",value:tripDetail.assistReq},
+      {label:"Status",value:tripDetail.status}
+    ] : [];
+
+    /* ── claim detail ──────────────────────────────────────────── */
+    const claimDetail = st.claimOpen ? CLAIMS_DATA.find(c => c.id === st.claimOpen) : null;
+    const claimFields = claimDetail ? [
+      {label:"Patient",value:claimDetail.patient}, {label:"Treatment",value:claimDetail.treatment},
+      {label:"Amount",value:claimDetail.amount}, {label:"Status",value:claimDetail.status},
+      {label:"Discrepancy",value:claimDetail.discrepancy},
+      {label:"Evidence collected",value:claimDetail.evidence.join(", ")||"None yet"},
+      {label:"Missing",value:claimDetail.missing.join(", ")||"None"}
+    ] : [];
+
+    /* ── inbox detail ──────────────────────────────────────────── */
+    const inboxDetail = st.inboxOpen ? INBOX.find(i => i.key === st.inboxOpen) : null;
+
+    /* ── filtered activity ─────────────────────────────────────── */
+    const filteredActivity = ACTIVITY_EVENTS.filter(e =>
+      st.actFilter === "all" ? true
+      : st.actFilter === "people" ? !e.actor.includes("Assistant") && !e.actor.includes("Coordinator") && !e.actor.includes("Briefing") && !e.actor.includes("Accounts") && e.actor !== "System"
+      : st.actFilter === "agents" ? (e.actor.includes("Assistant") || e.actor.includes("Coordinator") || e.actor.includes("Briefing") || e.actor.includes("Accounts"))
+      : e.dot === RED || e.dot === AMBER);
+
     /* ── scenario ──────────────────────────────────────────────── */
     const scenarioSteps = SCENARIO_STEPS.map((s, i) => ({
-      num: s.num, title: s.title, desc: s.desc,
-      current: i === st.scenarioStep,
-      done: i < st.scenarioStep,
-      bg: i === st.scenarioStep ? "var(--accent-faint)" : (i < st.scenarioStep ? "var(--surface-2)" : "var(--surface)"),
-      border: i === st.scenarioStep ? "var(--accent-line)" : "var(--border)",
-      numBg: i === st.scenarioStep ? "var(--accent)" : (i < st.scenarioStep ? "var(--ok)" : "var(--surface-2)"),
-      numColor: i === st.scenarioStep ? "var(--on-accent)" : (i < st.scenarioStep ? "var(--on-accent)" : DIM),
-      titleColor: i === st.scenarioStep ? "var(--accent)" : (i < st.scenarioStep ? "var(--ok)" : "var(--ink)"),
+      num:s.num, title:s.title, desc:s.desc,
+      current:i===st.scenarioStep, done:i<st.scenarioStep,
+      bg:i===st.scenarioStep?"var(--accent-faint)":(i<st.scenarioStep?"var(--surface-2)":"var(--surface)"),
+      border:i===st.scenarioStep?"var(--accent-line)":"var(--border)",
+      numBg:i===st.scenarioStep?"var(--accent)":(i<st.scenarioStep?"var(--ok)":"var(--surface-2)"),
+      numColor:i===st.scenarioStep?"var(--on-accent)":(i<st.scenarioStep?"var(--on-accent)":DIM),
+      titleColor:i===st.scenarioStep?"var(--accent)":(i<st.scenarioStep?"var(--ok)":"var(--ink)"),
       go: () => this.setState({scenarioStep:i})
     }));
+
+    /* ── work model ────────────────────────────────────────────── */
+    const workTaskRows = WORK_TASKS.map(t => ({
+      ...t, statusStyle:statusPill(t.status),
+      open: () => this.openPatient(t.patientId),
+      toggle: () => this.setState(prev => ({done:{...prev.done, [t.id]:!prev.done[t.id]}})),
+      isDone: !!st.done[t.id]
+    }));
+
+    /* ── settings model ────────────────────────────────────────── */
+    const settingsIdx = {deployment:0,staff:1,agents:2,integrations:3};
+    const activeSettingsCard = SETTINGS_CARDS[settingsIdx[st.adminOpen]||0];
 
     return {
       nav, contextNav, contextHint, searchHint,
@@ -1450,6 +1592,8 @@ class Component extends DCLogic {
         ? "M20.2 15.4A8.5 8.5 0 0 1 8.6 3.8 8.5 8.5 0 1 0 20.2 15.4Z"
         : "M12 4.2V2.6 M12 21.4v-1.6 M4.2 12H2.6 M21.4 12h-1.6 M6.5 6.5 5.4 5.4 M18.6 18.6l-1.1-1.1 M6.5 17.5l-1.1 1.1 M18.6 5.4l-1.1 1.1 M12 16.6a4.6 4.6 0 1 0 0-9.2 4.6 4.6 0 0 0 0 9.2Z",
       toggleTheme: () => this.setState({theme: st.theme === "light" ? "dark" : "light"}),
+      toggleNotifs: () => this.setState({showNotifs:!st.showNotifs}),
+      showNotifs: st.showNotifs,
 
       /* rail */
       railOuter: "position:relative;z-index:2;width:" + (railOpen ? "232px" : "60px")
@@ -1459,8 +1603,10 @@ class Component extends DCLogic {
         + "overflow-y:auto;overflow-x:hidden;scrollbar-width:none;"
         + "transition:width .32s var(--ease),padding .32s var(--ease)",
       brandStyle: railOpen
-        ? "flex:1;min-width:0;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;opacity:1"
+        ? "flex:1;min-width:0;overflow:hidden;opacity:1"
         : "display:none",
+      logoCollapsedStyle: railOpen ? "display:none" : "width:30px;height:30px;flex:none;border-radius:10px;object-fit:contain",
+      logoExpandedStyle: railOpen ? "height:28px;object-fit:contain;margin-right:auto" : "display:none",
       railRowStyle: "display:flex;align-items:center;gap:10px;"
         + (railOpen ? "width:100%;padding:0 10px;" : "justify-content:center;width:40px;"),
       railOpen, railLabel: railOpen ? "Collapse sidebar" : "Expand sidebar",
@@ -1468,25 +1614,55 @@ class Component extends DCLogic {
       settingsInlineStyle: inlineStyle,
       settingsStyle: railStyle(page === "Settings") + ";animation:railIn .42s var(--ease) 300ms both",
       settingsGlyphStyle: glyphStyle(page === "Settings", st.hovered === "__settings"),
-      enterSettings: (e) => this.hover("__settings", "Settings", e),
+      enterSettings: (e) => this.hover("__settings", "Settings", "", e),
       leaveSettings: () => this.unhover("__settings"),
       goSettings: () => this.go("Settings"),
 
       /* header */
+      isAgents: page === "Agents",
       showPillNav: page !== "Agents",
       navGroupStyle, navThumb,
+      searchExpanded: contextNav.length <= 6,
+      searchBarStyle: (() => {
+        const segs = contextNav.length;
+        const cap = segs <= 2 ? 520 : segs <= 4 ? 440 : 340;
+        return "flex:1 1 auto;min-width:min(200px,100%);max-width:" + cap + "px;height:36px;"
+          + "display:flex;align-items:center;gap:9px;padding:0 14px;margin:0 4px;"
+          + "background:var(--surface-2);border:1px solid var(--border-strong);border-radius:999px;"
+          + "box-shadow:0 1px 0 rgba(255,255,255,.05) inset,0 4px 12px rgba(0,0,0,.28);"
+          + "cursor:pointer;color:var(--body);"
+          + "transition:border-color .2s var(--ease),color .2s var(--ease),background .2s var(--ease),max-width .3s var(--ease)";
+      })(),
+      openPalette: () => this.setState({paletteOpen:true, query:""}),
       barOpen: st.barOpen,
-      barLabel: st.barOpen ? "Collapse" : "Expand",
+      barLabel: st.barOpen ? "Collapse the bar" : "Expand the bar",
       barChevronStyle: "transition:transform .3s var(--ease);transform:rotate(" + (st.barOpen ? "0deg" : "180deg") + ")",
       toggleBar: () => this.setState(prev => ({barOpen: !prev.barOpen})),
       showHint: roomy && st.barOpen,
+      showSearchText: mid && st.barOpen,
       showProfileText: roomy,
-      searchBarStyle: "flex:1 1 auto;min-width:min(200px,100%);max-width:440px;height:36px;display:flex;align-items:center;gap:9px;padding:0 14px;margin:0 4px;"
-        + "background:var(--surface-2);border:1px solid var(--border-strong);border-radius:999px;cursor:pointer;color:var(--body);"
-        + "transition:border-color .2s var(--ease),color .2s var(--ease)",
-      openPalette: () => this.setState({paletteOpen:true, query:""}),
+      team: [{i:"SC",bg:"var(--accent)"},{i:"AR",bg:"#9fd6f0"},{i:"NC",bg:"#e6c78a"}],
+      inboxCount: String(openInbox.length),
 
-      hoverLabel: {label:st.hoverLabel, style:labelStyle(st.hovered !== null, st.hoverTop)},
+      hoverLabel: {label:st.hoverLabel, hint:st.hoverHint, style:labelStyle(st.hovered !== null, st.hoverTop)},
+
+      /* agent header */
+      agent: agentDef,
+      agentListHint: "AGENTS · " + AGENT_DEFS.length + " ACTIVE",
+      agentList: AGENT_DEFS.map(a => ({
+        name:a.name, shape:a.shape, state:a.state, tint:a.tint, when:a.when, preview:a.preview,
+        isSolo:true, isGroup:false,
+        rowStyle: "display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;cursor:pointer;transition:background .2s var(--ease)"
+          + (st.agentId === a.id ? ";background:var(--accent-faint)" : ""),
+        open: () => this.setState({agentId:a.id})
+      })),
+      agentThread, agentDraft: st.agentDraft,
+      setAgentDraft: (e) => this.setState({agentDraft:e.target.value}),
+      onAgentKey: (e) => { if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); } },
+      agentPlaceholder: "Ask " + agentDef.name + " anything…",
+
+      /* notifications */
+      notifications: INBOX.slice(0,4).map(i => ({dot:i.dot, text:i.title, meta:i.why})),
 
       /* page flags */
       isHome: page === "Home",
@@ -1496,7 +1672,6 @@ class Component extends DCLogic {
       isTravel: page === "Travel",
       isClaims: page === "Claims",
       isDashboard: page === "Dashboard",
-      isAgents: page === "Agents",
       isWork: page === "Work",
       isRecords: page === "Records",
       isActivity: page === "Activity",
@@ -1507,57 +1682,67 @@ class Component extends DCLogic {
       greetingName: "Sarah",
       heliosEmpty: st.thread.length === 0,
       threadOpen: st.thread.length > 0,
+      showRail: st.thread.length === 0,
       threadTitle: st.thread.length ? st.thread[0].text : "",
       thread: st.thread.map(m => {
         const isHelios = m.role === "helios";
         return {
           isUser: m.role === "user", isHelios, text: isHelios ? m.full : m.text,
-          hasTool: isHelios && !!m.tool, tool: m.tool || "", toolEffect: m.effect ? "· " + m.effect : "",
+          hasTool: isHelios && !!m.tool, tool:m.tool||"", toolEffect: m.effect ? "· "+m.effect : "",
           toolDot: m.effect === "write" ? AMBER : LIME,
           hasTable: isHelios && !!m.cols,
-          cols: m.cols || [], tableCols: m.cols ? "1.6fr 1fr .85fr .9fr" : "1fr",
-          rows: (m.rows || []).map(r => ({cells:r.map((v,i) => ({v, color: i===0 ? INK : DIM}))})),
+          cols:m.cols||[], tableCols: m.cols ? "1.6fr 1fr .85fr .9fr" : "1fr",
+          rows:(m.rows||[]).map(r => ({cells:r.map((v,i) => ({v, color: i===0 ? INK : DIM}))})),
           hasActions: isHelios && !!m.actions,
-          actions: (m.actions || []).map(a => ({label:a[0], bg:a[1] ? LIME : "none", color:a[1] ? "var(--on-accent)" : INK, border:a[1] ? LIME : "var(--border)", run:() => this.ask(a[0])}))
+          actions:(m.actions||[]).map(a => ({label:a[0], bg:a[1]?LIME:"none", color:a[1]?"var(--on-accent)":INK, border:a[1]?LIME:"var(--border)", run:()=>this.ask(a[0])}))
         };
       }),
-      draft: st.draft,
-      setDraft: (e) => this.setState({draft:e.target.value}),
-      onDraftKey: (e) => { if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); if (st.draft.trim()) this.ask(st.draft.trim()); } },
+      draft: st.draft, setDraft: (e) => this.setState({draft:e.target.value}),
+      onDraftKey: (e) => { if (e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); if (st.draft.trim()) this.ask(st.draft.trim()); } },
       send: () => { if (st.draft.trim()) this.ask(st.draft.trim()); },
+      newThread: () => this.setState({thread:[], typed:0, draft:""}),
       suggestions: [
-        {label:"Who is travelling next week?", run:() => this.ask("Who is travelling next week?")},
-        {label:"Which cases are blocked?", run:() => this.ask("Which cases are blocked?")},
-        {label:"What needs my approval?", run:() => this.ask("What needs my approval?")}
+        {label:"Who is travelling next week?", run:()=>this.ask("Who is travelling next week?")},
+        {label:"Which cases are blocked?", run:()=>this.ask("Which cases are blocked?")},
+        {label:"What needs my approval?", run:()=>this.ask("What needs my approval?")}
       ],
-      showRail: st.thread.length === 0,
-      inboxCount: String(INBOX_ITEMS.length),
-      inboxItems: INBOX_ITEMS.map(i => ({...i, go: () => {}})),
+      inboxItems: openInbox.map(i => ({...i, go: () => this.setState({inboxOpen:i.key})})),
       upcomingTravel: [
         {title:"Catherine Walsh · Madrid", when:weekdayDate(addDays(TODAY,3)), dot:LIME},
-        {title:"Thomas O'Brien · Barcelona", when:weekdayDate(addDays(TODAY,15)) + " (pending)", dot:AMBER},
+        {title:"Thomas O'Brien · Barcelona", when:weekdayDate(addDays(TODAY,15))+" (pending)", dot:AMBER},
         {title:"Siobhán Murphy · Barcelona", when:weekdayDate(addDays(TODAY,10)), dot:GREEN}
       ],
       miniKpis: [
-        {label:"Active cases", value:String(PATIENTS.filter(p => p.stage > 0 && p.stage < 7).length), delta:"+3 this week", deltaColor:GREEN},
-        {label:"Travelling", value:"2", delta:"this week", deltaColor:LIME},
-        {label:"Blocked", value:"1", delta:"Mary Byrne", deltaColor:RED},
-        {label:"Overdue docs", value:"3", delta:"+1 today", deltaColor:AMBER}
+        {label:"Active cases",value:String(PATIENTS.filter(p=>p.stage>0&&p.stage<7).length),delta:"+3 this week",deltaColor:GREEN},
+        {label:"Travelling",value:"2",delta:"this week",deltaColor:LIME},
+        {label:"Blocked",value:"1",delta:"Mary Byrne",deltaColor:RED},
+        {label:"Overdue docs",value:"3",delta:"+1 today",deltaColor:AMBER}
       ],
+
+      /* inbox detail */
+      inboxDetailOpen: !!inboxDetail,
+      closeInboxDetail: () => this.setState({inboxOpen:null}),
+      inboxDetail: inboxDetail ? {
+        title:inboxDetail.title, kind:inboxDetail.kind, why:inboxDetail.why, detail:inboxDetail.detail,
+        actionLabel:inboxDetail.actionLabel, secondaryLabel:inboxDetail.secondaryLabel,
+        dot:inboxDetail.dot, age:inboxDetail.age,
+        approve: () => this.setState(prev => ({approved:{...prev.approved,[inboxDetail.key]:true},inboxOpen:null})),
+        secondary: () => { if (inboxDetail.key==="book") this.openPatient("p2"); else if (inboxDetail.key==="ref") this.openPatient("p1"); else if (inboxDetail.key==="claim") this.setState({page:"Claims",claimTab:"claims",claimOpen:"c1",inboxOpen:null}); else this.setState({inboxOpen:null}); }
+      } : {title:"",kind:"",why:"",detail:"",actionLabel:"",secondaryLabel:"",dot:"",age:"",approve:()=>{},secondary:()=>{}},
 
       /* patients */
       patientsTitle: PATIENTS.length + " patients",
-      patientProfile: !!profilePatient,
-      showPatientList: !profilePatient,
-      patientViewBoard: st.patientView === "board",
-      patientViewList: st.patientView === "list",
+      patientProfile: !!pp,
+      showPatientList: !pp,
+      patientViewBoard: st.patientTab === "board",
+      patientViewList: st.patientTab === "list",
       boardCols: String(STAGES.length),
       boardColumns,
-      profileInitials: profilePatient ? profilePatient.initials : "",
-      profileName: profilePatient ? profilePatient.name : "",
-      profileSummary: profilePatient ? profilePatient.treatment + " · " + profilePatient.coordinator : "",
-      profileStatus: profilePatient ? STAGES[profilePatient.stage] : "",
-      profileStatusStyle: profilePatient ? statusPill(STAGES[profilePatient.stage]) : "",
+      profileInitials: pp ? pp.initials : "",
+      profileName: pp ? pp.name : "",
+      profileSummary: pp ? pp.treatment + " · " + pp.coordinator : "",
+      profileStatus: pp ? STAGES[pp.stage] : "",
+      profileStatusStyle: pp ? statusPill(STAGES[pp.stage]) : "",
       closeProfile: () => this.setState({profileOpen:null}),
       profileTabs, profileFields,
       patientCols: ["Patient","Treatment","Stage","Coordinator","Destination","Issue"],
@@ -1565,99 +1750,142 @@ class Component extends DCLogic {
         name:p.name, initials:p.initials, bg:p.bg, treatment:p.treatment,
         stage:STAGES[p.stage], stageStyle:statusPill(STAGES[p.stage]),
         coordinator:p.coordinator, destination:p.destination,
-        issue: p.issue || "—", issueColor: p.issue ? (p.issue.includes("Missing") || p.issue.includes("Overdue") ? RED : DIM) : FAINT,
-        open: () => this.setState({profileOpen:p.id, profileTab:"Overview"})
+        issue:p.issue||"—", issueColor:p.issue?(p.issue.includes("Missing")||p.issue.includes("Overdue")?RED:DIM):FAINT,
+        open: () => this.openPatient(p.id)
       })),
 
       /* referrals */
       referralsTitle: "Document management",
       referralStats: [
-        {label:"Outstanding requests", value:String(REFERRAL_ROWS.filter(r => r.status !== "Complete").length), color:AMBER},
-        {label:"Complete", value:String(REFERRAL_ROWS.filter(r => r.status === "Complete").length), color:GREEN},
-        {label:"Needs review", value:String(REFERRAL_ROWS.filter(r => r.status === "Needs Review").length), color:RED}
+        {label:"Outstanding",value:String(REFERRAL_ROWS.filter(r=>r.status!=="Complete").length),color:AMBER},
+        {label:"Complete",value:String(REFERRAL_ROWS.filter(r=>r.status==="Complete").length),color:GREEN},
+        {label:"Needs review",value:String(REFERRAL_ROWS.filter(r=>r.status==="Needs Review").length),color:RED}
       ],
-      referralCols: ["Patient","Source","Requested items","Date requested","Status","Owner"],
-      referralRows: REFERRAL_ROWS.map(r => ({
+      referralCols: ["Patient","Source","Items","Requested","Status","Owner"],
+      referralRows: filteredRefs.map(r => ({
         patient:r.patient, source:r.source, items:r.items, requested:r.requested,
         status:r.status, statusStyle:statusPill(r.status), owner:r.owner,
-        open: () => {}
+        open: () => { const p = PATIENTS.find(pt => pt.name === r.patient); if (p) this.openPatient(p.id); }
       })),
+      referralsEmpty: filteredRefs.length === 0,
 
       /* care network */
       careNetworkTitle: "Hospitals & surgeons",
+      showHospitals: st.careTab === "hospitals" || st.careTab === "options" || st.careTab === "performance",
+      showSurgeons: st.careTab === "surgeons",
       hospitals: HOSPITALS.map(h => ({
         name:h.name, location:h.loc, initials:h.name.split(" ").map(w=>w[0]).join("").slice(0,2),
-        tint:h.tint, treatments:String(h.treatments), activeCases:String(h.activeCases),
-        categories:h.categories
+        tint:h.tint, treatments:String(h.treatments), activeCases:String(h.active),
+        categories:h.cats, response:h.response, docs:h.docs,
+        open: () => this.setState({hospitalOpen:h.id})
       })),
+      surgeons: SURGEONS.map(s => ({
+        name:s.name, specialty:s.specialty, hospital:s.hospital, lang:s.lang,
+        cases:String(s.cases), verified:s.verified, verifiedLabel:s.verified?"Verified":"Pending review",
+        verifiedColor:s.verified?GREEN:AMBER
+      })),
+      hospitalDetailOpen: !!st.hospitalOpen,
+      closeHospital: () => this.setState({hospitalOpen:null}),
 
       /* travel */
       travelTitle: "Trips & logistics",
       travelStats: [
-        {label:"Active trips", value:"3", color:LIME, hint:"this month"},
-        {label:"Departures this week", value:"1", color:GREEN, hint:"Catherine Walsh"},
-        {label:"Pending changes", value:"1", color:AMBER, hint:"Thomas O'Brien date shift"},
-        {label:"Unconfirmed pickups", value:"0", color:GREEN, hint:"all assigned"}
+        {label:"Active trips",value:"3",color:LIME,hint:"this month"},
+        {label:"Departures this week",value:"1",color:GREEN,hint:"Catherine Walsh"},
+        {label:"Pending changes",value:"1",color:AMBER,hint:"Thomas O'Brien date shift"},
+        {label:"Unconfirmed pickups",value:"0",color:GREEN,hint:"all assigned"}
       ],
       trips: TRIPS.map(t => ({
-        ...t,
-        statusStyle: statusPill(t.status),
-        open: () => {}
+        ...t, statusStyle:statusPill(t.status),
+        open: () => this.setState({tripOpen:t.id})
       })),
+      tripDetailOpen: !!tripDetail,
+      closeTripDetail: () => this.setState({tripOpen:null}),
+      tripFields,
+      tripPatientLink: tripDetail ? (() => { const p = PATIENTS.find(pt => pt.id === tripDetail.patientId); return p ? () => this.openPatient(p.id) : () => {}; })() : () => {},
 
       /* claims */
       claimsTitle: "Reimbursement & funding",
+      showClaimsTracker: st.claimTab === "claims",
+      showFunding: st.claimTab === "funding",
       claimStats: [
-        {label:"Claims in progress", value:String(CLAIMS.filter(c => c.status !== "Paid").length), color:AMBER},
-        {label:"Submitted to HSE", value:String(CLAIMS.filter(c => c.status === "Submitted").length), color:GREEN},
-        {label:"Funding applications", value:String(FUNDING.length), color:DIM}
+        {label:"Claims in progress",value:String(CLAIMS_DATA.filter(c=>c.status!=="Paid"&&c.status!=="Submitted").length),color:AMBER},
+        {label:"Submitted to HSE",value:String(CLAIMS_DATA.filter(c=>c.status==="Submitted").length),color:GREEN},
+        {label:"Funding applications",value:String(FUNDING_DATA.length),color:DIM}
       ],
-      claims: CLAIMS.map(cl => ({...cl, statusStyle:statusPill(cl.status), open:() => {}})),
-      funding: FUNDING,
+      claims: CLAIMS_DATA.map(cl => ({...cl, statusStyle:statusPill(cl.status),
+        open: () => this.setState({claimOpen:cl.id})})),
+      funding: FUNDING_DATA.map(f => ({...f, statusStyle:statusPill(f.status)})),
+      claimDetailOpen: !!claimDetail,
+      closeClaimDetail: () => this.setState({claimOpen:null}),
+      claimFields,
+      claimPatientLink: claimDetail ? (() => { const p = PATIENTS.find(pt=>pt.id===claimDetail.patientId); return p ? ()=>this.openPatient(p.id) : ()=>{}; })() : ()=>{},
 
       /* dashboard */
       kpiColumns: String(Object.keys(KPI_DEFS).length),
       kpis: Object.keys(KPI_DEFS).map(k => {
         const d = KPI_DEFS[k], hero = d.hero === true;
-        return {label:d.label, value:d.value, delta:d.delta, hint:d.hint,
-          bg: hero ? "var(--accent)" : "var(--surface)",
-          border: hero ? "var(--accent)" : (d.dir === "down" ? "var(--bad-soft)" : "var(--border)"),
-          ink: hero ? "var(--on-accent)" : INK,
-          deltaColor: hero ? "var(--on-accent-2)" : (d.dir === "up" ? GREEN : RED)};
+        return {label:d.label,value:d.value,delta:d.delta,hint:d.hint,
+          bg:hero?"var(--accent)":"var(--surface)",
+          border:hero?"var(--accent)":(d.dir==="down"?"var(--bad-soft)":"var(--border)"),
+          ink:hero?"var(--on-accent)":INK,
+          deltaColor:hero?"var(--on-accent-2)":(d.dir==="up"?GREEN:RED)};
       }),
-      dashCards: DASH_CARDS,
-
-      /* agents */
-      agentListHint: "AGENTS · " + AGENT_DEFS.length + " ACTIVE",
-      agentList: AGENT_DEFS.map(a => ({
-        name:a.name, shape:a.shape, state:a.state, tint:a.tint, when:a.when, preview:a.preview,
-        rowStyle: "display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;cursor:pointer;transition:background .2s var(--ease)"
-          + (st.agentId === a.id ? ";background:var(--accent-faint)" : ""),
-        open: () => this.setState({agentId:a.id})
-      })),
-      agent: agentDef,
-      agentThread,
+      dashCards: [
+        {title:"Patient pipeline",rows:[
+          {label:"Enquiry",value:String(PATIENTS.filter(p=>p.stage===0).length),color:DIM},
+          {label:"Referral collection",value:String(PATIENTS.filter(p=>p.stage===1).length),color:DIM},
+          {label:"Hospital review",value:String(PATIENTS.filter(p=>p.stage===2).length),color:DIM},
+          {label:"Booked / ready",value:String(PATIENTS.filter(p=>p.stage===3||p.stage===4).length),color:LIME},
+          {label:"In treatment",value:String(PATIENTS.filter(p=>p.stage===5).length),color:GREEN},
+          {label:"Aftercare",value:String(PATIENTS.filter(p=>p.stage===6).length),color:DIM}]},
+        {title:"Business revenue (illustrative)",rows:[
+          {label:"Hospital coordination fees",value:"€142,800",color:LIME},
+          {label:"Direct coordination costs",value:"€86,400",color:DIM},
+          {label:"Contribution per case",value:"€2,014",color:DIM},
+          {label:"Outstanding from hospitals",value:"€28,400",color:AMBER}]},
+        {title:"Treatment payments (illustrative)",rows:[
+          {label:"Patient payments to hospitals",value:"€384,200",color:DIM},
+          {label:"HSE reimbursements submitted",value:"€218,600",color:DIM},
+          {label:"HSE reimbursements received",value:"€196,400",color:GREEN},
+          {label:"Claims pending",value:"€22,200",color:AMBER}]},
+        {title:"Admin workload",rows:[
+          {label:"Open tasks",value:String(WORK_TASKS.length),color:DIM},
+          {label:"Overdue tasks",value:String(WORK_TASKS.filter(t=>t.status==="Overdue").length),color:RED},
+          {label:"Pending approvals",value:String(INBOX.filter(i=>i.group==="Approvals").length),color:AMBER},
+          {label:"Documents in review",value:String(REFERRAL_ROWS.filter(r=>r.status==="Needs Review").length),color:DIM}]}
+      ],
 
       /* work */
-      workTitle: "Patient tasks",
+      workTitle: (() => { const s = st.workSection; return s==="tasks"?"Tasks":s==="approvals"?"Approvals":s==="workflows"?"Workflows":"Schedules"; })(),
+      showWorkTasks: st.workSection === "tasks",
+      showWorkApprovals: st.workSection === "approvals",
+      showWorkOther: st.workSection === "workflows" || st.workSection === "schedules",
       workCols: ["Task","Patient","Owner","Due","Status"],
-      workRows: WORK_TASKS.map(t => ({
-        title:t.title, patient:t.patient, owner:t.owner, due:t.due, dueColor:t.dueColor,
-        status:t.status, statusStyle:statusPill(t.status)
+      workRows: workTaskRows,
+      workApprovals: INBOX.filter(i=>i.group==="Approvals").map(i => ({
+        title:i.title, why:i.why, dot:i.dot, age:i.age,
+        actionLabel:i.actionLabel, approved:!!st.approved[i.key],
+        approve: () => this.setState(prev => ({approved:{...prev.approved,[i.key]:true}})),
+        open: () => this.setState({inboxOpen:i.key})
       })),
 
       /* records */
       recordCols: ["Name","Role","Email","Organisation","Type"],
-      recordRows: RECORDS.map(p => ({
-        ...p, tagStyle: tagStyle(p.tag === "Patient" ? "var(--accent)" : p.tag === "GP" ? "#e6c78a" : p.tag === "Surgeon" ? "#7fd8a4" : p.tag === "Staff" ? "#9fd6f0" : "var(--surface-2)")
+      recordRows: RECORDS.map(p => ({...p, tagStyle:tagPill(p.tag),
+        open: () => { const pt = PATIENTS.find(x=>x.name===p.name); if (pt) this.openPatient(pt.id); }
       })),
+      showRecordsContacts: st.recSection === "contacts",
+      showRecordsFiles: st.recSection === "files",
+      showRecordsOntology: st.recSection === "ontology",
 
       /* activity */
-      activityCount: String(ACTIVITY_EVENTS.length),
-      activityRows: ACTIVITY_EVENTS,
+      activityCount: String(filteredActivity.length),
+      activityRows: filteredActivity,
 
       /* settings */
-      settingsCards: SETTINGS_CARDS,
+      settingsTitle: activeSettingsCard.title,
+      settingsRows: activeSettingsCard.rows,
 
       /* scenario controls */
       scenarioOpen: st.scenarioOpen,
